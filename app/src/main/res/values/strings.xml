@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">GID</string>
+    <string name="title_activity_tour_detail">TourDetail</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+
+    // TourDetail
+    <string name="route">Маршрут</string>
+    <string name="tour_description">Описание тура</string>
+    <string name="buy_a_tour">Купить тур</string>
+    <string name="similar_destinations">Похожие направления</string>
+
+</resources>

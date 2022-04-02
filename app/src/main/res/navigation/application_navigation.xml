@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/application_navigation"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/directionDetailFragment"
+        android:name="com.travel.gid.ui.direction_detail.DirectionDetailFragment"
+        android:label="DirectionDetailFragment" >
+        <argument
+            android:name="id"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.travel.gid.ui.home.HomeFragment"
+        android:label="home_fragment"
+        tools:layout="@layout/home_fragment" />
+
+    <fragment
+        android:id="@+id/tourDetailFragment"
+        android:name="com.travel.gid.ui.tour_detail.TourDetailFragment"
+        android:label="tour_detail_fragment"
+        tools:layout="@layout/fragment_tour_detail">
+        <argument
+            android:name="id"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentReservation"
+        android:name="com.travel.gid.ui.FragmentReservation"
+        android:label="FragmentReservation" >
+        <action
+            android:id="@+id/action_fragmentReservation_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+</navigation>
