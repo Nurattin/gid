@@ -233,7 +233,6 @@ class TourDetailFragment : Fragment() {
                 mapview.setNoninteractive(true)
             }
         }
-
     }
 
     private fun initMarkPlaces() {

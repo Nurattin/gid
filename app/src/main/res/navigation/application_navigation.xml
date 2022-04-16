@@ -37,5 +37,39 @@
             app:destination="@id/homeFragment"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/selectCityFragment"
+        android:name="com.travel.gid.ui.select_city.SelectCityFragment"
+        android:label="select_city_fragment"
+        tools:layout="@layout/select_city_fragment" />
+    <fragment
+        android:id="@+id/hotelsFragment"
+        android:name="com.travel.gid.ui.hotels_list.HotelsFragment"
+        android:label="hotels_fragment"
+        tools:layout="@layout/hotels_fragment" />
+    <fragment
+        android:id="@+id/hotelDetailFragment"
+        android:name="com.travel.gid.ui.hotel_detail.HotelDetailFragment"
+        android:label="hotel_detail_fragment"
+        tools:layout="@layout/hotel_detail_fragment" >
+        <argument
+            android:name="hotel"
+            app:argType="com.travel.gid.data.models.Hotel" />
+    </fragment>
+    <fragment
+        android:id="@+id/roomsFragment"
+        android:name="com.travel.gid.ui.rooms.RoomsFragment"
+        android:label="rooms_fragment"
+        tools:layout="@layout/rooms_fragment" >
+        <argument
+            android:name="roomsList"
+            app:argType="com.travel.gid.data.models.Room[]" />
+    </fragment>
+    <fragment
+        android:id="@+id/roomDetailFragment"
+        android:name="com.travel.gid.ui.room_detail.RoomDetailFragment"
+        android:label="room_detail_fragment"
+        tools:layout="@layout/room_detail_fragment" />
+
 
 </navigation>

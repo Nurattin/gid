@@ -17,6 +17,26 @@
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
+    <style name="ThemeOverlay.App.MaterialCalendar" parent="@style/ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
+    </style>
+
+    <style name="Widget.App.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxBackgroundColor">@color/pine_green</item>
+        <item name="materialCalendarHeaderToggleButton">@style/HeaderToggleButton1</item>
+    </style>
+
+    <style name="MyMaterialCalendarTheme" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">@color/pine_green</item>
+        <item name="materialCalendarHeaderToggleButton">@style/HeaderToggleButton1</item>
+    </style>
+
+    <style name="HeaderToggleButton1" parent="@style/Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton">
+        <item name="android:visibility">gone</item>
+    </style>
+
+
     <style name="Theme.GID.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

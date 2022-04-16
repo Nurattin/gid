@@ -1,6 +1,7 @@
 package com.travel.gid.utils
 
 import android.content.Context
+import android.text.format.DateFormat
 import android.util.TypedValue
 import java.text.NumberFormat
 import java.util.*
@@ -15,4 +16,11 @@ fun valueToPrice(value: Int): String{
     format.currency = Currency.getInstance("RUB")
 
     return format.format(value)
+}
+
+fun getDateFromTimestamp(timestamp: Long) :String {
+    val calendar = Calendar.getInstance(Locale.ENGLISH)
+    calendar.timeInMillis = timestamp
+    val date = DateFormat.format("dd-MMMM",calendar).toString()
+    return date
 }
