@@ -27,6 +27,7 @@ import com.travel.gid.utils.observe
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import com.google.android.material.datepicker.DateValidatorPointForward
+import com.travel.gid.data.models.DirectionData
 import com.travel.gid.utils.getDateFromTimestamp
 import java.util.*
 
@@ -52,21 +53,24 @@ class HomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        observeViewModel()
+        //observeViewModel()
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (viewModel.tour == null) {
-            viewModel.getDirections()
-            lifecycleScope.launch {
-                getTours()
+        viewModel.directionsLiveDataPrivate.observe(viewLifecycleOwner,){
+            it.body()?.data?.let { listDirection ->
+                showDirections(listDirection)
+                showBanner()
             }
-        }else {
-            showDirections()
-            showBanner()
+        }
+
+        viewModel.tourLiveDataPrivate.observe(viewLifecycleOwner){
+            it.body()?.data.let { tourList ->
+
+            }
         }
 
         binding.run {
@@ -151,7 +155,6 @@ class HomeFragment : Fragment() {
         when(val response = request { viewModel.getTour() }) {
             is ApiResponse.Result<*> -> {
                 val data = response.data as Tour
-                viewModel.tour = data
                 showBanner()
             }
             is ApiResponse.Error -> {
@@ -171,11 +174,11 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun showDirections() {
+    private fun showDirections(listDirection: List<DirectionData>) {
 
         binding.run {
             val childFragmentsAdapter =
-                ViewPagerChildFragmentsAdapter(this@HomeFragment, directions = viewModel.directions!!.data)
+                ViewPagerChildFragmentsAdapter(this@HomeFragment, directions = listDirection)
             vpChildFragment.adapter = childFragmentsAdapter
             vpChildFragment.isUserInputEnabled = false
         }
@@ -193,14 +196,14 @@ class HomeFragment : Fragment() {
     private fun handleDirectionsList(status: Resource<Direction>) {
         when (status) {
             is Resource.Loading -> showLoadingView()
-            is Resource.Success -> status.data?.let { showDirections() }
+            is Resource.Success -> status.data?.let { showDirections(it.data) }
             is Resource.DataError -> {
 
             }
         }
     }
 
-    fun observeViewModel(){
-        observe(viewModel.tourLiveData, ::handleDirectionsList)
-    }
+//    fun observeViewModel(){
+//        observe(viewModel.directionsLiveData, ::handleDirectionsList)
+//    }
 }

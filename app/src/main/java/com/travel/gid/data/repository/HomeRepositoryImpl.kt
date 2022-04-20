@@ -18,10 +18,8 @@ class HomeRepositoryImpl @Inject constructor(private val api: GidApi, private va
 
     override suspend fun getTours(): Response<Tour> = api.getToursList()
 
-    override suspend fun getTour(): Flow<Resource<Direction>> {
-        return flow {
-            emit(requestTour())
-        }.flowOn(ioDispatcher)
+    override suspend fun getDirection(): Response<Direction> {
+        return api.getDirectionsList()
     }
 
     suspend fun requestTour(): Resource<Direction> {

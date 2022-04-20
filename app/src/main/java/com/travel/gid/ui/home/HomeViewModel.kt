@@ -1,6 +1,5 @@
 package com.travel.gid.ui.home
 
-import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,21 +19,27 @@ class HomeViewModel @Inject constructor(
     private val getHomeUseCase: GetHomeUseCase
 ): ViewModel() {
 
-    val tourLiveDataPrivate = MutableLiveData<Resource<Direction>>()
-    val tourLiveData : LiveData<Resource<Direction>> get() = tourLiveDataPrivate
+    val directionsLiveDataPrivate = MutableLiveData<Response<Direction>>()
+    val directionsLiveData : LiveData<Response<Direction>> get() = directionsLiveDataPrivate
 
-    var tour: Tour? = null
-    var directions: Direction? = null
+    val tourLiveDataPrivate = MutableLiveData<Response<Tour>>()
+    val tourLiveData : LiveData<Response<Tour>> get() = tourLiveDataPrivate
+
+//    var tour: Tour? = null
+   // var directions: Direction? = null
+
+    init {
+        viewModelScope.launch {
+            directionsLiveDataPrivate.postValue(getHomeUseCase.getDirection())
+
+            tourLiveDataPrivate.postValue(getHomeUseCase.getTours())
+        }
+    }
 
     suspend fun getTour(): Response<Tour>  = getHomeUseCase.getTours()
 
     fun getDirections(){
-            viewModelScope.launch {
-                getHomeUseCase.getTour().collect {
-                    directions = it.data
-                    tourLiveDataPrivate.value = it
-                }
-            }
+
     }
 
 }
