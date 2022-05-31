@@ -52,15 +52,16 @@
         android:id="@+id/show_all_tour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="44dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="36dp"
         android:fontFamily="@font/namsan_bold"
         android:gravity="center"
         android:text="Все туры"
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/similarToursRecyclerView" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/upcomingToursRecyclerView"
