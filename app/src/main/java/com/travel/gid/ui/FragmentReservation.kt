@@ -61,6 +61,8 @@ class FragmentReservation : Fragment() {
                 findNavController().navigate(R.id.homeFragment)
             }
 
+            toolbar.setNavigationOnClickListener{findNavController().navigateUp()}
+
             paymentMethodsCheckBoxList.add(paymentMethodsCheckBox1)
             paymentMethodsCheckBoxList.add(paymentMethodsCheckBox2)
             paymentMethodsCheckBoxList.add(paymentMethodsCheckBox3)

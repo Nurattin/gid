@@ -10,8 +10,13 @@ import com.travel.gid.databinding.HomeTourItemBinding
 
 private typealias OnTourClickListener = ((DirectionData) -> Unit)
 
-class DirectionsListAdapter(private val array: ArrayList<DirectionData>) : RecyclerView.Adapter<DirectionsListAdapter.TourViewHolder>() {
+class DirectionsListAdapter() : RecyclerView.Adapter<DirectionsListAdapter.TourViewHolder>() {
 
+    var data = listOf<DirectionData>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
     private var clickListener: OnTourClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TourViewHolder {
@@ -25,11 +30,11 @@ class DirectionsListAdapter(private val array: ArrayList<DirectionData>) : Recyc
     }
 
     override fun onBindViewHolder(holder: TourViewHolder, position: Int) {
-        holder.bind(array[position], clickListener)
+        holder.bind(data[position], clickListener)
     }
 
     override fun getItemCount(): Int {
-        return array.size
+        return data.size
     }
 
 

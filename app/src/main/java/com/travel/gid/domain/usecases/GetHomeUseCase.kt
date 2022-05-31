@@ -1,10 +1,8 @@
 package com.travel.gid.domain.usecases
 
-import com.travel.gid.data.Resource
 import com.travel.gid.data.models.Direction
 import com.travel.gid.data.models.Tour
 import com.travel.gid.domain.repository.HomeRepository
-import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import javax.inject.Inject
 

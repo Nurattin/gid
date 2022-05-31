@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.travel.gid.R
@@ -11,11 +13,16 @@ import com.travel.gid.data.models.DirectionData
 import com.travel.gid.databinding.FragmentVpHomeToursBinding
 import com.travel.gid.ui.BaseFragment
 import com.travel.gid.ui.direction_detail.DirectionDetailFragmentArgs
+import com.travel.gid.ui.home.HomeViewModel
 import com.travel.gid.ui.home.adapters.DirectionsListAdapter
 import com.travel.gid.ui.home.adapters.UpcomingToursAdapter
 import com.travel.gid.utils.SpaceItemDecoration
+import dagger.hilt.android.AndroidEntryPoint
 
-class DirectionsFragment  : BaseFragment<FragmentVpHomeToursBinding>() {
+@AndroidEntryPoint
+class DirectionsFragment : BaseFragment<FragmentVpHomeToursBinding>() {
+
+    val viewModel: HomeViewModel by viewModels()
 
     var directionList: ArrayList<DirectionData> = ArrayList()
 
@@ -34,6 +41,12 @@ class DirectionsFragment  : BaseFragment<FragmentVpHomeToursBinding>() {
     ): View {
         binding = FragmentVpHomeToursBinding.inflate(inflater, container, false)
 
+        binding?.apply {
+            showAllTour.setOnClickListener {
+                findNavController().navigate(R.id.action_homeFragment_to_tourFragment)
+            }
+        }
+
         return binding!!.root
     }
 
@@ -45,15 +58,22 @@ class DirectionsFragment  : BaseFragment<FragmentVpHomeToursBinding>() {
     private fun setupRecyclerView() {
         binding?.run {
 
+            val adapter = DirectionsListAdapter()
             similarToursRecyclerView.layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            val adapter = DirectionsListAdapter(array = directionList)
             similarToursRecyclerView.adapter = adapter
+
+            viewModel.directionList.observe(viewLifecycleOwner, Observer {
+                it.body()?.data?.let {
+                    adapter.data = it
+                }
+            })
+
 
             adapter.setOnTourClickListener {
                 navController.navigate(
                     R.id.directionDetailFragment,
-                    DirectionDetailFragmentArgs(it.id,).toBundle()
+                    DirectionDetailFragmentArgs(it.id).toBundle()
                 )
             }
 

@@ -15,9 +15,9 @@ data class DirectionDetailData (
     @SerializedName("id") var id : Int,
     @SerializedName("name") var name : String,
     @SerializedName("description") var description : String,
-    @SerializedName("avatar") var avatar : String,
+    @SerializedName("image") var avatar : String,
     @SerializedName("city") var city : City,
-    @SerializedName("detail_photo") var images : List<String>,
+    @SerializedName("detailImages") var images : List<String>,
     @SerializedName("tours") var tours : List<TourDirection>
 )
 

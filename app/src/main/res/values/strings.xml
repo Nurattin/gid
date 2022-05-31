@@ -16,5 +16,7 @@
     <string name="tour_description">Описание тура</string>
     <string name="buy_a_tour">Купить тур</string>
     <string name="similar_destinations">Похожие направления</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

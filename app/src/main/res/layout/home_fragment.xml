@@ -254,7 +254,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:fontFamily="@font/namsan_medium"
-                        android:text="Сувениры" />
+                        android:text="События" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
 

@@ -1,46 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:mask="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:fitsSystemWindows="true"
     android:layout_height="match_parent"
-    xmlns:mask="http://schemas.android.com/apk/res-auto"
     android:background="#FAFAFA"
+    android:fitsSystemWindows="true"
     tools:context=".ui.MainActivity">
 
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="24dp"
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/Widget.MaterialComponents.Toolbar.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:elevation="1dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/back" />
+        app:navigationIcon="@drawable/ic_vector"
+        app:title="Бронирование"
+        app:titleCentered="true"
+        app:titleTextColor="@color/black" />
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/pro_display_semibold"
-        android:text="Бронирование"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView5" />
-
-    <ImageView
-        android:id="@+id/imageView10"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginTop="17dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:background="#fdfdfd"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -48,7 +30,7 @@
         android:background="#FAFAFA"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView10"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
@@ -75,9 +57,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:orientation="horizontal"
+                android:overScrollMode="never"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:overScrollMode="never"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView7" />
@@ -103,14 +85,14 @@
                     android:id="@+id/editTextTextPersonName"
                     android:layout_width="match_parent"
                     android:layout_height="46dp"
-                    android:ems="10"
-                    android:paddingStart="0dp"
-                    android:background="@drawable/edit_text_botton_line"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
+                    android:background="@drawable/edit_text_botton_line"
+                    android:ems="10"
                     android:fontFamily="@font/pro_display_regular"
                     android:hint="Имя"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:paddingStart="0dp" />
 
 
                 <br.com.sapereaude.maskedEditText.MaskedEditText
@@ -119,10 +101,10 @@
                     android:layout_height="61dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
-                    android:gravity="bottom"
-                    android:paddingStart="0dp"
                     android:background="@drawable/edit_text_botton_line"
+                    android:gravity="bottom"
                     android:inputType="phone"
+                    android:paddingStart="0dp"
                     android:textColorHint="@android:color/darker_gray"
                     android:typeface="monospace"
                     mask:allowed_chars="1234567890"
@@ -171,11 +153,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:gravity="center"
-                            android:textSize="16sp"
-                            android:textColor="@color/black"
                             android:fontFamily="@font/pro_display_semibold"
-                            android:text="0" />
+                            android:gravity="center"
+                            android:text="0"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
 
                         <ImageView
                             android:id="@+id/countPeoplePlus"
@@ -210,10 +192,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="19dp"
-                android:textColor="#000000"
                 android:layout_marginTop="21dp"
                 android:fontFamily="@font/pro_display_semibold"
                 android:text="Способ подтверждения оплаты"
+                android:textColor="#000000"
                 android:textSize="16sp" />
 
 
@@ -240,9 +222,9 @@
                         android:id="@+id/payment_methods_check_box1"
                         android:layout_width="24dp"
                         android:layout_height="48dp"
-                        android:clickable="false"
                         android:layout_marginStart="18dp"
                         android:button="@drawable/selector_checkbox"
+                        android:clickable="false"
                         android:theme="@style/OverlayCheckbox" />
 
                     <TextView
@@ -282,9 +264,9 @@
                         android:id="@+id/payment_methods_check_box2"
                         android:layout_width="24dp"
                         android:layout_height="48dp"
-                        android:clickable="false"
                         android:layout_marginStart="18dp"
                         android:button="@drawable/selector_checkbox"
+                        android:clickable="false"
                         android:theme="@style/OverlayCheckbox" />
 
                     <TextView
@@ -323,8 +305,8 @@
                         android:layout_width="24dp"
                         android:layout_height="48dp"
                         android:layout_marginStart="18dp"
-                        android:clickable="false"
                         android:button="@drawable/selector_checkbox"
+                        android:clickable="false"
                         android:theme="@style/OverlayCheckbox" />
 
                     <TextView
@@ -359,13 +341,13 @@
                         android:id="@+id/editTextTextPersonName2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="25dp"
                         android:background="@drawable/edit_text_botton_line_2"
                         android:ems="10"
-                        android:paddingStart="0dp"
                         android:gravity="bottom"
-                        android:layout_marginEnd="25dp"
                         android:hint="Ваш комментарий"
-                        android:inputType="textPersonName" />
+                        android:inputType="textPersonName"
+                        android:paddingStart="0dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -393,10 +375,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="22dp"
-                    android:textColor="#8B929E"
                     android:layout_marginTop="24dp"
                     android:fontFamily="@font/pro_display_regular"
                     android:text="Стоимость тура"
+                    android:textColor="#8B929E"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -429,8 +411,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/pro_display_regular"
-                    android:textColor="#8B929E"
                     android:text="Количество людей"
+                    android:textColor="#8B929E"
                     app:layout_constraintStart_toStartOf="@+id/textView22"
                     app:layout_constraintTop_toBottomOf="@+id/textView22" />
 
@@ -450,8 +432,8 @@
                     android:id="@+id/textView25"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#8B929E"
                     android:text="2"
+                    android:textColor="#8B929E"
                     app:layout_constraintBottom_toBottomOf="@+id/textView24"
                     app:layout_constraintEnd_toEndOf="@+id/textView23" />
 
@@ -461,8 +443,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/pro_display_regular"
-                    android:textColor="#8B929E"
                     android:text="Общая стоимость"
+                    android:textColor="#8B929E"
                     app:layout_constraintStart_toStartOf="@+id/textView24"
                     app:layout_constraintTop_toBottomOf="@+id/textView24" />
 
@@ -493,9 +475,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:layout_marginBottom="24dp"
-                    android:textColor="@color/black"
                     android:fontFamily="@font/pro_display_regular"
                     android:text="Итого"
+                    android:textColor="@color/black"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/textView26"
@@ -508,8 +490,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pro_display_regular"
                     android:text="5 000 ₽"
-                    android:textSize="16sp"
                     android:textColor="@color/black"
+                    android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView28"
                     app:layout_constraintEnd_toEndOf="@+id/textView27"
                     app:layout_constraintTop_toTopOf="@+id/textView28" />

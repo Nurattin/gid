@@ -15,7 +15,7 @@ data class TourData (
     val id: Long,
     @SerializedName("name")
     val name: String,
-    @SerializedName("avatar")
+    @SerializedName("image")
     val avatar: String
 )
 

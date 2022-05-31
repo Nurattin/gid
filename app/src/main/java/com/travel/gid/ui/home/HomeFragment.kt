@@ -2,15 +2,15 @@ package com.travel.gid.ui.home
 
 import android.content.DialogInterface
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.CalendarConstraints.DateValidator
+import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.datepicker.MaterialDatePicker.INPUT_MODE_CALENDAR
 import com.travel.gid.R
@@ -18,17 +18,14 @@ import com.travel.gid.data.Resource
 import com.travel.gid.data.datasource.network.ApiResponse
 import com.travel.gid.data.datasource.network.request
 import com.travel.gid.data.models.Direction
+import com.travel.gid.data.models.DirectionData
 import com.travel.gid.data.models.Tour
 import com.travel.gid.databinding.HomeFragmentBinding
 import com.travel.gid.ui.home.adapters.ViewPagerChildFragmentsAdapter
 import com.travel.gid.ui.select_guest.BottomSheetSelectGuests
-import com.travel.gid.utils.home_btns_controller.HomeButtonsControllerImpl
-import com.travel.gid.utils.observe
-import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import com.google.android.material.datepicker.DateValidatorPointForward
-import com.travel.gid.data.models.DirectionData
 import com.travel.gid.utils.getDateFromTimestamp
+import com.travel.gid.utils.home_btns_controller.HomeButtonsControllerImpl
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 
@@ -60,14 +57,14 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.directionsLiveDataPrivate.observe(viewLifecycleOwner,){
+        viewModel.directionsLiveDataPrivate.observe(viewLifecycleOwner) {
             it.body()?.data?.let { listDirection ->
                 showDirections(listDirection)
                 showBanner()
             }
         }
 
-        viewModel.tourLiveDataPrivate.observe(viewLifecycleOwner){
+        viewModel.tourLiveDataPrivate.observe(viewLifecycleOwner) {
             it.body()?.data.let { tourList ->
 
             }
@@ -76,7 +73,7 @@ class HomeFragment : Fragment() {
         binding.run {
             homeButtonsControllerImpl = HomeButtonsControllerImpl(requireContext())
             homeButtonsControllerImpl.prevContainer = interestContainer
-
+            vpChildFragment.offscreenPageLimit = 2
             selectGuest.setOnClickListener {
                 showDialogSelectGuests()
             }
@@ -102,10 +99,11 @@ class HomeFragment : Fragment() {
                 vpChildFragment.setCurrentItem(1, false)
             }
 
-//            placesBtn.setOnClickListener {
-//                homeButtonsControllerImpl.setBtnStyleChecked(it, 2)
-//                vpChildFragment.setCurrentItem(2, false)
-//            }
+
+            placesBtn.setOnClickListener {
+                homeButtonsControllerImpl.setBtnStyleChecked(it, 2)
+                vpChildFragment.setCurrentItem(2, false)
+            }
 //
 //            souvenirsBtn.setOnClickListener {
 //                homeButtonsControllerImpl.setBtnStyleChecked(it, 3)
@@ -115,7 +113,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupRangePickerDialog() {
-        val builder: MaterialDatePicker.Builder<androidx.core.util.Pair<Long,Long>> =MaterialDatePicker.Builder.dateRangePicker()
+        val builder: MaterialDatePicker.Builder<androidx.core.util.Pair<Long, Long>> =
+            MaterialDatePicker.Builder.dateRangePicker()
         builder.setTitleText("Выберите дату заселения и выезда")
         builder.setInputMode(INPUT_MODE_CALENDAR)
         builder.setTheme(R.style.MyMaterialCalendarTheme)
@@ -129,19 +128,20 @@ class HomeFragment : Fragment() {
         try {
             builder.setCalendarConstraints(constraintsBuilder.build())
 
-            val picker:MaterialDatePicker<androidx.core.util.Pair<Long,Long>> =builder.build()
+            val picker: MaterialDatePicker<androidx.core.util.Pair<Long, Long>> = builder.build()
             getDateRange(picker)
             picker.show(parentFragmentManager, picker.toString())
-        } catch (e:IllegalArgumentException){
+        } catch (e: IllegalArgumentException) {
         }
     }
 
-    private fun getDateRange(materialCalendarPicker:MaterialDatePicker<out androidx.core.util.Pair<Long,Long>>) {
+    private fun getDateRange(materialCalendarPicker: MaterialDatePicker<out androidx.core.util.Pair<Long, Long>>) {
         materialCalendarPicker.addOnPositiveButtonClickListener { selection: androidx.core.util.Pair<Long, Long> ->
             val startDate = selection.first
             val endDate = selection.second
 
-            binding.selectDates.text = "${getDateFromTimestamp(startDate)}  ${getDateFromTimestamp(endDate)}"
+            binding.selectDates.text =
+                "${getDateFromTimestamp(startDate)}  ${getDateFromTimestamp(endDate)}"
         }
         materialCalendarPicker.addOnNegativeButtonClickListener { dialog: View? -> }
 
@@ -151,8 +151,8 @@ class HomeFragment : Fragment() {
 
     }
 
-    private suspend fun getTours(){
-        when(val response = request { viewModel.getTour() }) {
+    private suspend fun getTours() {
+        when (val response = request { viewModel.getTour() }) {
             is ApiResponse.Result<*> -> {
                 val data = response.data as Tour
                 showBanner()
@@ -184,11 +184,11 @@ class HomeFragment : Fragment() {
         }
     }
 
-    fun showLoadingView(){
+    fun showLoadingView() {
 
     }
 
-    fun showDialogSelectGuests(){
+    fun showDialogSelectGuests() {
         var bottomSheet = BottomSheetSelectGuests()
         bottomSheet.show(parentFragmentManager, bottomSheet.tag)
     }

@@ -10,11 +10,11 @@ import retrofit2.http.Query
 
 interface GidApi {
 
-    @GET("tours")
+    @GET("tours/list")
     suspend fun getToursList(
     ): Response<Tour>
 
-    @GET("directions")
+    @GET("directions/list")
     suspend fun getDirectionsList(
     ): Response<Direction>
 
