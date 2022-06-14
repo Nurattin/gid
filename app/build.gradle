@@ -94,6 +94,9 @@ dependencies {
 
     implementation 'ru.egslava:MaskedEditText:1.0.5'
 
+    //Lottie
+    implementation "com.airbnb.android:lottie:5.2.0"
+
 }
 
 

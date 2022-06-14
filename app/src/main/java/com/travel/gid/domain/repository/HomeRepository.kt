@@ -1,6 +1,7 @@
 package com.travel.gid.domain.repository
 
 import com.travel.gid.data.Resource
+import com.travel.gid.data.models.Categories
 import com.travel.gid.data.models.Direction
 import com.travel.gid.data.models.Tour
 import kotlinx.coroutines.flow.Flow
@@ -10,4 +11,5 @@ interface HomeRepository {
     suspend fun getTours(): Response<Tour>
     suspend fun getDirection(): Response<Direction>
     suspend fun getDirections(): Response<Direction>
+    suspend fun getCategories(): Categories?
 }

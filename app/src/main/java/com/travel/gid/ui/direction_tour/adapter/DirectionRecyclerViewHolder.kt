@@ -1,4 +1,4 @@
-package com.travel.gid.ui.direction_list.tour.adapter
+package com.travel.gid.ui.direction_tour.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,27 +9,27 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.travel.gid.R
 import com.travel.gid.data.models.DirectionData
-import com.travel.gid.databinding.LongTourItemBinding
-import com.travel.gid.databinding.ShortTourItemBinding
+import com.travel.gid.databinding.LongDirectionListItemBinding
+import com.travel.gid.databinding.ShortDirectionListItemBinding
 
-sealed class TourRecyclerViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
+sealed class DirectionRecyclerViewHolder(binding: ViewBinding) :
+    RecyclerView.ViewHolder(binding.root) {
 
 
-    class LongViewHolder(private val binding: LongTourItemBinding) :
-        TourRecyclerViewHolder(binding) {
-        fun bind(item: DirectionData, clickListener: OnTourClickListener?) {
+    class LongViewHolder(private val binding: LongDirectionListItemBinding) :
+        DirectionRecyclerViewHolder(binding) {
+        fun bind(item: DirectionData, clickListener: OnDirectionClickListener?) {
             binding.run {
                 cardTour.setOnClickListener {
                     clickListener?.invoke(item)
                 }
             }
-            val imgUri = item.avatar.toUri().buildUpon().scheme("https").build()
+            val imgUri = item.avatar.toUri().buildUpon().scheme("http").build()
             Glide.with(itemView.context)
                 .load(imgUri)
                 .apply(
                     RequestOptions()
-
-                        .placeholder(R.drawable.loading_animation)
+//                        .placeholder(R.drawable.loading_animation)
                         .error(R.drawable.no_image)
                 )
                 .into(binding.imageTour)
@@ -40,27 +40,28 @@ sealed class TourRecyclerViewHolder(binding: ViewBinding) : RecyclerView.ViewHol
         companion object {
             fun fromLong(parent: ViewGroup): LongViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val bindingLong = LongTourItemBinding.inflate(layoutInflater, parent, false)
+                val bindingLong =
+                    LongDirectionListItemBinding.inflate(layoutInflater, parent, false)
                 return LongViewHolder(bindingLong)
             }
         }
     }
 
-    class ShortViewHolder(private val binding: ShortTourItemBinding) :
-        TourRecyclerViewHolder(binding) {
-        fun bind(item: DirectionData, clickListener: OnTourClickListener?) {
+    class ShortViewHolder(private val binding: ShortDirectionListItemBinding) :
+        DirectionRecyclerViewHolder(binding) {
+        fun bind(item: DirectionData, clickListener: OnDirectionClickListener?) {
             binding.run {
                 cardTour.setOnClickListener {
                     clickListener?.invoke(item)
                 }
             }
-            val imgUri = item.avatar.toUri().buildUpon().scheme("https").build()
+            val imgUri = item.avatar.toUri().buildUpon().scheme("http").build()
             Glide.with(itemView.context)
                 .load(imgUri)
                 .apply(
                     RequestOptions()
 
-                        .placeholder(R.drawable.loading_animation)
+//                        .placeholder(R.drawable.loading_animation)
                         .error(R.drawable.no_image)
                 )
                 .into(binding.imageTour)
@@ -71,7 +72,8 @@ sealed class TourRecyclerViewHolder(binding: ViewBinding) : RecyclerView.ViewHol
         companion object {
             fun fromShort(parent: ViewGroup): ShortViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val bindingShort = ShortTourItemBinding.inflate(layoutInflater, parent, false)
+                val bindingShort =
+                    ShortDirectionListItemBinding.inflate(layoutInflater, parent, false)
                 return ShortViewHolder(bindingShort)
             }
         }

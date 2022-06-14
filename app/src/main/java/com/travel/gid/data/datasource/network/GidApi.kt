@@ -1,11 +1,9 @@
 package com.travel.gid.data.datasource.network
 
-import com.travel.gid.data.models.Direction
-import com.travel.gid.data.models.DirectionDetail
-import com.travel.gid.data.models.Tour
-import com.travel.gid.data.models.TourDetail
+import com.travel.gid.data.models.*
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface GidApi {
@@ -13,6 +11,10 @@ interface GidApi {
     @GET("tours/list")
     suspend fun getToursList(
     ): Response<Tour>
+
+    @GET("places/list-category")
+    suspend fun getCategoryList(
+    ): Response<Categories>
 
     @GET("directions/list")
     suspend fun getDirectionsList(
@@ -27,6 +29,11 @@ interface GidApi {
     suspend fun getTourDetail(
         @Query("id") id:Long
     ): Response<TourDetail>
+
+    @GET("tours/list")
+    suspend fun getTourByCategories(
+        @Query("categoryId") id: Long
+    ): Response<Tour>
 }
 
 suspend fun <T> request(

@@ -2,9 +2,7 @@ package com.travel.gid.data.repository
 
 import com.travel.gid.data.Resource
 import com.travel.gid.data.datasource.network.GidApi
-import com.travel.gid.data.models.Direction
-import com.travel.gid.data.models.Tour
-import com.travel.gid.data.models.TourData
+import com.travel.gid.data.models.*
 import com.travel.gid.domain.repository.HomeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -49,4 +47,9 @@ class HomeRepositoryImpl @Inject constructor(private val api: GidApi, private va
 
     override suspend fun getDirections(): Response<Direction> = api.getDirectionsList()
 
+    override suspend fun getCategories(): Categories?{
+        val listCategories = api.getCategoryList().body()
+        listCategories?.data?.add(0, CategoriesData(id = 0, name="Все", enable = true))
+        return listCategories
+    }
 }

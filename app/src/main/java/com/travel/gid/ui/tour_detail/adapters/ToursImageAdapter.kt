@@ -1,33 +1,54 @@
 package com.travel.gid.ui.tour_detail.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.travel.gid.R
+import com.travel.gid.databinding.ViewPagerBannerTourDetailBinding
 
 
-class ToursImageAdapter (private val sliderItems: List<String>): RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
+class ToursImageAdapter(private val sliderItems: List<String>) :
+    RecyclerView.Adapter<ToursImageAdapter.TourDetailViewHolder>() {
 
-    class SliderViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return SliderViewHolder(LayoutInflater.from(parent.context)
-            .inflate(R.layout.view_pager_banner_tour_detail, parent, false))
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
-
-        Glide.with(holder.itemView.context)
-            .load("http://admin.gidtravel.xyz/storage/" + sliderItems[position])
-            .placeholder(R.drawable.no_image)
-            .into(holder.itemView.findViewById(R.id.imageBanner))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TourDetailViewHolder {
+        return TourDetailViewHolder.fromLong(parent)
     }
 
     override fun getItemCount(): Int {
         return sliderItems.size
+    }
+
+    class TourDetailViewHolder(private val binding: ViewPagerBannerTourDetailBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: String) {
+
+            val imgUri = item.toUri().buildUpon().scheme("http").build()
+            Log.i("dwa", "$imgUri")
+            Glide.with(itemView.context)
+                .load(imgUri)
+                .placeholder(R.drawable.no_image)
+                .apply(
+                    RequestOptions()
+                        .error(R.drawable.no_image)
+                )
+                .into(binding.imageBanner)
+        }
+
+        companion object {
+            fun fromLong(parent: ViewGroup): TourDetailViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding =
+                    ViewPagerBannerTourDetailBinding.inflate(layoutInflater, parent, false)
+                return TourDetailViewHolder(binding)
+            }
+        }
+    }
+
+    override fun onBindViewHolder(holder: TourDetailViewHolder, position: Int) {
+        holder.bind(sliderItems[position])
     }
 }

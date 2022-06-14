@@ -1,16 +1,17 @@
-package com.travel.gid.ui.direction_list.tour.adapter
+package com.travel.gid.ui.direction_list.list_tour.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.travel.gid.data.models.DirectionData
+import com.travel.gid.data.models.TourData
 
-internal typealias OnTourClickListener = ((DirectionData) -> Unit)
+internal typealias OnTourClickListener = ((TourData) -> Unit)
 
 class ToursAdapter : RecyclerView.Adapter<TourRecyclerViewHolder>() {
 
     private var clickListener: OnTourClickListener? = null
 
-    var data = listOf<DirectionData>()
+    var data = listOf<TourData>()
         set(value) {
             field = value
             notifyDataSetChanged()

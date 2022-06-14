@@ -22,7 +22,14 @@
             android:id="@+id/action_homeFragment_to_tourFragment"
             app:destination="@id/tourFragment"
             app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out" />
+            app:exitAnim="@anim/fade_out"
+            app:popExitAnim="@anim/fade_out" />
+        <action
+            android:id="@+id/action_homeFragment_to_directionListFragment"
+            app:destination="@id/directionListFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
 
     <fragment
@@ -41,6 +48,7 @@
         <action
             android:id="@+id/action_fragmentReservation_to_homeFragment"
             app:destination="@id/homeFragment"
+            app:enterAnim="@anim/fade_in"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
@@ -78,8 +86,12 @@
         tools:layout="@layout/room_detail_fragment" />
     <fragment
         android:id="@+id/tourFragment"
-        android:name="com.travel.gid.ui.direction_list.tour.TourFragment"
+        android:name="com.travel.gid.ui.direction_list.list_tour.TourFragment"
         android:label="TourFragment" />
+    <fragment
+        android:id="@+id/directionListFragment"
+        android:name="com.travel.gid.ui.direction_tour.DirectionListFragment"
+        android:label="DirectionListFragment" />
 
 
 </navigation>

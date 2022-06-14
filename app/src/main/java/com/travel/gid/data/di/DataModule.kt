@@ -4,6 +4,7 @@ import com.travel.gid.BuildConfig
 import com.travel.gid.data.datasource.network.GidApi
 import com.travel.gid.data.repository.DirectionDetailRepositoryImpl
 import com.travel.gid.data.repository.HomeRepositoryImpl
+import com.travel.gid.data.repository.TourByCategoriesRepository
 import com.travel.gid.data.repository.TourDetailRepositoryImpl
 import com.travel.gid.domain.repository.DirectionDetailRepository
 import com.travel.gid.domain.repository.HomeRepository
@@ -32,6 +33,9 @@ abstract class DataModule {
     @Binds
     abstract fun bindTourDetailRepository(repo: TourDetailRepositoryImpl): TourDetailRepository
 
+    @Binds
+    abstract fun bindTourByCategoriesRepository(repo: TourByCategoriesRepository): com.travel.gid.domain.repository.TourByCategoriesRepository
+
     companion object {
         @Provides
         @ViewModelScoped
@@ -45,7 +49,7 @@ abstract class DataModule {
             okHttpBuilder.addInterceptor {
                 val request = it.request()
                 val url = request.url.newBuilder()
-                    .addQueryParameter("key", "key")
+//                    .addQueryParameter("key", "key")
                     .build()
                 it.proceed(request.newBuilder().url(url).build())
             }

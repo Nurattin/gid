@@ -41,11 +41,7 @@ class DirectionsFragment : BaseFragment<FragmentVpHomeToursBinding>() {
     ): View {
         binding = FragmentVpHomeToursBinding.inflate(inflater, container, false)
 
-        binding?.apply {
-            showAllTour.setOnClickListener {
-                findNavController().navigate(R.id.action_homeFragment_to_tourFragment)
-            }
-        }
+
 
         return binding!!.root
     }
@@ -53,7 +49,17 @@ class DirectionsFragment : BaseFragment<FragmentVpHomeToursBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupRecyclerView()
         setupUpcomingRecyclerView()
+
+        binding?.apply {
+            showAllTour.setOnClickListener {
+                findNavController().navigate(R.id.action_homeFragment_to_tourFragment)
+            }
+            showAllDirection.setOnClickListener {
+                findNavController().navigate(R.id.action_homeFragment_to_directionListFragment)
+            }
+        }
     }
+
 
     private fun setupRecyclerView() {
         binding?.run {
@@ -78,7 +84,6 @@ class DirectionsFragment : BaseFragment<FragmentVpHomeToursBinding>() {
             }
 
             similarToursRecyclerView.clipToPadding = false
-
             similarToursRecyclerView.addItemDecoration(
                 SpaceItemDecoration(
                     space = 50,

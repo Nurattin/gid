@@ -24,6 +24,8 @@ class HomeViewModel @Inject constructor(
     val tourLiveDataPrivate = MutableLiveData<Response<Tour>>()
     val tourLiveData: LiveData<Response<Tour>> get() = tourLiveDataPrivate
 
+    var tour: Tour? = null
+
     private val _directionList = MutableLiveData<Response<Direction>>()
     val directionList: LiveData<Response<Direction>>
         get() = _directionList

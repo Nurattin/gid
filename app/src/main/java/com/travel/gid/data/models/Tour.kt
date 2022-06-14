@@ -16,7 +16,8 @@ data class TourData (
     @SerializedName("name")
     val name: String,
     @SerializedName("image")
-    val avatar: String
+    val avatar: String,
+    var favorite: Boolean = false
 )
 
 data class Links (
