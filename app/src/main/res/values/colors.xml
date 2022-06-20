@@ -18,8 +18,10 @@
     <color name="bg_menu_btn">#EDEDED</color>
 
     <color name="pine_green">#76A595</color>
+    <color name="lightBlueGrey">#F1F4F9</color>
     <color name="lightBlack">#85899F</color>
     <color name="green_text_color">#738C95</color>
     <color name="green_btn_color">#738C95</color>
     <color name="bg_item_room">#F4F4F4</color>
+
 </resources>

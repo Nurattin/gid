@@ -2,8 +2,9 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="#00FFFFFF"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#00FFFFFF"
     android:transitionName="shared_element_container">
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -38,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="19dp"
-                android:layout_marginTop="17dp"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="Категории"
                 android:textColor="@color/black"
@@ -50,160 +51,135 @@
                 android:id="@+id/chipGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="19dp"
-                android:layout_marginTop="17dp"
-                android:layout_marginEnd="19dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 app:chipSpacingHorizontal="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView6"
-                app:selectionRequired="true">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_1"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-
-                    android:text="Все"
-                    app:chipCornerRadius="8dp" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_2"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Красивые"
-                    app:chipCornerRadius="8dp" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_3"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Дневные"
-                    app:chipCornerRadius="8dp" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_4"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:text="Ночные"
-                    app:chipCornerRadius="8dp" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_5"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:text="Популярные"
-                    app:chipCornerRadius="8dp" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_6"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:text="Исторические"
-                    app:chipCornerRadius="8dp" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_7"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Природа"
-
-                    app:chipCornerRadius="8dp" />
-
-
-
+                app:layout_constraintTop_toBottomOf="@+id/textView6">
             </com.google.android.material.chip.ChipGroup>
 
             <TextView
                 android:id="@+id/price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="19dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="Цена"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
+                app:layout_constraintTop_toBottomOf="@+id/chipGroup"/>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/priceFrom"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/startPriceForm"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="19dp"
-                android:layout_marginEnd="19dp"
-                android:gravity="center"
-                android:hint="От"
-                app:endIconDrawable="@drawable/ic_rub"
-                app:endIconMode="custom"
-                app:errorEnabled="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/priceTo"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/rounded_layout"
+                android:padding="10dp"
+                app:layout_constraintEnd_toStartOf="@id/endPriceForm"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/price">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/startPrice"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/textFrom"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="\t\t\t\t\t\t700"
-                    android:inputType="number"
-                    android:lines="1"
-                    android:maxLength="5" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:textSize="12sp"
+                    android:hint="От"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/priceTo"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                <TextView
+                    android:id="@+id/tvStartPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/rub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_rub"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/endPriceForm"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="19dp"
-                android:gravity="center"
-                android:hint="До"
-                app:endIconDrawable="@drawable/ic_rub"
-                app:endIconMode="custom"
-                app:errorEnabled="true"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/rounded_layout"
+                android:padding="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/priceFrom"
-                app:layout_constraintTop_toTopOf="@+id/priceFrom">
+                app:layout_constraintStart_toEndOf="@id/startPriceForm"
+                app:layout_constraintTop_toBottomOf="@+id/price">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/endPrice"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/textTo"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="\t\t\t\t\t\t10000"
-                    android:inputType="number"
-                    android:lines="1"
-                    android:maxLength="5" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:textSize="12sp"
+                    android:hint="До"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
+                <TextView
+                    android:id="@+id/tvEndPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10 000"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_rub"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.slider.RangeSlider
                 android:id="@+id/rangeSliderPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="19dp"
-                android:layout_marginTop="33dp"
-                android:layout_marginEnd="19dp"
+                android:layout_marginStart="11dp"
+                android:layout_marginEnd="11dp"
+                android:layout_marginTop="16dp"
                 android:valueFrom="700"
                 android:valueTo="10000"
+                app:labelBehavior="gone"
+                app:tickVisible="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/priceFrom"
+                app:layout_constraintTop_toBottomOf="@+id/startPriceForm"
                 app:thumbColor="#FFFFFF"
                 app:thumbStrokeColor="@color/pine_green"
                 app:thumbStrokeWidth="2dp"
@@ -211,45 +187,94 @@
                 app:values="@array/rangeSliderPrice" />
 
             <TextView
-                android:id="@+id/textView12"
+                android:id="@+id/tvStartPriceCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="19dp"
+                android:layout_marginStart="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rangeSliderPrice"
+                android:textColor="#8B929E"
+                android:textSize="12sp"
+                android:text="0"
+                tools:text="0" />
+
+            <TextView
+                android:id="@+id/tvEndPriceCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rangeSliderPrice"
+                android:textColor="#8B929E"
+                android:textSize="12sp"
+                android:text="10000"
+                tools:text="10000" />
+
+            <TextView
+                android:id="@+id/tvDaysCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
                 android:fontFamily="@font/roboto_medium"
-                android:text="Количествов дней"
+                android:text="Количество дней"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rangeSliderPrice" />
+                app:layout_constraintTop_toBottomOf="@+id/tvStartPriceCount" />
 
             <com.google.android.material.slider.RangeSlider
                 android:id="@+id/rangeSliderDay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="19dp"
-                android:layout_marginTop="25dp"
-                android:layout_marginEnd="19dp"
+                android:layout_marginStart="11dp"
+                android:layout_marginEnd="11dp"
+                android:layout_marginTop="10dp"
                 android:stepSize="1"
                 android:valueFrom="2"
                 android:valueTo="15"
+                app:labelBehavior="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView12"
+                app:layout_constraintTop_toBottomOf="@+id/tvDaysCount"
                 app:thumbColor="#FFFFFF"
                 app:thumbStrokeColor="@color/pine_green"
                 app:thumbStrokeWidth="2dp"
                 app:trackHeight="2dp"
                 app:values="@array/rangeSliderDay" />
 
+            <TextView
+                android:id="@+id/tvStartDaysCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rangeSliderDay"
+                android:textColor="#8B929E"
+                android:textSize="12sp"
+                android:text="0"
+                tools:text="0" />
+
+            <TextView
+                android:id="@+id/tvEndDaysCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rangeSliderDay"
+                android:textColor="#8B929E"
+                android:textSize="12sp"
+                android:text="15"
+                tools:text="15" />
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/applyBtn"
                 android:layout_width="0dp"
                 android:layout_height="55dp"
                 android:layout_gravity="center"
-                android:layout_marginStart="19dp"
-                android:layout_marginTop="50dp"
-                android:layout_marginEnd="19dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="16dp"
                 android:background="@drawable/bg_green_button"
                 android:clickable="true"
                 android:focusable="true"
@@ -258,10 +283,12 @@
                 android:text="Подтвердить"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rangeSliderDay" />
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
