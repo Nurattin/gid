@@ -1,6 +1,7 @@
 package com.travel.gid.ui.map_detail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,7 +52,6 @@ class MapFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_map, container, false)
         binding = FragmentMapBinding.bind(view)
         sharedElementEnterTransition = MaterialContainerTransform()
@@ -60,7 +60,6 @@ class MapFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
 
         val arrayPlace = args.places
 
@@ -106,7 +105,6 @@ class MapFragment : Fragment() {
                 cameraPosition.tilt
             )
             mapview.map.move(cameraPosition, Animation(Animation.Type.SMOOTH, 0f), null)
-            mapview.setNoninteractive(false)
         }
 
     }

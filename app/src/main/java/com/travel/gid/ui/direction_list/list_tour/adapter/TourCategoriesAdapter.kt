@@ -8,7 +8,7 @@ import com.travel.gid.R
 import com.travel.gid.data.models.Categories
 import com.travel.gid.databinding.CategoriesItemBinding
 
-internal typealias OnCategoriesTourClickListener = ((Categories) -> Unit)
+internal typealias OnCategoriesTourClickListener = ((Categories, Int) -> Unit)
 
 class TourCategoriesAdapter : RecyclerView.Adapter<TourCategoriesAdapter.ViewHolder>() {
 
@@ -46,7 +46,7 @@ class TourCategoriesAdapter : RecyclerView.Adapter<TourCategoriesAdapter.ViewHol
                     notifyItemChanged(positionCategories)
                     notifyItemChanged(adapterPosition)
                     positionCategories = adapterPosition
-                    clickListener?.invoke(item)
+                    clickListener?.invoke(item, adapterPosition)
                 }
             }
         }

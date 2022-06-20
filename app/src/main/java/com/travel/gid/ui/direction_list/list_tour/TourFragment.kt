@@ -5,11 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.travel.gid.R
 import com.travel.gid.databinding.FragmentTourBinding
@@ -24,16 +22,14 @@ import dagger.hilt.android.AndroidEntryPoint
 class TourFragment : Fragment() {
 
     private val viewModel: TourViewModel by viewModels()
-
     private lateinit var binding: FragmentTourBinding
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_tour, container, false)
-
         binding = FragmentTourBinding.bind(view)
         return binding.root
     }
@@ -54,12 +50,12 @@ class TourFragment : Fragment() {
 
         val adapterCategory = TourCategoriesAdapter()
         binding.categoriesRecycler.adapter = adapterCategory
-        viewModel.categories.observe(viewLifecycleOwner, Observer {
+        viewModel.categories.observe(viewLifecycleOwner) {
             it?.let {
                 adapterCategory.data = it
                 adapterCategory.positionCategories = viewModel.categoriesPos
             }
-        })
+        }
 
 
         adapterTour.setOnTourClickListener {
@@ -70,33 +66,30 @@ class TourFragment : Fragment() {
             )
         }
 
-        adapterCategory.setOnCategoriesTourClickListener {
-            if (viewModel.categoriesPos != it.id.toInt()) {
+        adapterCategory.setOnCategoriesTourClickListener { categories, pos ->
+            if (viewModel.categoriesPos != pos) {
                 viewModel.changeCategories(viewModel.categoriesPos)
-                viewModel.changePos(it.id.toInt())
-                when (it.id) {
+                viewModel.changePos(pos)
+                when (categories.id) {
                     0L -> viewModel.getAllTour(null)
-                    else -> viewModel.getTourByCategories(listOf(it.id.toInt()))
+                    else -> viewModel.getTourByCategories(listOf(categories.id.toInt()))
                 }
                 showProgress()
             }
         }
 
         binding.tourRecycler.setHasFixedSize(true)
-
         binding.toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
 
         binding.apply {
             selectFilter.setOnClickListener {
-                val filterSheet =FilterFragmentSheet()
-                    if (!filterSheet.isAdded) {
-                        filterSheet.show(parentFragmentManager, TAG)
-
-
-                        filterSheet.setOnBtnApplyClickListener {
-                            viewModel.getAllTour(it)
-                        }
+                val filterSheet = FilterFragmentSheet()
+                if (!filterSheet.isAdded) {
+                    filterSheet.show(parentFragmentManager, TAG)
+                    filterSheet.setOnBtnApplyClickListener {
+                        viewModel.getAllTour(it)
                     }
+                }
             }
 
             range.setOnClickListener {

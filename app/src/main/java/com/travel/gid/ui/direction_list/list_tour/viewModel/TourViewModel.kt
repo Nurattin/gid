@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.travel.gid.data.models.Categories
 import com.travel.gid.data.models.Filters
-import com.travel.gid.data.models.Price
 import com.travel.gid.data.models.Tour
 import com.travel.gid.domain.usecases.GetFilterUseCase
 import com.travel.gid.domain.usecases.GetHomeUseCase
@@ -23,10 +22,6 @@ class TourViewModel @Inject constructor(
     private val getFilterUseCase: GetFilterUseCase,
     private val getTourListFilter: GetTourListFilter,
 ) : ViewModel() {
-
-    private val _priceRange = MutableLiveData<Price>()
-    val priceRange: LiveData<Price>
-        get() = _priceRange
 
     private val _filters = MutableLiveData<Response<Filters>>()
     val filters: LiveData<Response<Filters>>

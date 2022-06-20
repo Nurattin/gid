@@ -22,15 +22,11 @@ sealed class TourRecyclerViewHolder(binding: ViewBinding) : RecyclerView.ViewHol
                 cardTour.setOnClickListener {
                     clickListener?.invoke(item)
                 }
-
             }
             val imgUri = item.avatar.toUri().buildUpon().scheme("http").build()
             Glide.with(itemView.context)
                 .load(imgUri)
-                .apply(
-                    RequestOptions()
-                        .error(R.drawable.no_image)
-                )
+                .apply(RequestOptions().error(R.drawable.no_image))
                 .into(binding.imageTour)
             binding.nameTour.text = item.name
         }
@@ -48,17 +44,12 @@ sealed class TourRecyclerViewHolder(binding: ViewBinding) : RecyclerView.ViewHol
         TourRecyclerViewHolder(binding) {
         fun bind(item: TourData, clickListener: OnTourClickListener?) {
             binding.run {
-                cardTour.setOnClickListener {
-                    clickListener?.invoke(item)
-                }
+                cardTour.setOnClickListener{clickListener?.invoke(item)}
             }
             val imgUri = item.avatar.toUri().buildUpon().scheme("http").build()
             Glide.with(itemView.context)
                 .load(imgUri)
-                .apply(
-                    RequestOptions()
-                        .error(R.drawable.no_image)
-                )
+                .apply(RequestOptions().error(R.drawable.no_image))
                 .into(binding.imageTour)
             binding.nameTour.text = item.name
             binding.place.text = "г. Дагестан"
