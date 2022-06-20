@@ -33,7 +33,6 @@ sealed class TourRecyclerViewHolder(binding: ViewBinding) : RecyclerView.ViewHol
                 )
                 .into(binding.imageTour)
             binding.nameTour.text = item.name
-            binding.place.text = "г. Дагестан"
         }
 
         companion object {

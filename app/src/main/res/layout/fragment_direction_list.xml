@@ -21,7 +21,7 @@
             app:navigationIcon="@drawable/ic_vector"
             app:title="Направления"
             app:titleCentered="true"
-            app:titleTextColor="@color/black"></com.google.android.material.appbar.MaterialToolbar>
+            app:titleTextColor="@color/black" />
 
 
         <androidx.appcompat.widget.AppCompatButton
@@ -104,6 +104,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tourRecycler"
+            android:layout_gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

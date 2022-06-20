@@ -20,7 +20,8 @@ data class TourDetailData (
     @SerializedName("duration") var duration : String,
     @SerializedName("peopleCount") var peopleCount : Int,
     @SerializedName("lunch") var lunch : String,
-    @SerializedName("detailImages") var detailPhoto : List<String>
+    @SerializedName("detailImages") var detailPhoto : List<String>,
+    @SerializedName("places") var places: List<Places>
 )
 
 

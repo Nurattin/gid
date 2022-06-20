@@ -29,6 +29,7 @@ constructor(ctx: Context, attributeSet: AttributeSet? = null, defStyleAttr: Int 
         place_txt.text = place.toString()
     }
 
+
     fun setColor(){
         val place_txt = findViewById<TextView>(R.id.place)
         place_txt.text = "asda"

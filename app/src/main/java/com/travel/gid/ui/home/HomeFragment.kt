@@ -21,7 +21,6 @@ import com.travel.gid.data.models.Direction
 import com.travel.gid.data.models.DirectionData
 import com.travel.gid.data.models.Tour
 import com.travel.gid.databinding.HomeFragmentBinding
-import com.travel.gid.ui.home.adapters.BannerListAdapter
 import com.travel.gid.ui.home.adapters.ViewPagerChildFragmentsAdapter
 import com.travel.gid.ui.select_guest.BottomSheetSelectGuests
 import com.travel.gid.utils.getDateFromTimestamp
@@ -48,9 +47,9 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         //observeViewModel()
     }
 

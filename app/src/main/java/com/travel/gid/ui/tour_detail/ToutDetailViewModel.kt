@@ -3,7 +3,7 @@ package com.travel.gid.ui.tour_detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.travel.gid.data.models.Direction
+import com.travel.gid.data.models.Places
 import com.travel.gid.data.models.TourDetail
 import com.travel.gid.domain.usecases.GetTourDetailUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +19,11 @@ class ToutDetailViewModel @Inject constructor(var repository: GetTourDetailUseCa
 
 
     suspend fun getTourDetail(id: Long) {
-        tourDetail.value = repository.getTourDetail(id).body()
+        tourDetail.value = repository.getTourDetail(1).body()
+    }
+
+    fun getPlaces(): List<Places>? {
+        return tourDetail.value?.data?.places
     }
 
 }

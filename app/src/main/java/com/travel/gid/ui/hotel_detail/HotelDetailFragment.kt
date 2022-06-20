@@ -34,10 +34,10 @@ class HotelDetailFragment : BaseFragment<HotelDetailFragmentBinding>() {
     lateinit var adapterAmenities: HotelAmenitiesAdapter
     lateinit var adapterAboutHotel: HotelAmenitiesAdapter
 
-    private val arrayPlaces =
-        arrayListOf(
-            Place(title = "Махачкала", coordinate = Point(42.96663, 47.51263))
-        )
+//    private val arrayPlaces =
+//        arrayListOf(
+//            Place(title = "Махачкала", coordinate = Point(42.96663, 47.51263))
+//        )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,8 +57,8 @@ class HotelDetailFragment : BaseFragment<HotelDetailFragmentBinding>() {
         adapterAmenities = HotelAmenitiesAdapter(hotel.amenetiesHotel)
         adapterAboutHotel = HotelAmenitiesAdapter(hotel.aboutHotel)
 
-        initMarkPlaces()
-        setupMap()
+//        initMarkPlaces()
+//        setupMap()
 
         binding?.run {
             stars.rating = 4.0f
@@ -74,40 +74,40 @@ class HotelDetailFragment : BaseFragment<HotelDetailFragmentBinding>() {
         }
     }
 
-    private fun setupMap() {
-        binding?.run {
-            mapview.map.isRotateGesturesEnabled = false
-            val boundingBox = BoundingBox(
-                Point(42.96663, 47.51263),
-                Point(42.96663, 47.51263)
-            )
-            var cameraPosition = mapview.map.cameraPosition(boundingBox)
-            cameraPosition = CameraPosition(
-                cameraPosition.target,
-                cameraPosition.zoom - 4f,
-                cameraPosition.azimuth,
-                cameraPosition.tilt
-            )
-            mapview.map.move(cameraPosition, Animation(Animation.Type.SMOOTH, 0f), null)
-            mapview.setNoninteractive(true)
-        }
-    }
+//    private fun setupMap() {
+//        binding?.run {
+//            mapview.map.isRotateGesturesEnabled = false
+//            val boundingBox = BoundingBox(
+//                Point(42.96663, 47.51263),
+//                Point(42.96663, 47.51263)
+//            )
+//            var cameraPosition = mapview.map.cameraPosition(boundingBox)
+//            cameraPosition = CameraPosition(
+//                cameraPosition.target,
+//                cameraPosition.zoom - 4f,
+//                cameraPosition.azimuth,
+//                cameraPosition.tilt
+//            )
+//            mapview.map.move(cameraPosition, Animation(Animation.Type.SMOOTH, 0f), null)
+//            mapview.setNoninteractive(true)
+//        }
+//    }
+//
+//    private fun initMarkPlaces() {
+//        binding?.run {
+//            val mapObjects = mapview.map.mapObjects.addCollection()
+//
+//            arrayPlaces.forEachIndexed { index, place ->
+//                val pointer = CustomPointer(requireContext())
+//
+//                pointer.setValues(place = index + 1, false)
+//
+//                val viewProvider = ViewProvider(pointer)
+//                mapObjects.addPlacemark(place.coordinate, viewProvider)
+//            }
+//        }
 
-    private fun initMarkPlaces() {
-        binding?.run {
-            val mapObjects = mapview.map.mapObjects.addCollection()
-
-            arrayPlaces.forEachIndexed { index, place ->
-                val pointer = CustomPointer(requireContext())
-
-                pointer.setValues(place = index + 1, false)
-
-                val viewProvider = ViewProvider(pointer)
-                mapObjects.addPlacemark(place.coordinate, viewProvider)
-            }
-        }
-
-    }
+//    }
 
     override fun onStop() {
         super.onStop()

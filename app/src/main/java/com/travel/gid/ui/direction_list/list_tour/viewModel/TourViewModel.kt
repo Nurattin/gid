@@ -6,9 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.travel.gid.data.models.Categories
+import com.travel.gid.data.models.Filters
+import com.travel.gid.data.models.Price
 import com.travel.gid.data.models.Tour
+import com.travel.gid.domain.usecases.GetFilterUseCase
 import com.travel.gid.domain.usecases.GetHomeUseCase
-import com.travel.gid.domain.usecases.GetTourByCategories
+import com.travel.gid.domain.usecases.GetTourListFilter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -17,11 +20,20 @@ import javax.inject.Inject
 @HiltViewModel
 class TourViewModel @Inject constructor(
     private val getHomeUseCase: GetHomeUseCase,
-    private val getTourByCategories: GetTourByCategories
+    private val getFilterUseCase: GetFilterUseCase,
+    private val getTourListFilter: GetTourListFilter
 ) : ViewModel() {
 
-    private val _categories = MutableLiveData<Categories>()
-    val categories: LiveData<Categories>
+    private val _priceRange = MutableLiveData<Price>()
+    val priceRange: LiveData<Price>
+        get() = _priceRange
+
+    private val _filters = MutableLiveData<Response<Filters>>()
+    val filters: LiveData<Response<Filters>>
+        get() = _filters
+
+    private val _categories = MutableLiveData<List<Categories>>()
+    val categories: LiveData<List<Categories>>
         get() = _categories
 
     private var _categoriesPos = 0
@@ -33,33 +45,39 @@ class TourViewModel @Inject constructor(
         get() = _tours
 
     init {
+
         viewModelScope.launch {
-            _categories.value = getHomeUseCase.getCategories()
+            _filters.value = getFilterUseCase.getFilterParams()
+            val listCategories = filters.value?.body()?.data?.listCategories
+            listCategories?.add(0, Categories(0, "Все", true))
+            _categories.value = listCategories!!
         }
         viewModelScope.launch {
             _tours.value = getHomeUseCase.getTours()
         }
+
+
     }
 
     fun changeCategories(pos: Int) {
-        _categories.value!!.data[pos].enable = false
+        _categories.value!![pos].enable = false
+
     }
 
     fun changePos(pos: Int) {
         _categoriesPos = pos
     }
 
-    fun getTourByCategories(id: Long) {
-        when (id) {
-            0L -> viewModelScope.launch {
-                _tours.value = getHomeUseCase.getTours()
-            }
-            else -> {
-                viewModelScope.launch {
-                    _tours.value = getTourByCategories.getToursByCategories(id)
-                    Log.i("dwa", _tours.value.toString())
-                }
-            }
+    fun getAllTour() {
+        viewModelScope.launch {
+            _tours.value = getHomeUseCase.getTours()
+        }
+    }
+
+    fun getTourByCategories(listId: Array<Int>) {
+        Log.i("dwa", "$listId")
+        viewModelScope.launch {
+            _tours.value = getTourListFilter.getTourListFilter(categories = listId)
         }
     }
 }

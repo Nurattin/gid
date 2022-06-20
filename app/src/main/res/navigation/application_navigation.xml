@@ -40,6 +40,9 @@
         <argument
             android:name="id"
             app:argType="long" />
+        <action
+            android:id="@+id/action_tourDetailFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
     </fragment>
     <fragment
         android:id="@+id/fragmentReservation"
@@ -92,6 +95,15 @@
         android:id="@+id/directionListFragment"
         android:name="com.travel.gid.ui.direction_tour.DirectionListFragment"
         android:label="DirectionListFragment" />
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.travel.gid.ui.map_detail.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" >
+        <argument
+            android:name="places"
+            app:argType="com.travel.gid.data.models.Places[]" />
+    </fragment>
 
 
 </navigation>

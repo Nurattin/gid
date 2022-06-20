@@ -48,8 +48,8 @@ class DirectionListFragment : Fragment() {
 
         val adapterCategory = DirectionCategoriesAdapter()
         binding.categoriesRecycler.adapter = adapterCategory
-        viewModel.categories.observe(viewLifecycleOwner) {
-            it.data.let {
+        viewModel.filters.observe(viewLifecycleOwner) {
+            it.let {
                 adapterCategory.data = it
                 adapterCategory.positionCategories = viewModel.categoriesPos
             }

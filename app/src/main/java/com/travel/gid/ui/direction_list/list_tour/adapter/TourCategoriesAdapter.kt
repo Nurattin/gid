@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.travel.gid.R
-import com.travel.gid.data.models.CategoriesData
+import com.travel.gid.data.models.Categories
 import com.travel.gid.databinding.CategoriesItemBinding
 
-internal typealias OnCategoriesTourClickListener = ((CategoriesData) -> Unit)
+internal typealias OnCategoriesTourClickListener = ((Categories) -> Unit)
 
 class TourCategoriesAdapter : RecyclerView.Adapter<TourCategoriesAdapter.ViewHolder>() {
 
@@ -16,7 +16,7 @@ class TourCategoriesAdapter : RecyclerView.Adapter<TourCategoriesAdapter.ViewHol
 
     var positionCategories: Int = 0
 
-    var data = listOf<CategoriesData>()
+    var data = listOf<Categories>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -36,7 +36,7 @@ class TourCategoriesAdapter : RecyclerView.Adapter<TourCategoriesAdapter.ViewHol
     inner class ViewHolder constructor(private val binding: CategoriesItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: CategoriesData, clickListener: OnCategoriesTourClickListener?) {
+        fun bind(item: Categories, clickListener: OnCategoriesTourClickListener?) {
             binding.apply {
                 categoryName.text = item.name
                 backgroundChange(item)
@@ -51,7 +51,7 @@ class TourCategoriesAdapter : RecyclerView.Adapter<TourCategoriesAdapter.ViewHol
             }
         }
 
-        private fun CategoriesItemBinding.backgroundChange(item: CategoriesData) {
+        private fun CategoriesItemBinding.backgroundChange(item: Categories) {
             if (!item.enable) {
                 categoryName.setBackgroundResource(R.drawable.btn_categories_unenable)
                 categoryName.setTextColor(Color.parseColor("#000000"))

@@ -37,14 +37,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-<!--        <com.airbnb.lottie.LottieAnimationView-->
-<!--            android:id="@+id/favorite"-->
-<!--            android:layout_width="45dp"-->
-<!--            android:layout_height="45dp"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:lottie_loop="false"-->
-<!--            app:lottie_rawRes="@raw/favorites" />-->
+        <!--        <com.airbnb.lottie.LottieAnimationView-->
+        <!--            android:id="@+id/favorite"-->
+        <!--            android:layout_width="45dp"-->
+        <!--            android:layout_height="45dp"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent"-->
+        <!--            app:lottie_loop="false"-->
+        <!--            app:lottie_rawRes="@raw/favorites" />-->
 
         <TextView
             android:id="@+id/name_tour"

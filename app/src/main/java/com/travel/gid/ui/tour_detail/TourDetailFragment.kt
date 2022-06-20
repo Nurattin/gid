@@ -1,18 +1,20 @@
 package com.travel.gid.ui.tour_detail
 
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.android.material.transition.MaterialElevationScale
 import com.travel.gid.R
-import com.travel.gid.data.models.Place
+import com.travel.gid.data.models.Places
 import com.travel.gid.data.models.TourData
 import com.travel.gid.data.models.TourDetailData
 import com.travel.gid.databinding.FragmentTourDetailBinding
@@ -35,7 +37,6 @@ import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.MapObjectCollection
 import com.yandex.runtime.ui_view.ViewProvider
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.launch
 
 
@@ -47,14 +48,6 @@ class TourDetailFragment : Fragment() {
     private val viewModel: ToutDetailViewModel by viewModels()
 
     lateinit var binding: FragmentTourDetailBinding
-
-    private val arrayPlaces =
-        arrayListOf(
-            Place(title = "Махачкала", coordinate = Point(42.96663, 47.51263)),
-            Place(title = "Буйнакск", coordinate = Point(42.819, 47.1192)),
-            Place(title = "Леваши", coordinate = Point(42.431739, 47.322962)),
-            Place(title = "Дербент", coordinate = Point(42.057669, 48.288776))
-        )
 
     private fun getTours() =
         arrayListOf(
@@ -95,6 +88,7 @@ class TourDetailFragment : Fragment() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        exitTransition = MaterialElevationScale(true)
         super.onCreate(savedInstanceState)
     }
 
@@ -115,9 +109,29 @@ class TourDetailFragment : Fragment() {
             initIncludedTour()
         }
 
-        setupMap()
-        initMarkPlaces()
-        submitRequest()
+
+
+        val extras =
+            FragmentNavigatorExtras(binding.detailTourInclude.mapview to "shared_element_container")
+        viewModel.tourDetail.observe(viewLifecycleOwner) {
+            var arrayPlaces = viewModel.getPlaces()
+
+            setupMap(arrayPlaces!!)
+            initMarkPlaces(arrayPlaces)
+            submitRequest(arrayPlaces)
+
+            binding.detailTourInclude.mapview.setOnClickListener {
+
+                val bundle = bundleOf("places" to arrayPlaces.toTypedArray())
+                findNavController().navigate(
+                    R.id.action_tourDetailFragment_to_mapFragment,
+                    bundle,
+                    null,
+                    extras
+                )
+            }
+        }
+
     }
 
 //    @DelicateCoroutinesApi
@@ -233,12 +247,12 @@ class TourDetailFragment : Fragment() {
     }
 
 
-    private fun setupMap() {
+    private fun setupMap(arrayPlaces: List<Places>) {
         binding.run {
             detailTourInclude.run {
                 mapview.map.isRotateGesturesEnabled = false
                 val boundingBox = BoundingBox(
-                    Point(arrayPlaces[0].coordinate.latitude, arrayPlaces[0].coordinate.longitude),
+                    Point(arrayPlaces[0].latitude, arrayPlaces[0].longitude),
                     Point(41.629875, 48.680262)
                 )
                 var cameraPosition = mapview.map.cameraPosition(boundingBox)
@@ -254,26 +268,40 @@ class TourDetailFragment : Fragment() {
         }
     }
 
-    private fun initMarkPlaces() {
+    val listCustomPointer = ArrayList<CustomPointer>()
+    private fun initMarkPlaces(arrayPlaces: List<Places>) {
         binding.run {
             detailTourInclude.run {
                 mapObjects = mapview.map.mapObjects.addCollection()
 
                 arrayPlaces.forEachIndexed { index, place ->
                     val pointer = CustomPointer(requireContext())
-
+                    if (listCustomPointer.count() - 1 < index) {
+                        listCustomPointer.add(pointer)
+                    }
                     pointer.setValues(place = index + 1, false)
 
                     val viewProvider = ViewProvider(pointer)
-                    mapObjects!!.addPlacemark(place.coordinate, viewProvider)
+                    mapObjects!!.addPlacemark(
+                        Point(
+                            place.latitude,
+                            place.longitude
+                        ), viewProvider
+                    )
                 }
             }
         }
     }
 
-    private fun submitRequest() {
+    private fun submitRequest(arrayPlaces: List<Places>) {
         val routes =
-            arrayPlaces.map { RequestPoint(it.coordinate, RequestPointType.WAYPOINT, null) }
+            arrayPlaces.map {
+                RequestPoint(
+                    Point(it.latitude, it.longitude),
+                    RequestPointType.WAYPOINT,
+                    null
+                )
+            }
 
         val drivingRouter = DirectionsFactory.getInstance().createDrivingRouter()
 

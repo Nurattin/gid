@@ -1,4 +1,4 @@
-package com.travel.gid.ui.direction_list.list_tour
+package com.travel.gid.ui.filter
 
 import android.os.Bundle
 import android.text.Editable
@@ -7,14 +7,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.chip.Chip
 import com.google.android.material.slider.RangeSlider
 import com.travel.gid.R
+import com.travel.gid.data.models.Categories
 import com.travel.gid.databinding.FragmentFilterBinding
+import dagger.hilt.android.AndroidEntryPoint
 import java.lang.Math.round
 
-class FilterFragmentSheet : BottomSheetDialogFragment() {
+@AndroidEntryPoint
+class FilterFragment : BottomSheetDialogFragment() {
 
+    private val viewModel: FilterViewModel by viewModels()
     lateinit var binding: FragmentFilterBinding
 
     override fun onCreateView(
@@ -23,18 +29,45 @@ class FilterFragmentSheet : BottomSheetDialogFragment() {
     ): View {
         val view = inflater.inflate(R.layout.fragment_filter, container, false)
         binding = FragmentFilterBinding.bind(view)
+
+        viewModel.filters.observe(viewLifecycleOwner) {
+
+            val listCategories = viewModel.getCategories()
+            for (element in listCategories) {
+                val chip = layoutInflater.inflate(R.layout.single_chip, binding.chipGroup, false) as Chip
+                chip.text = element.name
+                if (element.name == "Все") chip.isChecked = true
+                binding.chipGroup.addView(chip)
+            }
+
+            val (price_from, price_to) = viewModel.getPriceRange()!!
+
+            binding.rangeSliderPrice.values = listOf(price_from.toFloat(), price_to.toFloat())
+            binding.rangeSliderPrice.valueFrom = price_from.toFloat()
+            binding.rangeSliderPrice.valueTo = price_to.toFloat()
+            stopProgressBar()
+        }
         return binding.root
     }
 
-    override fun getTheme() = R.style.CustomBottomSheetDialog
+    private fun stopProgressBar() {
+        binding.apply {
+            progressBar.visibility = View.GONE
+            content.visibility = View.VISIBLE
+        }
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.toolbar.setNavigationOnClickListener { this.dismiss() }
-        binding.toolbar.setOnMenuItemClickListener { true }
+//        binding.toolbar.setNavigationOnClickListener { this.dismiss() }
+//        binding.toolbar.setOnMenuItemClickListener { true }+
         super.onViewCreated(view, savedInstanceState)
 
+
+
+
         binding.apply {
+
             startPrice.setOnEditorActionListener { _, actionId, _ ->
                 priceFrom.error = null
                 try {

@@ -2,13 +2,8 @@ package com.travel.gid.data.di
 
 import com.travel.gid.BuildConfig
 import com.travel.gid.data.datasource.network.GidApi
-import com.travel.gid.data.repository.DirectionDetailRepositoryImpl
-import com.travel.gid.data.repository.HomeRepositoryImpl
-import com.travel.gid.data.repository.TourByCategoriesRepository
-import com.travel.gid.data.repository.TourDetailRepositoryImpl
-import com.travel.gid.domain.repository.DirectionDetailRepository
-import com.travel.gid.domain.repository.HomeRepository
-import com.travel.gid.domain.repository.TourDetailRepository
+import com.travel.gid.data.repository.*
+import com.travel.gid.domain.repository.*
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -25,6 +20,15 @@ import retrofit2.converter.gson.GsonConverterFactory
 abstract class DataModule {
 
     @Binds
+    abstract fun binTourListFilter(repo: TourListFilterRepositoryImpl): TourListFilterRepository
+
+    @Binds
+    abstract fun binPlaceById(repo: PlaceByIdRepositoryImpl): PlaceByIdRepository
+
+    @Binds
+    abstract fun binFilterRepository(repo: FilterRepositoryImpl): FilterRepository
+
+    @Binds
     abstract fun bindHomeRepository(repo: HomeRepositoryImpl): HomeRepository
 
     @Binds
@@ -32,9 +36,6 @@ abstract class DataModule {
 
     @Binds
     abstract fun bindTourDetailRepository(repo: TourDetailRepositoryImpl): TourDetailRepository
-
-    @Binds
-    abstract fun bindTourByCategoriesRepository(repo: TourByCategoriesRepository): com.travel.gid.domain.repository.TourByCategoriesRepository
 
     companion object {
         @Provides
@@ -66,6 +67,5 @@ abstract class DataModule {
         fun providePixabayApi(retrofit: Retrofit): GidApi {
             return retrofit.create(GidApi::class.java)
         }
-
     }
 }

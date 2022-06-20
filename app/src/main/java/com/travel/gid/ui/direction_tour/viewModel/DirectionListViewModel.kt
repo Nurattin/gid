@@ -6,23 +6,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.travel.gid.data.models.Categories
 import com.travel.gid.data.models.Direction
+import com.travel.gid.domain.usecases.GetFilterUseCase
 import com.travel.gid.domain.usecases.GetHomeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
 class DirectionListViewModel @Inject constructor(
+    private val getFilterUseCase: GetFilterUseCase,
     private val getHomeUseCase: GetHomeUseCase
 ) : ViewModel() {
 
-    private val _categories = MutableLiveData<Categories>()
-    val categories: LiveData<Categories>
-        get() = _categories
+    private val _filters = MutableLiveData<List<Categories>>()
+    val filters: LiveData<List<Categories>>
+        get() = _filters
 
     private var _categoriesPos = 0
     val categoriesPos: Int
@@ -34,14 +33,16 @@ class DirectionListViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            _categories.value = getHomeUseCase.getCategories()
+            val listCategories = getFilterUseCase.getFilterParams()?.body()?.data?.listCategories
+            listCategories?.add(0, Categories(0, "Все", true))
+            _filters.value = listCategories!!
         }
         viewModelScope.launch {
             _directionList.value = getHomeUseCase.getDirection()
         }
     }
     fun changeCategories(pos: Int){
-        _categories.value!!.data[pos].enable = false
+        _filters.value!![pos].enable = false
     }
     fun changePos(pos: Int){
         _categoriesPos = pos
