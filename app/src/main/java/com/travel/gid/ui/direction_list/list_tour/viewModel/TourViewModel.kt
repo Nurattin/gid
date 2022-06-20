@@ -21,7 +21,7 @@ import javax.inject.Inject
 class TourViewModel @Inject constructor(
     private val getHomeUseCase: GetHomeUseCase,
     private val getFilterUseCase: GetFilterUseCase,
-    private val getTourListFilter: GetTourListFilter
+    private val getTourListFilter: GetTourListFilter,
 ) : ViewModel() {
 
     private val _priceRange = MutableLiveData<Price>()
@@ -49,7 +49,6 @@ class TourViewModel @Inject constructor(
         viewModelScope.launch {
             _filters.value = getFilterUseCase.getFilterParams()
             val listCategories = filters.value?.body()?.data?.listCategories
-            listCategories?.add(0, Categories(0, "Все", true))
             _categories.value = listCategories!!
         }
         viewModelScope.launch {
@@ -68,13 +67,22 @@ class TourViewModel @Inject constructor(
         _categoriesPos = pos
     }
 
-    fun getAllTour() {
+    fun getAllTour(filter: HashMap<String, Any>?) {
         viewModelScope.launch {
-            _tours.value = getHomeUseCase.getTours()
+            if (filter != null) {
+                _tours.value =
+                    getTourListFilter.getTourListFilter(
+                        categories = filter["categories"] as List<Int>,
+                        priceFrom = filter["startPrice"] as Int,
+                        priceTo = filter["endPrice"] as Int
+                    )
+            } else {
+                _tours.value = getHomeUseCase.getTours()
+            }
         }
     }
 
-    fun getTourByCategories(listId: Array<Int>) {
+    fun getTourByCategories(listId: List<Int>) {
         Log.i("dwa", "$listId")
         viewModelScope.launch {
             _tours.value = getTourListFilter.getTourListFilter(categories = listId)

@@ -41,7 +41,7 @@ interface GidApi {
     suspend fun getToursListFilter(
         @Field("priceFrom")priceFrom: Int?,
         @Field("priceTo")priceTo: Int?,
-        @Field("categories")categories: Array<Int>?
+        @Field("categories")categories: List<Int>?
 
     ): Response<Tour>
 

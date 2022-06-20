@@ -5,12 +5,14 @@ import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.core.view.ViewCompat
+import com.bumptech.glide.Glide
+import com.travel.gid.R
 import com.travel.gid.data.models.TourData
 import com.travel.gid.databinding.ItemBannerBinding
 
 private typealias BannerClickListener = (() -> Unit)
 
-class BannerListAdapter(private val sliderItems: List<TourData> ): RecyclerView.Adapter<BannerListAdapter.BannerViewHolder>() {
+class BannerListAdapter(private val sliderItems: List<String> ): RecyclerView.Adapter<BannerListAdapter.BannerViewHolder>() {
 
     private var clickListener: BannerClickListener? = null
 
@@ -26,7 +28,7 @@ class BannerListAdapter(private val sliderItems: List<TourData> ): RecyclerView.
 
     override fun onBindViewHolder(holder: BannerViewHolder, position: Int) {
 
-        holder.bind()
+        holder.bind(sliderItems[position])
     }
 
     fun setOnTourClickListener(listener: BannerClickListener?) {
@@ -34,12 +36,12 @@ class BannerListAdapter(private val sliderItems: List<TourData> ): RecyclerView.
     }
 
     override fun getItemCount(): Int {
-        return 6
+        return sliderItems.size
     }
 
     class BannerViewHolder(var binding: ItemBannerBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(){
+        fun bind(item: String){
             binding.run {
                 root.onFocusChangeListener = OnFocusChangeListener { v, hasFocus ->
                     if (hasFocus) {
@@ -54,6 +56,10 @@ class BannerListAdapter(private val sliderItems: List<TourData> ): RecyclerView.
                 tourListImage2.setOnClickListener {
 //                    clickListener.invoke()
                 }
+                Glide.with(root)
+                    .load(item)
+                    .placeholder(R.drawable.no_image)
+                    .into(tourListImage2)
             }
         }
     }

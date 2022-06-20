@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -74,8 +75,8 @@ class TourFragment : Fragment() {
                 viewModel.changeCategories(viewModel.categoriesPos)
                 viewModel.changePos(it.id.toInt())
                 when (it.id) {
-                    0L -> viewModel.getAllTour()
-                    else -> viewModel.getTourByCategories(arrayOf(it.id.toInt()))
+                    0L -> viewModel.getAllTour(null)
+                    else -> viewModel.getTourByCategories(listOf(it.id.toInt()))
                 }
                 showProgress()
             }
@@ -90,6 +91,11 @@ class TourFragment : Fragment() {
                 val filterSheet =FilterFragmentSheet()
                     if (!filterSheet.isAdded) {
                         filterSheet.show(parentFragmentManager, TAG)
+
+
+                        filterSheet.setOnBtnApplyClickListener {
+                            viewModel.getAllTour(it)
+                        }
                     }
             }
 
@@ -102,7 +108,7 @@ class TourFragment : Fragment() {
     }
 
     private fun showMenu(v: View?, @MenuRes popupMenu: Int) {
-        val popup = PopupMenu(context!!, v)
+        val popup = PopupMenu(requireContext(), v)
         popup.menuInflater.inflate(popupMenu, popup.menu)
         popup.setOnMenuItemClickListener {
             when (it.itemId) {

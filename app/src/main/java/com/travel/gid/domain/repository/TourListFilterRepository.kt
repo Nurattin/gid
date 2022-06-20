@@ -5,5 +5,5 @@ import com.travel.gid.data.models.TourDetail
 import retrofit2.Response
 
 interface TourListFilterRepository {
-    suspend fun getTourListFilter(priceFrom: Int?, priceTo: Int?,categories: Array<Int>?): Response<Tour>
+    suspend fun getTourListFilter(priceFrom: Int?, priceTo: Int?,categories: List<Int>?): Response<Tour>
 }

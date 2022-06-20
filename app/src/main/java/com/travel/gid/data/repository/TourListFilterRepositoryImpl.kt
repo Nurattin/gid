@@ -11,7 +11,7 @@ TourListFilterRepository  {
     override suspend fun getTourListFilter(
         priceFrom: Int?,
         priceTo: Int?,
-        categories: Array<Int>?
+        categories: List<Int>?
     ): Response<Tour> {
        return api.getToursListFilter(priceFrom = priceFrom, priceTo = priceTo, categories = categories)
     }

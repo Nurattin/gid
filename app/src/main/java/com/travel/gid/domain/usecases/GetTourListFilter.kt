@@ -6,6 +6,6 @@ import retrofit2.Response
 import javax.inject.Inject
 
 class GetTourListFilter @Inject constructor(private val repo: TourListFilterRepository) {
-    suspend fun getTourListFilter(priceFrom: Int? = null, priceTo: Int? = null,categories: Array<Int>? = null):
+    suspend fun getTourListFilter(priceFrom: Int? = null, priceTo: Int? = null,categories: List<Int>? = null):
             Response<Tour> = repo.getTourListFilter(priceFrom, priceTo, categories)
 }

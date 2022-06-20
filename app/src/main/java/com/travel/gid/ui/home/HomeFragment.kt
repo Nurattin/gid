@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.PagerSnapHelper
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.CalendarConstraints.DateValidator
 import com.google.android.material.datepicker.DateValidatorPointForward
@@ -21,6 +22,7 @@ import com.travel.gid.data.models.Direction
 import com.travel.gid.data.models.DirectionData
 import com.travel.gid.data.models.Tour
 import com.travel.gid.databinding.HomeFragmentBinding
+import com.travel.gid.ui.home.adapters.BannerListAdapter
 import com.travel.gid.ui.home.adapters.ViewPagerChildFragmentsAdapter
 import com.travel.gid.ui.select_guest.BottomSheetSelectGuests
 import com.travel.gid.utils.getDateFromTimestamp
@@ -70,39 +72,38 @@ class HomeFragment : Fragment() {
             }
         }
 
-//        binding.run {
-//            bannerRecyclerView.run {
-//                val adapterVH = BannerListAdapter(viewModel.tour!!.data)
-//
-//                adapterVH.setOnTourClickListener {
-//                    startActivity(Intent(context, TourDirectionActivity::class.java))
-//                }
-//
-//                adapter = adapterVH
-//
-//                clipToPadding = false
-//                clipChildren = false
-//            }
-//        }
+        binding.run {
+            bannerRecyclerView.run {
+                val snapHelper = PagerSnapHelper()
+                val adapterVH = BannerListAdapter(listOf("https://img.freepik.com/free-vector/welcome-egypt-online-journey-planning-booking-isometric-website-horizontal-banner-with-pyramids-palms-travelers_1284-32154.jpg?t=st=1655737200~exp=1655737800~hmac=74351c4b069ce9adff328ebf277170bafb35edca3ed6ad183edd7cd3b041fa63&w=1800",
+                "https://img.freepik.com/free-vector/welcome-egypt-online-journey-planning-booking-isometric-website-horizontal-banner-with-pyramids-palms-travelers_1284-32154.jpg?t=st=1655737200~exp=1655737800~hmac=74351c4b069ce9adff328ebf277170bafb35edca3ed6ad183edd7cd3b041fa63&w=1800"))
+
+                adapter = adapterVH
+
+                clipToPadding = false
+                clipChildren = false
+                snapHelper.attachToRecyclerView(binding.bannerRecyclerView)
+            }
+        }
 
         binding.run {
             homeButtonsControllerImpl = HomeButtonsControllerImpl(requireContext())
             homeButtonsControllerImpl.prevContainer = interestContainer
             vpChildFragment.offscreenPageLimit = 2
-            selectGuest.setOnClickListener {
-                showDialogSelectGuests()
-            }
-
-            selectCity.setOnClickListener {
-                findNavController().navigate(R.id.selectCityFragment)
-            }
-
-            findHotel.setOnClickListener {
-                findNavController().navigate(R.id.hotelsFragment)
-            }
-            selectDates.setOnClickListener {
-                setupRangePickerDialog()
-            }
+//            selectGuest.setOnClickListener {
+//                showDialogSelectGuests()
+//            }
+//
+//            selectCity.setOnClickListener {
+//                findNavController().navigate(R.id.selectCityFragment)
+//            }
+//
+//            findHotel.setOnClickListener {
+//                findNavController().navigate(R.id.hotelsFragment)
+//            }
+//            selectDates.setOnClickListener {
+//                setupRangePickerDialog()
+//            }
 
             interestContainer.setOnClickListener {
                 homeButtonsControllerImpl.setBtnStyleChecked(it, 0)
@@ -155,8 +156,8 @@ class HomeFragment : Fragment() {
             val startDate = selection.first
             val endDate = selection.second
 
-            binding.selectDates.text =
-                "${getDateFromTimestamp(startDate)}  ${getDateFromTimestamp(endDate)}"
+//            binding.selectDates.text =
+//                "${getDateFromTimestamp(startDate)}  ${getDateFromTimestamp(endDate)}"
         }
         materialCalendarPicker.addOnNegativeButtonClickListener { dialog: View? -> }
 

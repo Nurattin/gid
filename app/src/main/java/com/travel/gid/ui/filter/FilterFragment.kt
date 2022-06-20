@@ -11,17 +11,20 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
 import com.google.android.material.slider.RangeSlider
 import com.travel.gid.R
+import com.travel.gid.data.models.Categories
 import com.travel.gid.databinding.FragmentFilterBinding
 import com.travel.gid.ui.filter.FilterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.Math.round
+
+internal typealias OnBtnApplyClickListener = ((HashMap<String, Any>) -> Unit)
 
 @AndroidEntryPoint
 class FilterFragmentSheet : BottomSheetDialogFragment() {
 
     private val viewModel: FilterViewModel by viewModels()
     lateinit var binding: FragmentFilterBinding
-    lateinit var chipAll: Chip
+    private var clickListener: OnBtnApplyClickListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,16 +36,12 @@ class FilterFragmentSheet : BottomSheetDialogFragment() {
         viewModel.filters.observe(viewLifecycleOwner) {
 
             val listCategories = viewModel.getCategories()
-            var i = 0
             for (element in listCategories) {
                 val chip =
                     layoutInflater.inflate(R.layout.single_chip, binding.chipGroup, false) as Chip
                 chip.text = element.name
                 chip.id = element.id.toInt()
-                if (element.name == "Все") chip.isChecked = true
                 binding.chipGroup.addView(chip)
-                i += 1
-
             }
 //            binding.chipGroup.checkedChipIds
 
@@ -85,12 +84,14 @@ class FilterFragmentSheet : BottomSheetDialogFragment() {
 
             applyBtn.setOnClickListener {
                 val categories = chipGroup.checkedChipIds
+
                 putFilterDetail(
                     categories,
-                    tvStartPrice.text.toString(),
-                    tvEndPrice.text.toString(),
-                    rangeSliderDay.values
+                    tvStartPrice.text.toString().toInt(),
+                    tvEndPrice.text.toString().toInt(),
+//                    rangeSliderDay.values
                 )
+
             }
 
         }
@@ -98,17 +99,18 @@ class FilterFragmentSheet : BottomSheetDialogFragment() {
 
     private fun putFilterDetail(
         categories: List<Int>,
-        startPrice: String,
-        endPrice: String,
-        dayCount: List<Float>,
+        startPrice: Int,
+        endPrice: Int,
+//        dayCount: List<Float>,
     ) {
         val filterDetail = hashMapOf(
             "categories" to categories,
             "startPrice" to startPrice,
             "endPrice" to endPrice,
-            "dayCount" to dayCount
+//            "dayCount" to dayCount
         )
-        Log.i("dwa", "$filterDetail")
+        clickListener?.invoke(filterDetail)
+        this.dismiss()
     }
 
     private fun changeRangeSlide(startValue: Editable?, endValue: Editable?) {
@@ -120,5 +122,9 @@ class FilterFragmentSheet : BottomSheetDialogFragment() {
 
     companion object {
         const val TAG = "FilterFragmentSheet"
+    }
+
+    fun setOnBtnApplyClickListener(listener: OnBtnApplyClickListener?) {
+        clickListener = listener
     }
 }

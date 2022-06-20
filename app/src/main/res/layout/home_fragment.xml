@@ -55,19 +55,19 @@
             app:layout_scrollFlags="scroll|enterAlways">
 
 
-<!--            <androidx.recyclerview.widget.RecyclerView-->
-<!--                android:id="@+id/bannerRecyclerView"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:clipToPadding="false"-->
-<!--                android:orientation="horizontal"-->
-<!--                android:paddingStart="8dp"-->
-<!--                android:paddingEnd="24dp"-->
-<!--                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/imageView2"-->
-<!--                tools:listitem="@layout/item_banner" />-->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/bannerRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                android:paddingStart="8dp"
+                android:paddingEnd="24dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView2"
+                tools:listitem="@layout/item_banner" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
@@ -85,92 +85,92 @@
                     app:cardCornerRadius="8dp"
                     app:cardElevation="0dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="vertical">-->
 
-                        <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/selectCity"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/white"
-                            android:drawableStart="@drawable/ic_city_select"
-                            android:drawablePadding="12dp"
-                            android:gravity="start|center"
-                            android:outlineProvider="none"
-                            android:paddingStart="16dp"
-                            android:paddingEnd="16dp"
-                            android:layout_marginTop="4dp"
-                            android:text="Выбор города"
-                            android:textAllCaps="false" />
+<!--                        <androidx.appcompat.widget.AppCompatButton-->
+<!--                            android:id="@+id/selectCity"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:background="@color/white"-->
+<!--                            android:drawableStart="@drawable/ic_city_select"-->
+<!--                            android:drawablePadding="12dp"-->
+<!--                            android:gravity="start|center"-->
+<!--                            android:outlineProvider="none"-->
+<!--                            android:paddingStart="16dp"-->
+<!--                            android:paddingEnd="16dp"-->
+<!--                            android:layout_marginTop="4dp"-->
+<!--                            android:text="Выбор города"-->
+<!--                            android:textAllCaps="false" />-->
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="4dp"
-                            android:background="@color/line_gray" />
+<!--                        <View-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="1dp"-->
+<!--                            android:layout_marginTop="4dp"-->
+<!--                            android:background="@color/line_gray" />-->
 
-                        <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/selectDates"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/white"
-                            android:drawableStart="@drawable/ic_calendar"
-                            android:drawablePadding="12dp"
-                            android:gravity="start|center"
-                            android:outlineProvider="none"
-                            android:paddingStart="16dp"
-                            android:paddingEnd="16dp"
-                            android:layout_marginTop="4dp"
-                            android:text="Дата заезда/выезда"
-                            android:textAllCaps="false" />
+<!--                        <androidx.appcompat.widget.AppCompatButton-->
+<!--                            android:id="@+id/selectDates"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:background="@color/white"-->
+<!--                            android:drawableStart="@drawable/ic_calendar"-->
+<!--                            android:drawablePadding="12dp"-->
+<!--                            android:gravity="start|center"-->
+<!--                            android:outlineProvider="none"-->
+<!--                            android:paddingStart="16dp"-->
+<!--                            android:paddingEnd="16dp"-->
+<!--                            android:layout_marginTop="4dp"-->
+<!--                            android:text="Дата заезда/выезда"-->
+<!--                            android:textAllCaps="false" />-->
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="4dp"
-                            android:background="@color/line_gray" />
+<!--                        <View-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="1dp"-->
+<!--                            android:layout_marginTop="4dp"-->
+<!--                            android:background="@color/line_gray" />-->
 
-                        <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/selectGuest"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/white"
-                            android:drawableStart="@drawable/ic_users"
-                            android:drawablePadding="12dp"
-                            android:gravity="start|center"
-                            android:outlineProvider="none"
-                            android:paddingStart="16dp"
-                            android:paddingEnd="16dp"
-                            android:text="1 человек"
-                            android:textAllCaps="false" />
+<!--                        <androidx.appcompat.widget.AppCompatButton-->
+<!--                            android:id="@+id/selectGuest"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:background="@color/white"-->
+<!--                            android:drawableStart="@drawable/ic_users"-->
+<!--                            android:drawablePadding="12dp"-->
+<!--                            android:gravity="start|center"-->
+<!--                            android:outlineProvider="none"-->
+<!--                            android:paddingStart="16dp"-->
+<!--                            android:paddingEnd="16dp"-->
+<!--                            android:text="1 человек"-->
+<!--                            android:textAllCaps="false" />-->
 
-                        <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/findHotel"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="#76A595"
-                            android:gravity="center"
-                            android:outlineProvider="none"
-                            android:text="Найти отель"
-                            android:textAllCaps="false"
-                            android:textColor="@color/white" />
+<!--                        <androidx.appcompat.widget.AppCompatButton-->
+<!--                            android:id="@+id/findHotel"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:background="#76A595"-->
+<!--                            android:gravity="center"-->
+<!--                            android:outlineProvider="none"-->
+<!--                            android:text="Найти отель"-->
+<!--                            android:textAllCaps="false"-->
+<!--                            android:textColor="@color/white" />-->
 
-                    </LinearLayout>
+<!--                    </LinearLayout>-->
 
                 </androidx.cardview.widget.CardView>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <View
-                android:id="@+id/imageView"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/line_gray" />
+<!--            <View-->
+<!--                android:id="@+id/imageView"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="1dp"-->
+<!--                android:layout_marginStart="16dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:layout_marginEnd="16dp"-->
+<!--                android:background="@color/line_gray" />-->
 
             <!--  Контейнер кнопок меню -->
             <!-- Как работают кнопки, см. в классе HomeButtonsController -->
