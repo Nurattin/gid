@@ -12,11 +12,10 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.travel.gid.R
 import com.travel.gid.databinding.FragmentTourBinding
-import com.travel.gid.ui.filter.FilterFragment.Companion.TAG
+import com.travel.gid.ui.direction_list.list_tour.FilterFragmentSheet.Companion.TAG
 import com.travel.gid.ui.direction_list.list_tour.adapter.TourCategoriesAdapter
 import com.travel.gid.ui.direction_list.list_tour.adapter.ToursAdapter
 import com.travel.gid.ui.direction_list.list_tour.viewModel.TourViewModel
-import com.travel.gid.ui.filter.FilterFragment
 import com.travel.gid.ui.tour_detail.TourDetailFragmentArgs
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -74,7 +73,7 @@ class TourFragment : Fragment() {
             if (viewModel.categoriesPos != it.id.toInt()) {
                 viewModel.changeCategories(viewModel.categoriesPos)
                 viewModel.changePos(it.id.toInt())
-                when (it.id){
+                when (it.id) {
                     0L -> viewModel.getAllTour()
                     else -> viewModel.getTourByCategories(arrayOf(it.id.toInt()))
                 }
@@ -88,10 +87,10 @@ class TourFragment : Fragment() {
 
         binding.apply {
             selectFilter.setOnClickListener {
-                val filterSheet = FilterFragment()
-                if (!filterSheet.isAdded) {
-                    filterSheet.show(parentFragmentManager, TAG)
-                }
+                val filterSheet =FilterFragmentSheet()
+                    if (!filterSheet.isAdded) {
+                        filterSheet.show(parentFragmentManager, TAG)
+                    }
             }
 
             range.setOnClickListener {
