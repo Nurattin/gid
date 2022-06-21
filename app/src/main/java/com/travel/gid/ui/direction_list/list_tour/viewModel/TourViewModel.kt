@@ -67,7 +67,7 @@ class TourViewModel @Inject constructor(
             if (filter != null) {
                 _tours.value =
                     getTourListFilter.getTourListFilter(
-                        categories = filter["categories"] as List<Int>,
+                        categories = filter["categories"] as List<Int>?,
                         priceFrom = filter["startPrice"] as Int,
                         priceTo = filter["endPrice"] as Int
                     )

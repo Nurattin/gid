@@ -1,6 +1,7 @@
 package com.travel.gid.ui.direction_list.list_tour
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -87,6 +88,7 @@ class TourFragment : Fragment() {
                 if (!filterSheet.isAdded) {
                     filterSheet.show(parentFragmentManager, TAG)
                     filterSheet.setOnBtnApplyClickListener {
+                        Log.i("dwa", "$it")
                         viewModel.getAllTour(it)
                     }
                 }

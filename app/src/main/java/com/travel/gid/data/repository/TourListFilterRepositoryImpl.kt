@@ -13,6 +13,6 @@ TourListFilterRepository  {
         priceTo: Int?,
         categories: List<Int>?
     ): Response<Tour> {
-       return api.getToursListFilter(priceFrom = priceFrom, priceTo = priceTo, categories = categories.toString())
+       return api.getToursListFilter(priceFrom = priceFrom, priceTo = priceTo, categories = if (categories!!.isEmpty()) null else categories.toString())
     }
 }

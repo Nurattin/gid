@@ -85,6 +85,7 @@ class FilterFragmentSheet : BottomSheetDialogFragment() {
             applyBtn.setOnClickListener {
                 val categories = chipGroup.checkedChipIds
 
+
                 putFilterDetail(
                     categories,
                     tvStartPrice.text.toString().toInt(),
