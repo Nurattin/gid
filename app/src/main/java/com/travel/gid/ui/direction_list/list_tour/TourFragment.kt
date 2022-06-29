@@ -12,10 +12,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.travel.gid.R
 import com.travel.gid.databinding.FragmentTourBinding
-import com.travel.gid.ui.direction_list.list_tour.FilterFragmentSheet.Companion.TAG
 import com.travel.gid.ui.direction_list.list_tour.adapter.TourCategoriesAdapter
 import com.travel.gid.ui.direction_list.list_tour.adapter.ToursAdapter
 import com.travel.gid.ui.direction_list.list_tour.viewModel.TourViewModel
+import com.travel.gid.ui.filter.FilterFragmentSheet
+import com.travel.gid.ui.filter.FilterFragmentSheet.Companion.TAG
 import com.travel.gid.ui.tour_detail.TourDetailFragmentArgs
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -37,7 +38,7 @@ class TourFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        if (viewModel.tours == null) showProgress()
+        if (viewModel.tours.value == null) showProgress()
 
         val adapterTour = ToursAdapter()
         binding.tourRecycler.adapter = adapterTour
@@ -56,6 +57,10 @@ class TourFragment : Fragment() {
                 adapterCategory.data = it
                 adapterCategory.positionCategories = viewModel.categoriesPos
             }
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) {
+            showRefresh()
         }
 
 
@@ -82,13 +87,21 @@ class TourFragment : Fragment() {
         binding.tourRecycler.setHasFixedSize(true)
         binding.toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
 
+        binding.refresh.setOnClickListener {
+            if (viewModel.categoriesPos == null) viewModel.getAllTour(null)
+            else viewModel.getTourByCategories(listOf(viewModel.categoriesPos + 1))
+            showProgress()
+        }
+
+
         binding.apply {
+            val filterSheet = FilterFragmentSheet()
             selectFilter.setOnClickListener {
-                val filterSheet = FilterFragmentSheet()
                 if (!filterSheet.isAdded) {
                     filterSheet.show(parentFragmentManager, TAG)
+
                     filterSheet.setOnBtnApplyClickListener {
-                        Log.i("dwa", "$it")
+                        showProgress()
                         viewModel.getAllTour(it)
                     }
                 }
@@ -101,6 +114,7 @@ class TourFragment : Fragment() {
             }
         }
     }
+
 
     private fun showMenu(v: View?, @MenuRes popupMenu: Int) {
         val popup = PopupMenu(requireContext(), v)
@@ -122,13 +136,25 @@ class TourFragment : Fragment() {
         binding.apply {
             progressBar.visibility = View.GONE
             tourRecycler.visibility = View.VISIBLE
+            categoriesRecycler.visibility = View.VISIBLE
+            refreshContainer.visibility = View.GONE
         }
     }
 
     private fun showProgress() {
         binding.apply {
+            refreshContainer.visibility = View.GONE
             progressBar.visibility = View.VISIBLE
             tourRecycler.visibility = View.GONE
+            categoriesRecycler.visibility =
+                if (viewModel.categories != null) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun showRefresh() {
+        with(binding) {
+            progressBar.visibility = View.GONE
+            refreshContainer.visibility = View.VISIBLE
         }
     }
 }

@@ -10,6 +10,7 @@ import com.travel.gid.data.models.Filters
 import com.travel.gid.data.models.Price
 import com.travel.gid.domain.usecases.GetFilterUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
@@ -24,27 +25,34 @@ class FilterViewModel @Inject constructor(
     val filters: LiveData<Response<Filters>>
         get() = _filters
 
+    private val _error = MutableLiveData<String>()
+    val error: LiveData<String>
+        get() = _error
+
+    private val coroutineExceptionHandler =
+        CoroutineExceptionHandler { coroutineContext, throwable ->
+        }
+
     init {
-        viewModelScope.launch {
+        getFilter()
+    }
+
+    fun getFilter() {
+        viewModelScope.launch(coroutineExceptionHandler) {
+            Log.i("filter", "Call")
             _filters.value = getFilterUseCase.getFilterParams()
         }
     }
 
-    fun getCategories(): List<Categories> {
-        val listCategories = filters.value?.body()?.data?.listCategories
-        return if (listCategories!![0].name != "Все") {
-            listCategories.add(0, Categories(0, "Все", true))
-            listCategories
-        } else listCategories
+    fun getCategories(): List<Categories>? = filters.value?.body()?.data?.listCategories
 
-    }
 
     fun getPriceRange(): Price? {
         return filters.value?.body()?.data?.price
     }
 
     override fun onCleared() {
-        Log.i("dwa", "destroy")
         super.onCleared()
     }
+
 }

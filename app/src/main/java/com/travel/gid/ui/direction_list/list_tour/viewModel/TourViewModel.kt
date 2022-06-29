@@ -12,6 +12,7 @@ import com.travel.gid.domain.usecases.GetFilterUseCase
 import com.travel.gid.domain.usecases.GetHomeUseCase
 import com.travel.gid.domain.usecases.GetTourListFilter
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
@@ -39,17 +40,23 @@ class TourViewModel @Inject constructor(
     val tours: LiveData<Response<Tour>>
         get() = _tours
 
-    init {
+    private val _error = MutableLiveData<String>()
+    val error: LiveData<String>
+        get() = _error
 
-        viewModelScope.launch {
+    private val coroutineExceptionHandler =
+        CoroutineExceptionHandler { coroutineContext, throwable ->
+            _error.value = ""
+            Log.i("dwa", "call")
+        }
+
+    init {
+        viewModelScope.launch(coroutineExceptionHandler) {
             _filters.value = getFilterUseCase.getFilterParams()
             val listCategories = filters.value?.body()?.data?.listCategories
             _categories.value = listCategories!!
         }
-        viewModelScope.launch {
-            _tours.value = getHomeUseCase.getTours()
-        }
-
+        getAllTour(null)
 
     }
 
@@ -63,7 +70,7 @@ class TourViewModel @Inject constructor(
     }
 
     fun getAllTour(filter: HashMap<String, Any>?) {
-        viewModelScope.launch {
+        viewModelScope.launch(coroutineExceptionHandler) {
             if (filter != null) {
                 _tours.value =
                     getTourListFilter.getTourListFilter(
@@ -79,7 +86,7 @@ class TourViewModel @Inject constructor(
 
     fun getTourByCategories(listId: List<Int>) {
         Log.i("dwa", "$listId")
-        viewModelScope.launch {
+        viewModelScope.launch(coroutineExceptionHandler) {
             _tours.value = getTourListFilter.getTourListFilter(categories = listId)
         }
     }

@@ -43,8 +43,8 @@
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="14sp"
-            app:iconPadding="10dp"
             app:icon="@drawable/ic_coolicon"
+            app:iconPadding="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
@@ -55,15 +55,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#00FFFFFF"
-            android:gravity="end"
             android:fontFamily="@font/roboto_medium"
+            android:gravity="end"
             android:text="По пулярности"
-            app:iconTint="#8A8A8A"
-            app:icon="@drawable/ic_baseline_arrow_drop_down"
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="14sp"
+            app:icon="@drawable/ic_baseline_arrow_drop_down"
             app:iconGravity="end"
+            app:iconTint="#8A8A8A"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
@@ -84,7 +84,7 @@
                 android:clipToPadding="false"
                 android:orientation="horizontal"
                 android:paddingStart="13dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -99,9 +99,9 @@
             android:id="@+id/tourRecycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             android:orientation="vertical"
-            android:layout_gravity="center_horizontal"
             android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -118,9 +118,13 @@
             android:layout_height="500dp"
             android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
+
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat">
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat"
+            app:layout_constraintVertical_bias="0.0"
+            tools:visibility="visible">
 
             <ProgressBar
                 android:layout_width="wrap_content"
@@ -128,6 +132,53 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </LinearLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/refresh_container"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:padding="15dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="14dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Слабое интернет - соединение"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/textView10"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.496"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="14dp"
+                android:textColor="#ADADAD"
+                android:text="Обновите страницу"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/refresh"
+                app:layout_constraintEnd_toEndOf="@+id/textView8"
+                app:layout_constraintStart_toStartOf="@+id/textView8" />
+
+            <Button
+                android:id="@id/refresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Обновить"
+                android:textAllCaps="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/textView8"
+                app:layout_constraintStart_toStartOf="@+id/textView8" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

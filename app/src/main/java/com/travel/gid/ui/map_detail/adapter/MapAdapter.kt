@@ -19,6 +19,7 @@ class MapAdapter() : RecyclerView.Adapter<MapAdapter.ViewHolder>() {
             notifyDataSetChanged()
         }
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             RouteDetailItemBinding.inflate(
@@ -32,6 +33,7 @@ class MapAdapter() : RecyclerView.Adapter<MapAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(data[position], position)
     }
+
 
     override fun getItemCount(): Int {
         return data.size

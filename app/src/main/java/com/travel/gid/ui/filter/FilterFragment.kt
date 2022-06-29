@@ -1,4 +1,4 @@
-package com.travel.gid.ui.direction_list.list_tour
+package com.travel.gid.ui.filter
 
 import android.os.Bundle
 import android.text.Editable
@@ -36,7 +36,7 @@ class FilterFragmentSheet : BottomSheetDialogFragment() {
         viewModel.filters.observe(viewLifecycleOwner) {
 
             val listCategories = viewModel.getCategories()
-            for (element in listCategories) {
+            for (element in listCategories!!) {
                 val chip =
                     layoutInflater.inflate(R.layout.single_chip, binding.chipGroup, false) as Chip
                 chip.text = element.name
@@ -66,6 +66,8 @@ class FilterFragmentSheet : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.getFilter()
 
         binding.apply {
             rangeSliderPrice.addOnChangeListener(RangeSlider.OnChangeListener { slider, _, _ ->
@@ -122,7 +124,7 @@ class FilterFragmentSheet : BottomSheetDialogFragment() {
     }
 
     companion object {
-        const val TAG = "FilterFragmentSheet"
+        const val TAG = "com.travel.gid.ui.filter.FilterFragmentSheet"
     }
 
     fun setOnBtnApplyClickListener(listener: OnBtnApplyClickListener?) {
