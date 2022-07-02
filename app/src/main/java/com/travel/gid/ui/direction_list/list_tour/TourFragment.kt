@@ -1,7 +1,6 @@
 package com.travel.gid.ui.direction_list.list_tour
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.travel.gid.R
+import com.travel.gid.data.models.FilterParams
 import com.travel.gid.databinding.FragmentTourBinding
 import com.travel.gid.ui.direction_list.list_tour.adapter.TourCategoriesAdapter
 import com.travel.gid.ui.direction_list.list_tour.adapter.ToursAdapter
@@ -24,8 +24,11 @@ import dagger.hilt.android.AndroidEntryPoint
 class TourFragment : Fragment() {
 
     private val viewModel: TourViewModel by viewModels()
+    private var filterDetail = FilterParams()
+    private val adapterTour = ToursAdapter()
+    private val adapterCategory = TourCategoriesAdapter()
+    private val filterSheet = FilterFragmentSheet()
     private lateinit var binding: FragmentTourBinding
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,75 +41,67 @@ class TourFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+
         if (viewModel.tours.value == null) showProgress()
-
-        val adapterTour = ToursAdapter()
-        binding.tourRecycler.adapter = adapterTour
-        viewModel.tours.observe(viewLifecycleOwner) { it ->
-            it.body()?.data?.let {
-                adapterTour.data = it
-            }
-            stopProgress()
-        }
-
-
-        val adapterCategory = TourCategoriesAdapter()
-        binding.categoriesRecycler.adapter = adapterCategory
-        viewModel.categories.observe(viewLifecycleOwner) {
-            it?.let {
-                adapterCategory.data = it
-                adapterCategory.positionCategories = viewModel.categoriesPos
-            }
-        }
-
-        viewModel.error.observe(viewLifecycleOwner) {
-            showRefresh()
-        }
-
-
-        adapterTour.setOnTourClickListener {
-            findNavController().navigate(
-                R.id.tourDetailFragment,
-                TourDetailFragmentArgs(it.id).toBundle(),
-                null
-            )
-        }
-
-        adapterCategory.setOnCategoriesTourClickListener { categories, pos ->
-            if (viewModel.categoriesPos != pos) {
-                viewModel.changeCategories(viewModel.categoriesPos)
-                viewModel.changePos(pos)
-                when (categories.id) {
-                    0L -> viewModel.getAllTour(null)
-                    else -> viewModel.getTourByCategories(listOf(categories.id.toInt()))
+        with(binding) {
+            with(tourRecycler) {
+                adapter = adapterTour
+                viewModel.tours.observe(viewLifecycleOwner) { it ->
+                    it.body()?.data?.let {
+                        adapterTour.data = it
+                    }
+                    stopProgress()
                 }
+                adapterTour.setOnTourClickListener {
+                    findNavController().navigate(
+                        R.id.tourDetailFragment,
+                        TourDetailFragmentArgs(it.id).toBundle(),
+                        null
+                    )
+                }
+            }
+
+            with(categoriesRecycler) {
+                adapter = adapterCategory
+                viewModel.categories.observe(viewLifecycleOwner) {
+                    it?.let {
+                        adapterCategory.data = it
+                        adapterCategory.positionCategories = viewModel.categoriesPos
+                    }
+                }
+                adapterCategory.setOnCategoriesTourClickListener { categories, pos ->
+                    getToursByCategories(pos, categories.id.toInt())
+                }
+            }
+
+            viewModel.error.observe(viewLifecycleOwner) {
+                showRefresh()
+            }
+
+            toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
+
+            refresh.setOnClickListener {
+                viewModel.getAllTour(filterDetail)
                 showProgress()
             }
-        }
 
-        binding.tourRecycler.setHasFixedSize(true)
-        binding.toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
+            refreshData.setOnRefreshListener {
+                viewModel.getAllTour(filterDetail)
+            }
 
-        binding.refresh.setOnClickListener {
-            if (viewModel.categoriesPos == null) viewModel.getAllTour(null)
-            else viewModel.getTourByCategories(listOf(viewModel.categoriesPos + 1))
-            showProgress()
-        }
-
-
-        binding.apply {
-            val filterSheet = FilterFragmentSheet()
             selectFilter.setOnClickListener {
                 if (!filterSheet.isAdded) {
                     filterSheet.show(parentFragmentManager, TAG)
-
                     filterSheet.setOnBtnApplyClickListener {
-                        showProgress()
+                        filterDetail = it
+                        filterDetail.orderByPrice = null
                         viewModel.getAllTour(it)
+                        showProgress()
+                        adapterCategory.categoriesAllOn()
+                        viewModel.changeCategories(viewModel.categoriesPos, 0)
                     }
                 }
             }
-
             range.setOnClickListener {
                 showMenu(it, R.menu.popup_menu)
                 animSort.speed = 1F
@@ -115,21 +110,30 @@ class TourFragment : Fragment() {
         }
     }
 
-
     private fun showMenu(v: View?, @MenuRes popupMenu: Int) {
         val popup = PopupMenu(requireContext(), v)
         popup.menuInflater.inflate(popupMenu, popup.menu)
         popup.setOnMenuItemClickListener {
             when (it.itemId) {
-                R.id.option_1 -> binding.range.text = "По популятрности"
-                R.id.option_2 -> binding.range.text = "Сначала дорогие"
-                R.id.option_3 -> binding.range.text = "Сначала дешевые"
-                R.id.option_4 -> binding.range.text = "Новые"
+                R.id.option_2 -> {
+                    getSortTours("\"desc\"")
+                }
+                R.id.option_3 -> {
+                    getSortTours("\"asc\"")
+                }
             }
+            binding.range.text = it.title.toString()
             true
         }
         popup.show()
+    }
 
+    private fun getSortTours(params: String) {
+        if (filterDetail.orderByPrice != params) {
+            filterDetail.orderByPrice = params
+            viewModel.getAllTour(filterDetail)
+            showProgress()
+        }
     }
 
     private fun stopProgress() {
@@ -138,6 +142,7 @@ class TourFragment : Fragment() {
             tourRecycler.visibility = View.VISIBLE
             categoriesRecycler.visibility = View.VISIBLE
             refreshContainer.visibility = View.GONE
+            binding.refreshData.isRefreshing = false
         }
     }
 
@@ -146,8 +151,6 @@ class TourFragment : Fragment() {
             refreshContainer.visibility = View.GONE
             progressBar.visibility = View.VISIBLE
             tourRecycler.visibility = View.GONE
-            categoriesRecycler.visibility =
-                if (viewModel.categories != null) View.VISIBLE else View.GONE
         }
     }
 
@@ -156,5 +159,16 @@ class TourFragment : Fragment() {
             progressBar.visibility = View.GONE
             refreshContainer.visibility = View.VISIBLE
         }
+    }
+
+    private fun getToursByCategories(pos: Int, categoriesId: Int) {
+        with(viewModel) {
+            filterSheet.filterDetail = FilterParams()
+            changeCategories(viewModel.categoriesPos, pos)
+            filterDetail = FilterParams()
+            filterDetail.categories = if (categoriesId == 0) null else listOf(categoriesId)
+            getAllTour(filterDetail)
+        }
+        showProgress()
     }
 }

@@ -99,7 +99,7 @@ class HomeButtonsControllerImpl(var context: Context): HomeButtonsController {
                 is ImageView -> {
                     when(position) {
                         0 -> {
-                            it.setImageResource(R.drawable.ic_globe_uncheck)
+                                it.setImageResource(R.drawable.ic_globe_uncheck)
                         }
                         1 -> {
                             it.setImageResource(R.drawable.ic_gid_uncheck)
@@ -124,7 +124,7 @@ class HomeButtonsControllerImpl(var context: Context): HomeButtonsController {
                             it.setTextColor(context.resources.getColor(R.color.text_menu_btn))
                         }
                         1 -> {
-                            it.setTextColor(context.resources.getColor(R.color.text_menu_btn))
+                                it.setTextColor(context.resources.getColor(R.color.text_menu_btn))
                         }
                         2 -> {
                             it.setTextColor(context.resources.getColor(R.color.text_menu_btn))

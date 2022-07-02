@@ -1,20 +1,15 @@
 package com.travel.gid.ui.direction_detail.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.travel.gid.R
 import com.travel.gid.data.models.TourDirection
-import com.travel.gid.databinding.ItemBannerBinding
 import com.travel.gid.databinding.TourDirectionItemBinding
-import com.travel.gid.ui.home.adapters.BannerListAdapter
 
 private typealias OnDirectionDetailClickListener = ((Long) -> Unit)
 
-class TourDirectionAdapter(var list: List<TourDirection>) : RecyclerView.Adapter<TourDirectionAdapter.TourDirectionViewHolder>() {
+class TourDirectionAdapter(var list: List<TourDirection>) :
+    RecyclerView.Adapter<TourDirectionAdapter.TourDirectionViewHolder>() {
 
     private var clickListener: OnDirectionDetailClickListener? = null
 
@@ -35,9 +30,10 @@ class TourDirectionAdapter(var list: List<TourDirection>) : RecyclerView.Adapter
         holder.bind(list[position], clickListener)
     }
 
-    class TourDirectionViewHolder(var binding: TourDirectionItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class TourDirectionViewHolder(var binding: TourDirectionItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: TourDirection, clickListener: OnDirectionDetailClickListener?){
+        fun bind(item: TourDirection, clickListener: OnDirectionDetailClickListener?) {
             binding.run {
                 tourName.text = item.name
                 txtDuration.text = item.duration

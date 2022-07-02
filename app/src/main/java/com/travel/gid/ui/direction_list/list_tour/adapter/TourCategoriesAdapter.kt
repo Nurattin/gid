@@ -13,7 +13,6 @@ internal typealias OnCategoriesTourClickListener = ((Categories, Int) -> Unit)
 class TourCategoriesAdapter : RecyclerView.Adapter<TourCategoriesAdapter.ViewHolder>() {
 
     private var clickListener: OnCategoriesTourClickListener? = null
-
     var positionCategories: Int = 0
 
     var data = listOf<Categories>()
@@ -39,15 +38,17 @@ class TourCategoriesAdapter : RecyclerView.Adapter<TourCategoriesAdapter.ViewHol
         fun bind(item: Categories, clickListener: OnCategoriesTourClickListener?) {
             binding.apply {
                 categoryName.text = item.name
-                backgroundChange(item)
                 categoryName.setOnClickListener {
-                    data[positionCategories].enable = false
-                    data[adapterPosition].enable = true
-                    notifyItemChanged(positionCategories)
-                    notifyItemChanged(adapterPosition)
-                    positionCategories = adapterPosition
-                    clickListener?.invoke(item, adapterPosition)
+                    if (adapterPosition != positionCategories) {
+                        data[positionCategories].enable = false
+                        data[adapterPosition].enable = true
+                        notifyItemChanged(adapterPosition)
+                        notifyItemChanged(positionCategories)
+                        positionCategories = adapterPosition
+                        clickListener?.invoke(item, adapterPosition)
+                    }
                 }
+                backgroundChange(item)
             }
         }
 
@@ -60,7 +61,16 @@ class TourCategoriesAdapter : RecyclerView.Adapter<TourCategoriesAdapter.ViewHol
                 categoryName.setTextColor(Color.parseColor("#FFFFFF"))
             }
         }
+    }
 
+    fun categoriesAllOn() {
+
+        if (!data[0].enable) {
+            data[0].enable = true
+            notifyItemChanged(0)
+            notifyItemChanged(positionCategories)
+            positionCategories = 0
+        }
 
     }
 

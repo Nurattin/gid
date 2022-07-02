@@ -33,13 +33,9 @@ class FilterViewModel @Inject constructor(
         CoroutineExceptionHandler { coroutineContext, throwable ->
         }
 
-    init {
-        getFilter()
-    }
 
     fun getFilter() {
         viewModelScope.launch(coroutineExceptionHandler) {
-            Log.i("filter", "Call")
             _filters.value = getFilterUseCase.getFilterParams()
         }
     }
@@ -54,5 +50,5 @@ class FilterViewModel @Inject constructor(
     override fun onCleared() {
         super.onCleared()
     }
-
+    
 }

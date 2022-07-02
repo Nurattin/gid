@@ -1,15 +1,14 @@
 package com.travel.gid.ui.direction_list.list_tour.viewModel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.travel.gid.data.models.Categories
+import com.travel.gid.data.models.FilterParams
 import com.travel.gid.data.models.Filters
 import com.travel.gid.data.models.Tour
 import com.travel.gid.domain.usecases.GetFilterUseCase
-import com.travel.gid.domain.usecases.GetHomeUseCase
 import com.travel.gid.domain.usecases.GetTourListFilter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -19,7 +18,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TourViewModel @Inject constructor(
-    private val getHomeUseCase: GetHomeUseCase,
     private val getFilterUseCase: GetFilterUseCase,
     private val getTourListFilter: GetTourListFilter,
 ) : ViewModel() {
@@ -47,47 +45,36 @@ class TourViewModel @Inject constructor(
     private val coroutineExceptionHandler =
         CoroutineExceptionHandler { coroutineContext, throwable ->
             _error.value = ""
-            Log.i("dwa", "call")
         }
 
     init {
         viewModelScope.launch(coroutineExceptionHandler) {
             _filters.value = getFilterUseCase.getFilterParams()
             val listCategories = filters.value?.body()?.data?.listCategories
+            listCategories?.add(0, Categories(0, "Все", true))
             _categories.value = listCategories!!
         }
-        getAllTour(null)
+        getAllTour(FilterParams())
 
     }
 
-    fun changeCategories(pos: Int) {
-        _categories.value!![pos].enable = false
-
-    }
-
-    fun changePos(pos: Int) {
-        _categoriesPos = pos
-    }
-
-    fun getAllTour(filter: HashMap<String, Any>?) {
-        viewModelScope.launch(coroutineExceptionHandler) {
-            if (filter != null) {
-                _tours.value =
-                    getTourListFilter.getTourListFilter(
-                        categories = filter["categories"] as List<Int>?,
-                        priceFrom = filter["startPrice"] as Int,
-                        priceTo = filter["endPrice"] as Int
-                    )
-            } else {
-                _tours.value = getHomeUseCase.getTours()
-            }
+    fun changeCategories(posCategories: Int, pos: Int) {
+        if (posCategories != pos) {
+            _categories.value!![posCategories].enable = false
+            _categoriesPos = pos
         }
+
     }
 
-    fun getTourByCategories(listId: List<Int>) {
-        Log.i("dwa", "$listId")
+    fun     getAllTour(filter: FilterParams) {
         viewModelScope.launch(coroutineExceptionHandler) {
-            _tours.value = getTourListFilter.getTourListFilter(categories = listId)
+            _tours.value =
+                getTourListFilter.getTourListFilter(
+                    categories = filter.categories,
+                    priceFrom = filter.startPrice,
+                    priceTo = filter.endPrice,
+                    orderByPrice = filter.orderByPrice,
+                )
         }
     }
 }

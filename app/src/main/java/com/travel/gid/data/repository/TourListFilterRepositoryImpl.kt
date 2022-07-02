@@ -7,12 +7,18 @@ import retrofit2.Response
 import javax.inject.Inject
 
 class TourListFilterRepositoryImpl @Inject constructor(var api: GidApi) :
-TourListFilterRepository  {
+    TourListFilterRepository {
     override suspend fun getTourListFilter(
         priceFrom: Int?,
         priceTo: Int?,
-        categories: List<Int>?
+        categories: List<Int>?,
+        orderByPrice: String?,
     ): Response<Tour> {
-       return api.getToursListFilter(priceFrom = priceFrom, priceTo = priceTo, categories = if (categories!!.isEmpty()) null else categories.toString())
+        return api.getToursListFilter(
+            priceFrom = priceFrom,
+            priceTo = priceTo,
+            categories = if (categories.isNullOrEmpty()) null else categories.toString(),
+            orderByPrice = orderByPrice
+        )
     }
 }
