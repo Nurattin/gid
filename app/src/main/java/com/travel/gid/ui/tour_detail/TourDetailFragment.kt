@@ -25,33 +25,39 @@ import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.RequestPoint
 import com.yandex.mapkit.RequestPointType
 import com.yandex.mapkit.directions.DirectionsFactory
-import com.yandex.mapkit.directions.driving.DrivingOptions
-import com.yandex.mapkit.directions.driving.DrivingRoute
-import com.yandex.mapkit.directions.driving.DrivingSession
-import com.yandex.mapkit.directions.driving.VehicleOptions
+import com.yandex.mapkit.directions.driving.*
 import com.yandex.mapkit.geometry.BoundingBox
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.MapObjectCollection
+import com.yandex.runtime.Error
 import com.yandex.runtime.ui_view.ViewProvider
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.concurrent.schedule
+import kotlin.math.ln
 
 
 @AndroidEntryPoint
-class TourDetailFragment : Fragment() {
+class TourDetailFragment : Fragment(), DrivingSession.DrivingRouteListener {
+    private var routes = listOf<RequestPoint>()
 
     private val args by lazy { TourDetailFragmentArgs.fromBundle(requireArguments()) }
     private val viewModel: ToutDetailViewModel by viewModels()
     lateinit var binding: FragmentTourDetailBinding
     private var arrayPlaces = listOf<Places>()
-    private var mapObjects: MapObjectCollection? = null
-
+    private lateinit var mapObjects: MapObjectCollection
+    private var drivingRouter: DrivingRouter? = null
+    private var drivingSession: DrivingSession? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentTourDetailBinding.inflate(inflater, container, false)
+        mapObjects = binding.detailTourInclude.mapview.map.mapObjects.addCollection();
+        drivingRouter = DirectionsFactory.getInstance().createDrivingRouter()
         return binding.root
     }
 
@@ -74,7 +80,7 @@ class TourDetailFragment : Fragment() {
                 arrayPlaces = viewModel.getPlaces()!!
                 setupMap(arrayPlaces)
                 initMarkPlaces(arrayPlaces)
-                submitRequest(arrayPlaces)
+                submitRequest()
             } catch (e: Exception) {
                 Toast.makeText(
                     requireContext(),
@@ -85,13 +91,12 @@ class TourDetailFragment : Fragment() {
             }
             binding.detailTourInclude.mapview.setOnClickListener {
 
-                val extras = FragmentNavigatorExtras(binding.detailTourInclude.mapview to "shared_element_container")
+//                val extras =
+//                    FragmentNavigatorExtras(binding.detailTourInclude.mapview to "shared_element_container")
                 val bundle = bundleOf("places" to arrayPlaces.toTypedArray())
                 findNavController().navigate(
                     R.id.action_tourDetailFragment_to_mapFragment,
                     bundle,
-                    null,
-                    extras
                 )
             }
         }
@@ -108,6 +113,7 @@ class TourDetailFragment : Fragment() {
                 bannerVP.adapter = adapter
 
                 TabLayoutMediator(wormDotsIndicator, bannerVP) { tab, position ->
+
                 }.attach()
             }
         }
@@ -190,22 +196,23 @@ class TourDetailFragment : Fragment() {
         binding.run {
             detailTourInclude.run {
                 mapview.map.isRotateGesturesEnabled = false
+                val (southWest, northEast) = getBoundingBox()
                 val boundingBox = BoundingBox(
-                    Point(arrayPlaces[0].latitude, arrayPlaces[0].longitude),
-                    Point(41.629875, 48.680262)
+                    southWest, northEast,
                 )
                 var cameraPosition = mapview.map.cameraPosition(boundingBox)
                 cameraPosition = CameraPosition(
                     cameraPosition.target,
-                    cameraPosition.zoom - 1f,
+                    cameraPosition.zoom - 1,
                     cameraPosition.azimuth,
                     cameraPosition.tilt
                 )
-                mapview.map.move(cameraPosition, Animation(Animation.Type.SMOOTH, 0f), null)
+                mapview.map.move(cameraPosition)
                 mapview.setNoninteractive(true)
             }
         }
     }
+
 
     private val listCustomPointer = ArrayList<CustomPointer>()
     private fun initMarkPlaces(arrayPlaces: List<Places>) {
@@ -223,8 +230,8 @@ class TourDetailFragment : Fragment() {
                     val viewProvider = ViewProvider(pointer)
                     mapObjects!!.addPlacemark(
                         Point(
-                            place.latitude,
-                            place.longitude
+                            place.geo.lat,
+                            place.geo.lng
                         ), viewProvider
                     )
                 }
@@ -232,43 +239,48 @@ class TourDetailFragment : Fragment() {
         }
     }
 
-    private fun submitRequest(arrayPlaces: List<Places>) {
-        val routes =
-            arrayPlaces.map {
-                RequestPoint(
-                    Point(it.latitude, it.longitude),
-                    RequestPointType.WAYPOINT,
-                    null
-                )
-            }
+    private fun submitRequest() {
+        routes = arrayPlaces.map {
+            RequestPoint(
+                Point(it.geo.lat, it.geo.lng),
+                RequestPointType.WAYPOINT,
+                null
+            )
+        }
+        val drivingOptions = DrivingOptions()
+        val vehicleOptions = VehicleOptions()
+        drivingSession = drivingRouter?.requestRoutes(routes, drivingOptions, vehicleOptions, this);
+    }
 
-        val drivingRouter = DirectionsFactory.getInstance().createDrivingRouter()
+    private fun getBoundingBox(): List<Point> {
+        var lat: Double
+        var lng: Double
+        var north = arrayPlaces[0].geo.lat // север
+        var west = arrayPlaces[0].geo.lng // запад
+        var east = arrayPlaces[0].geo.lng // восток
+        var south = arrayPlaces[0].geo.lat // юг
 
-        drivingRouter.requestRoutes(
-            routes,
-            DrivingOptions(),
-            VehicleOptions(),
-            object : DrivingSession.DrivingRouteListener {
-                override fun onDrivingRoutes(routes: MutableList<DrivingRoute>) {
-                    routes.forEach { mapObjects!!.addPolyline(it.geometry) }
-                }
+        arrayPlaces.forEach {
+            lat = it.geo.lat
+            lng = it.geo.lng
+            north = if (north < lat) lat else north
+            west = if (west < lng) lng else west
+            east = if (east > lng) lng else east
+            south = if (south > lat) lat else south
+        }
+        return listOf(Point(north, east), Point(south, west))
 
-                override fun onDrivingRoutesError(p0: com.yandex.runtime.Error) {
 
-                }
-            }
-        )
     }
 
     override fun onStop() {
-        super.onStop()
 
         binding.run {
             detailTourInclude.run {
                 mapview.onStop()
             }
         }
-        MapKitFactory.getInstance().onStop()
+        super.onStop()
     }
 
     override fun onStart() {
@@ -278,8 +290,26 @@ class TourDetailFragment : Fragment() {
             detailTourInclude.run {
                 mapview.onStart()
             }
+            showProgressBarMap()
         }
+    }
 
-        MapKitFactory.getInstance().onStart()
+    private fun showProgressBarMap() {
+        binding.detailTourInclude.progressBar.visibility = View.VISIBLE
+        Timer().schedule(500) {
+            activity?.runOnUiThread {
+                with(binding.detailTourInclude) {
+                    progressBar.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+    override fun onDrivingRoutes(p0: MutableList<DrivingRoute>) {
+        p0.forEach { mapObjects.addPolyline(it.geometry) }
+    }
+
+    override fun onDrivingRoutesError(p0: Error) {
+        Toast.makeText(requireContext(), p0.toString(), Toast.LENGTH_SHORT).show()
     }
 }

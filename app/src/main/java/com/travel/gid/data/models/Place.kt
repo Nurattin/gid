@@ -20,16 +20,23 @@ data class Places(
     val name: String,
     @SerializedName("stars")
     val stars: Int,
-    @SerializedName("longitude")
-    val longitude: Double,
+    @SerializedName("geo")
+    val geo: Geo,
     @SerializedName("image")
     val image: String,
     @SerializedName("detailImages")
     val detailImages: List<String>,
     @SerializedName("address")
     val address: String,
-    @SerializedName("latitude")
-    val latitude: Double,
-    @SerializedName("placeCategories")
-    val placeCategories: List<Unit>
-): Parcelable
+//    @SerializedName("placeCategories")
+//    val placeCategories: List<Unit>
+) : Parcelable
+
+@Parcelize
+@Serializable
+data class Geo(
+    @SerializedName("lat")
+    val lat: Double,
+    @SerializedName("lng")
+    val lng: Double,
+) : Parcelable

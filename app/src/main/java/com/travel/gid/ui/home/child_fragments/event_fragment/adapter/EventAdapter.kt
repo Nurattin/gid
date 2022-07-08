@@ -1,6 +1,5 @@
-package com.travel.gid.ui.home.adapters.eventAdapter
+package com.travel.gid.ui.home.child_fragments.event_fragment.adapter
 
-import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.travel.gid.data.models.DirectionData

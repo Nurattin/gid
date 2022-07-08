@@ -1,31 +1,35 @@
 package com.travel.gid.ui.home.adapters
 
+import android.util.Log
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.ListFragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.travel.gid.data.models.DirectionData
-import com.travel.gid.ui.home.child_fragments.GidFragment
-import com.travel.gid.ui.home.child_fragments.DirectionsFragment
+import com.travel.gid.databinding.HomeFragmentBinding
+import com.travel.gid.ui.home.HomeFragment
+import com.travel.gid.ui.home.child_fragments.gid_fragment.GidFragment
+import com.travel.gid.ui.home.child_fragments.direction_fragment.DirectionsFragment
 import com.travel.gid.ui.home.child_fragments.event_fragment.EventFragment
 
-class ViewPagerChildFragmentsAdapter(fragment: Fragment, var directions: List<DirectionData>) : FragmentStateAdapter(fragment) {
-    override fun getItemCount(): Int = 4
+class ViewPagerChildFragmentsAdapter(fragment: HomeFragment, private val listFragment: List<Fragment>) : FragmentStateAdapter(fragment) {
+
+
+    override fun getItemCount() = listFragment.size
 
     override fun createFragment(position: Int): Fragment {
-        var fragment :Fragment = DirectionsFragment()
-
-        when (position){
+        return when (position) {
             0 -> {
-                fragment = DirectionsFragment.newInstance(directions)
+                listFragment[0]
             }
             1 -> {
-                fragment = GidFragment()
+                listFragment[1]
+
             }
             2 -> {
-                fragment = EventFragment()
-
+                listFragment[2]
             }
-        }
-        return fragment
-    }
 
+            else -> {listFragment[0]}
+        }
+    }
 }

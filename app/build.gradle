@@ -87,7 +87,7 @@ dependencies {
     implementation 'com.ms-square:expandableTextView:0.1.4'
 
     //Yandex maps
-    implementation 'com.yandex.android:maps.mobile:4.0.0-full'
+    implementation 'com.yandex.android:maps.mobile:4.1.0-full'
 
     //dots indicator
     implementation 'com.tbuonomo:dotsindicator:4.2'
@@ -98,11 +98,14 @@ dependencies {
     implementation "com.airbnb.android:lottie:5.2.0"
 
     //Stfalcon ImageViewer
-    //implementation "com.github.stfalcon-studio: StfalconImageViewer: v1.0.1"
+//    implementation "com.github.stfalcon-studio:StfalconImageViewer:v1.0.1"
     //implementation "com.github.okaybroda:ImageZoom:1.1.0"
 
     //Paging3
     //implementation "androidx.paging:paging-runtime-ktx:3.1.1"
+
+    //ShimmerLayout
+    implementation 'io.supercharge:shimmerlayout:2.1.0'
 }
 
 

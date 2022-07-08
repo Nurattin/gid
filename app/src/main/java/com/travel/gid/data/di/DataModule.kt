@@ -10,7 +10,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.json.Json
+import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -20,7 +23,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 abstract class DataModule {
 
     @Binds
-    abstract fun binTourListFilter(repo: TourListFilterRepositoryImpl): TourListFilterRepository
+    abstract fun binGidRepository(repo: GidListListRepositoryImpl): GidListRepository
+
+    @Binds
+    abstract fun binTourListFilter(repo: TourListRepositoryImpl): TourListRepository
 
     @Binds
     abstract fun binPlaceById(repo: PlaceByIdRepositoryImpl): PlaceByIdRepository
@@ -67,5 +73,9 @@ abstract class DataModule {
         fun providePixabayApi(retrofit: Retrofit): GidApi {
             return retrofit.create(GidApi::class.java)
         }
+
+        @Provides
+        @ViewModelScoped
+        fun provideIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
     }
 }

@@ -38,24 +38,36 @@
                 android:layout_height="match_parent">
 
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/tourRecycler"
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="8dp"
-                    android:nestedScrollingEnabled="false"
-                    android:orientation="vertical"
-                    android:visibility="gone"
-                    app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat"
-                    app:spanCount="2"
-                    tools:itemCount="10"
-                    tools:listitem="@layout/long_tour_item"
-                    tools:visibility="visible" />
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/tourRecycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="8dp"
+                        android:nestedScrollingEnabled="false"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+                        app:spanCount="2"
+                        tools:itemCount="10"
+                        tools:listitem="@layout/long_tour_item" />
+
+                    <include
+                        android:layout_marginTop="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:id="@+id/skeletonLayout"
+                        layout="@layout/skeleton_shimmer_layout" />
+                </FrameLayout>
 
 
                 <com.airbnb.lottie.LottieAnimationView
@@ -128,25 +140,6 @@
                         tools:visibility="visible" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <LinearLayout
-                    android:id="@+id/progress_bar"
-                    android:layout_width="match_parent"
-                    android:layout_height="500dp"
-                    android:gravity="center"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat"
-                    app:layout_constraintVertical_bias="0.0"
-                    tools:visibility="gone">
-
-                    <ProgressBar
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </LinearLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/refresh_container"

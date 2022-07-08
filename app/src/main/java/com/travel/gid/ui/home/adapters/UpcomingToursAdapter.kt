@@ -17,22 +17,16 @@ class UpcomingToursAdapter () : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
             )
         )
     }
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
-
     }
 
     override fun getItemCount(): Int {
         return 4
     }
-
-
     inner class UpcomingViewHolder(private val binding: UpcomingToursItemBinding):
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind() {
-
         }
     }
 }

@@ -7,9 +7,6 @@ import retrofit2.http.*
 
 interface GidApi {
 
-
-
-
     @GET("tours/list-filter-parameters")
     suspend fun getFilterParams(
     ): Response<Filters>
@@ -35,19 +32,18 @@ interface GidApi {
     @GET("places/detail")
     suspend fun getPlaceById(@Query("id") id: Long): Response<Place>
 
+    @GET("guides/list")
+    suspend fun getGidList(): Response<Gid>
+
 
     @FormUrlEncoded
     @POST("tours/list")
-    suspend fun getToursListFilter(
+    suspend fun getTourList(
         @Field("priceFrom")priceFrom: Int?,
         @Field("priceTo")priceTo: Int?,
         @Field("categories") categories: String?,
         @Field("orderByPrice") orderByPrice: String?
     ): Response<Tour>
-
-
-
-
 }
 
 suspend fun <T> request(

@@ -1,4 +1,4 @@
-package com.travel.gid.ui.home.child_fragments.event_fragment
+package com.travel.gid.ui.home.child_fragments.event_fragment.view_model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

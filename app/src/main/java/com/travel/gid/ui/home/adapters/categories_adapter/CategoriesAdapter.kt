@@ -1,5 +1,6 @@
-package com.travel.gid.ui.home.adapters.CategoriesAdapter
+package com.travel.gid.ui.home.adapters.categories_adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,15 +11,18 @@ import com.travel.gid.databinding.ItemCategoriesHomeBinding
 internal typealias OnCategoriesClickListener = ((Int) -> Unit)
 
 class CategoriesAdapter : RecyclerView.Adapter<CategoriesAdapter.ViewHolder>() {
+
+    var nowPosition: Int = 0
+    var lastPosition = 0
+
     var data = listOf<CategoriesHome>()
         set(value) {
             field = value
-            field[0].isChecked = true
+            field[nowPosition].isChecked = true
             notifyDataSetChanged()
         }
 
     var clickListener: OnCategoriesClickListener? = null
-    var lastPosition = 0
 
     override fun getItemCount() = data.size
 
@@ -44,11 +48,11 @@ class CategoriesAdapter : RecyclerView.Adapter<CategoriesAdapter.ViewHolder>() {
             with(binding) {
                 if (item.isChecked) {
                     categoriesIcon.setImageResource(item.iconChecked)
-                    categoriesText.setTextColor(R.color.black)
+                    categoriesText.setTextColor(Color.parseColor("#000000"))
                     categoriesIcon.setBackgroundResource(R.drawable.bg_btns_home_menu_check)
                 } else {
                     categoriesIcon.setImageResource(item.iconUnChecked)
-                    categoriesText.setTextColor(R.color.white_40_per)
+                    categoriesText.setTextColor(Color.parseColor("#ACA6A6"))
                     categoriesIcon.setBackgroundResource(R.drawable.bg_btns_home_menu_uncheck)
                 }
                 categoriesText.text = item.name

@@ -1,7 +1,6 @@
 package com.travel.gid.ui.home.child_fragments.event_fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.travel.gid.R
-import com.travel.gid.data.models.Direction
-import com.travel.gid.data.models.DirectionData
 import com.travel.gid.databinding.FragmentEventBinding
-import com.travel.gid.ui.home.adapters.eventAdapter.EventAdapter
-import com.travel.gid.ui.home.child_fragments.DirectionsFragment
+import com.travel.gid.ui.home.child_fragments.event_fragment.adapter.EventAdapter
+import com.travel.gid.ui.home.child_fragments.event_fragment.view_model.EventViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 

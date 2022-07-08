@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.PopupMenu
 import androidx.annotation.MenuRes
+import androidx.core.view.isEmpty
+import androidx.core.view.isNotEmpty
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -19,6 +22,9 @@ import com.travel.gid.ui.filter.FilterFragmentSheet
 import com.travel.gid.ui.filter.FilterFragmentSheet.Companion.TAG
 import com.travel.gid.ui.tour_detail.TourDetailFragmentArgs
 import dagger.hilt.android.AndroidEntryPoint
+import io.supercharge.shimmerlayout.ShimmerLayout
+import java.util.*
+import kotlin.concurrent.schedule
 
 @AndroidEntryPoint
 class TourFragment : Fragment() {
@@ -29,20 +35,23 @@ class TourFragment : Fragment() {
     private val adapterCategory = TourCategoriesAdapter()
     private val filterSheet = FilterFragmentSheet()
     private lateinit var binding: FragmentTourBinding
+    private lateinit var skeletonLayout: LinearLayout
+    private lateinit var shimmer: ShimmerLayout
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(R.layout.fragment_tour, container, false)
         binding = FragmentTourBinding.bind(view)
+        skeletonLayout = binding.skeletonLayout.skeletonLayout
+        shimmer = binding.skeletonLayout.shimmerSkeleton
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-
-        if (viewModel.tours.value == null) showProgress()
+        showProgress()
         with(binding) {
             with(tourRecycler) {
                 adapter = adapterTour
@@ -67,6 +76,7 @@ class TourFragment : Fragment() {
                     it?.let {
                         adapterCategory.data = it
                         adapterCategory.positionCategories = viewModel.categoriesPos
+                        visibility = View.VISIBLE
                     }
                 }
                 adapterCategory.setOnCategoriesTourClickListener { categories, pos ->
@@ -87,10 +97,12 @@ class TourFragment : Fragment() {
 
             refreshData.setOnRefreshListener {
                 viewModel.getAllTour(filterDetail)
+                showProgress()
             }
 
             selectFilter.setOnClickListener {
                 if (!filterSheet.isAdded) {
+                    filterSheet.filterDetail
                     filterSheet.show(parentFragmentManager, TAG)
                     filterSheet.setOnBtnApplyClickListener {
                         filterDetail = it
@@ -137,28 +149,16 @@ class TourFragment : Fragment() {
     }
 
     private fun stopProgress() {
-        binding.apply {
-            progressBar.visibility = View.GONE
-            tourRecycler.visibility = View.VISIBLE
-            categoriesRecycler.visibility = View.VISIBLE
-            refreshContainer.visibility = View.GONE
-            binding.refreshData.isRefreshing = false
-        }
+        animateReplaceSkeleton(binding.tourRecycler)
+        binding.refreshData.isRefreshing = false
     }
 
     private fun showProgress() {
-        binding.apply {
-            refreshContainer.visibility = View.GONE
-            progressBar.visibility = View.VISIBLE
-            tourRecycler.visibility = View.GONE
-        }
+        showSkeleton(true)
     }
 
     private fun showRefresh() {
-        with(binding) {
-            progressBar.visibility = View.GONE
-            refreshContainer.visibility = View.VISIBLE
-        }
+        showSkeleton(true)
     }
 
     private fun getToursByCategories(pos: Int, categoriesId: Int) {
@@ -170,5 +170,34 @@ class TourFragment : Fragment() {
             getAllTour(filterDetail)
         }
         showProgress()
+    }
+
+    private fun showSkeleton(show: Boolean) {
+        if (show) {
+            binding.tourRecycler.visibility = View.GONE
+            if (skeletonLayout.isEmpty()) {
+                for (i in 0..1) {
+                    skeletonLayout.addView(
+                        layoutInflater.inflate(
+                            R.layout.skeleton_item_tour_list, null
+                        )
+                    )
+                }
+            }
+            shimmer.visibility = View.VISIBLE
+            shimmer.startShimmerAnimation()
+            skeletonLayout.visibility = View.VISIBLE
+            skeletonLayout.bringToFront()
+        } else {
+            shimmer.stopShimmerAnimation()
+            shimmer.visibility = View.GONE
+        }
+    }
+
+    private fun animateReplaceSkeleton(listView: View) {
+        listView.visibility = View.VISIBLE
+        showSkeleton(
+            false,
+        )
     }
 }

@@ -1,4 +1,4 @@
-package com.travel.gid.ui.home.adapters.eventAdapter
+package com.travel.gid.ui.home.child_fragments.event_fragment.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,9 +10,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.travel.gid.R
 import com.travel.gid.data.models.DirectionData
 import com.travel.gid.databinding.LongEventItemBinding
-import com.travel.gid.databinding.LongTourItemBinding
 import com.travel.gid.databinding.ShortEventItemBinding
-import com.travel.gid.databinding.ShortTourItemBinding
 
 sealed class EventRecyclerViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
 

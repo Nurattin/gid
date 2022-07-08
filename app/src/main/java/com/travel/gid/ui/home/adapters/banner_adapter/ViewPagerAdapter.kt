@@ -1,4 +1,4 @@
-package com.travel.gid.ui.home.adapters.BannerViewPagerAdapter
+package com.travel.gid.ui.home.adapters.banner_adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -12,8 +12,10 @@ class ViewPagerAdapter : RecyclerView.Adapter<ViewPagerAdapter.SliderViewHolder>
     var data = listOf<String>()
         set(value) {
             field = value
+            field = listOf(field.last()) + field + listOf(field.first())
             notifyDataSetChanged()
         }
+
 
     class SliderViewHolder(var binding: ItemBannerBinding) : RecyclerView.ViewHolder(binding.root) {
 

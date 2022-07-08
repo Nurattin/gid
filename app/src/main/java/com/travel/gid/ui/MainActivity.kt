@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.findNavController
 import com.travel.gid.R
+import com.yandex.mapkit.MapKitFactory
+import com.yandex.mapkit.directions.DirectionsFactory
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,10 +22,23 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), ActivityProvidin
     override fun provideInsetsController() = insets
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+        MapKitFactory.initialize(this)
+        DirectionsFactory.initialize(this)
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         this.supportActionBar!!.hide()
+    }
+
+    override fun onStop() {
+        MapKitFactory.getInstance().onStop();
+        super.onStop()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        MapKitFactory.getInstance().onStart();
     }
 }
 

@@ -9,18 +9,19 @@ import com.travel.gid.data.models.FilterParams
 import com.travel.gid.data.models.Filters
 import com.travel.gid.data.models.Tour
 import com.travel.gid.domain.usecases.GetFilterUseCase
-import com.travel.gid.domain.usecases.GetTourListFilter
+import com.travel.gid.domain.usecases.GetTourListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
 class TourViewModel @Inject constructor(
     private val getFilterUseCase: GetFilterUseCase,
-    private val getTourListFilter: GetTourListFilter,
-) : ViewModel() {
+    private val getTourListUseCase: GetTourListUseCase,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
+
+    ) : ViewModel() {
 
     private val _filters = MutableLiveData<Response<Filters>>()
     val filters: LiveData<Response<Filters>>
@@ -66,15 +67,17 @@ class TourViewModel @Inject constructor(
 
     }
 
-    fun     getAllTour(filter: FilterParams) {
+    fun getAllTour(filter: FilterParams) {
         viewModelScope.launch(coroutineExceptionHandler) {
-            _tours.value =
-                getTourListFilter.getTourListFilter(
+            _tours.value = withContext(ioDispatcher) {
+                return@withContext getTourListUseCase.getTourListFilter(
                     categories = filter.categories,
                     priceFrom = filter.startPrice,
                     priceTo = filter.endPrice,
                     orderByPrice = filter.orderByPrice,
                 )
+            }
+
         }
     }
 }

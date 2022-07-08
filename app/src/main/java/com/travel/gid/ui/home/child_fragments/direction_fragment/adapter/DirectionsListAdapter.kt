@@ -1,4 +1,4 @@
-package com.travel.gid.ui.home.adapters
+package com.travel.gid.ui.home.child_fragments.direction_fragment.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

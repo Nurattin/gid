@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../layout/custom_preview.xml" value="0.14958033573141488" />
+        <entry key="../Library/Android/sdk/platforms/android-31/data/res/layout/simple_selectable_list_item.xml" value="0.2543822146216332" />
         <entry key="..\:/project/gid2/app/src/main/res/drawable/bottom_sheet_backgroud.xml" value="0.159" />
         <entry key="..\:/project/gid2/app/src/main/res/drawable/bottom_sheet_background.xml" value="0.141" />
         <entry key="..\:/project/gid2/app/src/main/res/drawable/btn_categories_enable.xml" value="0.235" />
@@ -124,10 +126,12 @@
         <entry key="app/src/main/res/drawable/selected_dot.xml" value="0.31203703703703706" />
         <entry key="app/src/main/res/drawable/selected_dot_hotel.xml" value="0.3175925925925926" />
         <entry key="app/src/main/res/drawable/selector_checkbox.xml" value="0.2851851851851852" />
+        <entry key="app/src/main/res/drawable/skeleton.xml" value="0.173" />
         <entry key="app/src/main/res/drawable/tab_selector.xml" value="0.31203703703703706" />
         <entry key="app/src/main/res/drawable/tab_selector_hotel.xml" value="0.3175925925925926" />
         <entry key="app/src/main/res/drawable/text_view_price_background.xml" value="0.2935185185185185" />
         <entry key="app/src/main/res/drawable/unselected_dot_hotel.xml" value="0.3175925925925926" />
+        <entry key="app/src/main/res/layout-v23/gid_item.xml" value="0.30885416666666665" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.29128205128205126" />
         <entry key="app/src/main/res/layout/activity_tour_detail.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/bottom_select_guest.xml" value="0.3098958333333333" />
@@ -137,23 +141,29 @@
         <entry key="app/src/main/res/layout/custom_pointer.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/direction_detail_content_scrolling.xml" value="0.30512820512820515" />
         <entry key="app/src/main/res/layout/direction_detail_fragment.xml" value="0.30512820512820515" />
+        <entry key="app/src/main/res/layout/fragment_blank.xml" value="0.27546296296296297" />
         <entry key="app/src/main/res/layout/fragment_direction_detail.xml" value="0.2953125" />
+        <entry key="app/src/main/res/layout/fragment_direction_list.xml" value="0.27546296296296297" />
+        <entry key="app/src/main/res/layout/fragment_filter.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.1515625" />
         <entry key="app/src/main/res/layout/fragment_gid.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/fragment_map.xml" value="0.27546296296296297" />
         <entry key="app/src/main/res/layout/fragment_reservation.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_reservation_fragment.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_second.xml" value="0.1515625" />
+        <entry key="app/src/main/res/layout/fragment_tour.xml" value="0.2358303606817281" />
         <entry key="app/src/main/res/layout/fragment_tour_detail.xml" value="0.3098958333333333" />
-        <entry key="app/src/main/res/layout/fragment_vp_home_tours.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/gid_item.xml" value="0.3098958333333333" />
-        <entry key="app/src/main/res/layout/home_fragment.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/home_tour_item.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/fragment_vp_home_tours.xml" value="0.22693786621093748" />
+        <entry key="app/src/main/res/layout/gid_item.xml" value="0.3787032124057464" />
+        <entry key="app/src/main/res/layout/home_fragment.xml" value="0.3314917127071823" />
+        <entry key="app/src/main/res/layout/home_tour_item.xml" value="0.5299728393554688" />
         <entry key="app/src/main/res/layout/hotel_detail_fragment.xml" value="0.2375405405382024" />
         <entry key="app/src/main/res/layout/hotels_fragment.xml" value="0.31715473759339846" />
         <entry key="app/src/main/res/layout/item_additional.xml" value="0.24014498656317707" />
         <entry key="app/src/main/res/layout/item_ameneties.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/item_amenities.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/item_banner.xml" value="0.30512820512820515" />
+        <entry key="app/src/main/res/layout/item_categories_home.xml" value="0.45452182051064316" />
         <entry key="app/src/main/res/layout/item_child_guest.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/item_city.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/item_hotel.xml" value="0.335" />
@@ -166,11 +176,19 @@
         <entry key="app/src/main/res/layout/item_room_list_img.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/item_simmilar.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/item_tour.xml" value="0.2953125" />
+        <entry key="app/src/main/res/layout/long_tour_item.xml" value="0.2543822146216332" />
         <entry key="app/src/main/res/layout/room_detail_fragment.xml" value="0.29583333333333334" />
         <entry key="app/src/main/res/layout/rooms_fragment.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/sceleton_item_tour_list.xml" value="0.2358303606817281" />
         <entry key="app/src/main/res/layout/select_city_fragment.xml" value="0.29583333333333334" />
+        <entry key="app/src/main/res/layout/short_tour_item.xml" value="0.2543822146216332" />
+        <entry key="app/src/main/res/layout/skeleton_direction_tour_item.xml" value="0.274537037037037" />
+        <entry key="app/src/main/res/layout/skeleton_gid.xml" value="0.444468579367727" />
+        <entry key="app/src/main/res/layout/skeleton_item_gid.xml" value="0.3717901724356192" />
+        <entry key="app/src/main/res/layout/skeleton_item_tour_list.xml" value="0.271689497716895" />
+        <entry key="app/src/main/res/layout/skeleton_shimmer_layout.xml" value="0.2535271483539974" />
         <entry key="app/src/main/res/layout/tour_detail_fragment.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/tour_direction_item.xml" value="0.16642196956882838" />
+        <entry key="app/src/main/res/layout/tour_direction_item.xml" value="0.19163254085789086" />
         <entry key="app/src/main/res/layout/tout_detail_fragment.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/upcoming_tours_item.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/view_detail_live.xml" value="0.3098958333333333" />
@@ -182,10 +200,17 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.3098958333333333" />
+      </ProjectState>
+    </option>
   </component>
 </project>

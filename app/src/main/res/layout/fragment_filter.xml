@@ -38,180 +38,199 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/content"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat5"
-        tools:visibility="visible">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat5">
 
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:fontFamily="@font/roboto_medium"
-            android:text="Категории"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroup"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            app:chipSpacingHorizontal="12dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat5"
+            tools:visibility="visible">
 
-        <TextView
-            android:id="@+id/price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:fontFamily="@font/roboto_medium"
-            android:text="Цена"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/priceFrom"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:gravity="center"
-            android:hint="От"
-            app:endIconDrawable="@drawable/ic_rub"
-            app:endIconMode="custom"
-            app:errorEnabled="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/priceTo"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/price">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/startPrice"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="\t\t\t\t\t\t700"
-                android:inputType="number"
-                android:lines="1"
-                android:maxLength="5" />
-        </com.google.android.material.textfield.TextInputLayout>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/priceTo"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="19dp"
-            android:gravity="center"
-            android:hint="До"
-            app:endIconDrawable="@drawable/ic_rub"
-            app:endIconMode="custom"
-            app:errorEnabled="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/priceFrom"
-            app:layout_constraintTop_toTopOf="@+id/priceFrom">
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="32dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Категории"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/endPrice"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="\t\t\t\t\t\t10000"
-                android:inputType="number"
-                android:lines="1"
-                android:maxLength="5" />
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    app:chipSpacingHorizontal="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/applyBtn"
-            android:layout_width="0dp"
-            android:layout_height="55dp"
-            android:layout_gravity="center"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/bg_green_button"
-            android:clickable="true"
-            android:focusable="true"
-            android:fontFamily="@font/pro_display_semibold"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:text="Подтвердить"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rangeSliderDay" />
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="32dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Цена"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
 
-        <com.google.android.material.slider.RangeSlider
-            android:id="@+id/rangeSliderDay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:stepSize="1"
-            android:valueFrom="2"
-            android:valueTo="15"
-            app:labelBehavior="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvDaysCount"
-            app:thumbColor="#FFFFFF"
-            app:thumbStrokeColor="@color/pine_green"
-            app:thumbStrokeWidth="2dp"
-            app:trackHeight="2dp"
-            app:values="@array/rangeSliderDay" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/priceFrom"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center"
+                    android:hint="От"
+                    app:endIconDrawable="@drawable/ic_rub"
+                    app:endIconMode="custom"
+                    app:errorEnabled="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/priceTo"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/price">
 
-        <TextView
-            android:id="@+id/tvDaysCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:fontFamily="@font/roboto_medium"
-            android:text="Количество дней"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/rangeSliderDay"
-            app:layout_constraintTop_toBottomOf="@+id/rangeSliderPrice" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/startPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="\t\t\t\t\t\t700"
+                        android:inputType="number"
+                        android:lines="1"
+                        android:maxLength="5" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.slider.RangeSlider
-            android:id="@+id/rangeSliderPrice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:stepSize="1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/priceFrom"
-            app:thumbColor="#FFFFFF"
-            app:thumbStrokeColor="@color/pine_green"
-            app:thumbStrokeWidth="2dp"
-            app:tickVisible="false"
-            app:trackHeight="2dp" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/priceTo"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="19dp"
+                    android:gravity="center"
+                    android:hint="До"
+                    app:endIconDrawable="@drawable/ic_rub"
+                    app:endIconMode="custom"
+                    app:errorEnabled="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/priceFrom"
+                    app:layout_constraintTop_toTopOf="@+id/priceFrom">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/endPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="\t\t\t\t\t\t10000"
+                        android:inputType="number"
+                        android:lines="1"
+                        android:maxLength="5" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.slider.RangeSlider
+                    android:id="@+id/rangeSliderDay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:stepSize="1"
+                    android:valueFrom="2"
+                    android:valueTo="15"
+                    app:labelBehavior="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvDaysCount"
+                    app:thumbColor="#FFFFFF"
+                    app:thumbStrokeColor="@color/pine_green"
+                    app:thumbStrokeWidth="2dp"
+                    app:trackHeight="2dp"
+                    app:values="@array/rangeSliderDay" />
+
+                <TextView
+                    android:id="@+id/tvDaysCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Количество дней"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="@+id/rangeSliderDay"
+                    app:layout_constraintTop_toBottomOf="@+id/rangeSliderPrice" />
+
+                <com.google.android.material.slider.RangeSlider
+                    android:id="@+id/rangeSliderPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:stepSize="1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/priceFrom"
+                    app:thumbColor="#FFFFFF"
+                    app:thumbStrokeColor="@color/pine_green"
+                    app:thumbStrokeWidth="2dp"
+                    app:tickVisible="false"
+                    app:trackHeight="2dp" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/applyBtn"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/bg_green_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="@font/pro_display_semibold"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:text="Подтвердить"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

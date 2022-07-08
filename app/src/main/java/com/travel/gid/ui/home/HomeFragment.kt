@@ -3,14 +3,14 @@ package com.travel.gid.ui.home
 import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.findFragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.CompositePageTransformer
-import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.CalendarConstraints.DateValidator
@@ -18,22 +18,23 @@ import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.datepicker.MaterialDatePicker.INPUT_MODE_CALENDAR
 import com.travel.gid.R
-import com.travel.gid.data.Resource
-import com.travel.gid.data.datasource.network.ApiResponse
-import com.travel.gid.data.datasource.network.request
 import com.travel.gid.data.models.CategoriesHome
-import com.travel.gid.data.models.Direction
-import com.travel.gid.data.models.DirectionData
-import com.travel.gid.data.models.Tour
 import com.travel.gid.databinding.HomeFragmentBinding
-import com.travel.gid.ui.home.adapters.BannerViewPagerAdapter.ViewPagerAdapter
-import com.travel.gid.ui.home.adapters.CategoriesAdapter.CategoriesAdapter
+import com.travel.gid.ui.home.adapters.banner_adapter.ViewPagerAdapter
+import com.travel.gid.ui.home.adapters.categories_adapter.CategoriesAdapter
 import com.travel.gid.ui.home.adapters.ViewPagerChildFragmentsAdapter
+import com.travel.gid.ui.home.adapters.banner_adapter.view_pager_extension.autoScrollViewPager
+import com.travel.gid.ui.home.adapters.banner_adapter.view_pager_extension.infinityScrollViewPager
+import com.travel.gid.ui.home.child_fragments.direction_fragment.DirectionsFragment
+import com.travel.gid.ui.home.child_fragments.event_fragment.EventFragment
+import com.travel.gid.ui.home.child_fragments.gid_fragment.GidFragment
+import com.travel.gid.ui.home.view_model.HomeViewModel
 import com.travel.gid.ui.select_guest.BottomSheetSelectGuests
-import com.travel.gid.utils.home_btns_controller.HomeButtonsControllerImpl
+import com.travel.gid.utils.makeGoneIfElseVisible
+import com.travel.gid.utils.makeVisibleIfElseGone
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
-import kotlin.math.abs
+import kotlin.collections.HashMap
 
 
 @AndroidEntryPoint
@@ -42,7 +43,8 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
     private var sliderHandler = Handler()
     private lateinit var binding: HomeFragmentBinding
-    lateinit var homeButtonsControllerImpl: HomeButtonsControllerImpl
+    private lateinit var childFragmentsAdapter: ViewPagerChildFragmentsAdapter
+    private var listFragment = listOf(DirectionsFragment(), GidFragment(), EventFragment())
 
 
     override fun onCreateView(
@@ -50,46 +52,38 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = HomeFragmentBinding.inflate(inflater, container, false)
+        binding.run {
 
+            childFragmentsAdapter =
+                ViewPagerChildFragmentsAdapter(this@HomeFragment, listFragment)
+            vpChildFragment.adapter = childFragmentsAdapter
+            vpChildFragment.isUserInputEnabled = false
+
+        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.directionsLiveDataPrivate.observe(viewLifecycleOwner) {
-            it.body()?.data?.let { listDirection ->
-                showDirections(listDirection)
-                showBanner()
-            }
-        }
 
         binding.run {
             val adapters = ViewPagerAdapter()
             adapters.data = listOf(
                 "https://img.freepik.com/free-vector/welcome-egypt-online-journey-planning-booking-isometric-website-horizontal-banner-with-pyramids-palms-travelers_1284-32154.jpg?t=st=1655737200~exp=1655737800~hmac=74351c4b069ce9adff328ebf277170bafb35edca3ed6ad183edd7cd3b041fa63&w=1800",
-                "https://img.freepik.com/free-vector/welcome-egypt-online-journey-planning-booking-isometric-website-horizontal-banner-with-pyramids-palms-travelers_1284-32154.jpg?t=st=1655737200~exp=1655737800~hmac=74351c4b069ce9adff328ebf277170bafb35edca3ed6ad183edd7cd3b041fa63&w=1800",
-                "https://img.freepik.com/free-vector/welcome-egypt-online-journey-planning-booking-isometric-website-horizontal-banner-with-pyramids-palms-travelers_1284-32154.jpg?t=st=1655737200~exp=1655737800~hmac=74351c4b069ce9adff328ebf277170bafb35edca3ed6ad183edd7cd3b041fa63&w=1800",
+                "https://generisonline.com/wp-content/uploads/2022/05/GettyImages-187613060-2c4df95dc90045d484a01dfe21880c40.jpg",
+                "https://s28943.pcdn.co/wp-content/uploads/2018/04/Tour-Cart-Hero.jpg",
+                "https://www.peruhop.com/wp-content/uploads/IMG_20180718_082918-2.jpg",
             )
-            val compositePageTransformer = CompositePageTransformer()
-            compositePageTransformer.addTransformer(MarginPageTransformer(30))
-            compositePageTransformer.addTransformer { page, position ->
-                val r = 1 - abs(position)
-                page.scaleY = 0.85f + r * 0.15f
-            }
             bannerViewPager.run {
-                adapter = adapters
-                clipToPadding = false
-                clipChildren = false
-                offscreenPageLimit = 3
-                getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-                setPageTransformer(compositePageTransformer)
+                autoScrollViewPager(adapters)
+                infinityScrollViewPager()
 
                 registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                     override fun onPageSelected(position: Int) {
                         super.onPageSelected(position)
                         sliderHandler.removeCallbacks(sliderRunnable)
-                        sliderHandler.postDelayed(sliderRunnable, 5000)
+                        sliderHandler.postDelayed(sliderRunnable, 10000)
                     }
                 })
             }
@@ -97,7 +91,7 @@ class HomeFragment : Fragment() {
 
         with(binding.categoriesAdapter) {
             val adapterCategories = CategoriesAdapter()
-            val listCategories = listOf<CategoriesHome>(
+            val listCategories = listOf(
                 CategoriesHome(
                     id = 0,
                     iconChecked = R.drawable.ic_globe,
@@ -123,11 +117,60 @@ class HomeFragment : Fragment() {
                     name = "Еда"
                 )
             )
+            adapterCategories.nowPosition = viewModel.currentItem
+            adapterCategories.lastPosition = viewModel.lastItem
+
             adapterCategories.data = listCategories
             adapter = adapterCategories
             setHasFixedSize(true)
+            binding.vpChildFragment.currentItem = viewModel.currentItem
             adapterCategories.setOnCategoriesClickListener {
-                binding.vpChildFragment.setCurrentItem(it, true)
+                binding.vpChildFragment.currentItem = it
+                viewModel.currentItem = it
+                viewModel.lastItem = it
+            }
+        }
+
+        binding.swipeRefresh.setOnRefreshListener {
+            refreshData()
+        }
+
+        binding.refresh.setOnClickListener {
+            refreshData()
+        }
+    }
+
+
+    private fun refreshData() {
+        val fragment: Fragment
+        when (viewModel.currentItem) {
+
+            0 -> {
+                fragment = listFragment[0] as DirectionsFragment
+                fragment.refreshData()
+                fragment.setOnStopRefreshCallBack {
+                    with(binding) {
+                        swipeRefresh.isRefreshing = false
+                        errorContent.visibility = View.GONE
+                    }
+                }
+
+            }
+            1 -> {
+                fragment = listFragment[1] as GidFragment
+                fragment.refreshData()
+                fragment.setOnStopRefreshCallBack {
+                    with(binding) {
+                        swipeRefresh.isRefreshing = false
+
+
+                        errorContent.isVisible = false
+                        mainContent.isVisible = true
+                    }
+                }
+                fragment.setOnShowErrorCallback {
+                    showError()
+                }
             }
         }
     }
@@ -175,17 +218,6 @@ class HomeFragment : Fragment() {
     private var sliderRunnable =
         Runnable { binding.bannerViewPager.currentItem = binding.bannerViewPager.currentItem + 1 }
 
-    private suspend fun getTours() {
-        when (val response = request { viewModel.getTour() }) {
-            is ApiResponse.Result<*> -> {
-                val data = response.data as Tour
-                showBanner()
-            }
-            is ApiResponse.Error -> {
-
-            }
-        }
-    }
 
     private fun showBanner() {
 
@@ -195,31 +227,20 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun showDirections(listDirection: List<DirectionData>) {
-
-        binding.run {
-            val childFragmentsAdapter =
-                ViewPagerChildFragmentsAdapter(this@HomeFragment, directions = listDirection)
-            vpChildFragment.adapter = childFragmentsAdapter
-            vpChildFragment.isUserInputEnabled = false
-        }
-    }
-
     fun showLoadingView() {
     }
 
     fun showDialogSelectGuests() {
-        var bottomSheet = BottomSheetSelectGuests()
+        val bottomSheet = BottomSheetSelectGuests()
         bottomSheet.show(parentFragmentManager, bottomSheet.tag)
     }
 
-    private fun handleDirectionsList(status: Resource<Direction>) {
-        when (status) {
-            is Resource.Loading -> showLoadingView()
-            is Resource.Success -> status.data?.let { showDirections(it.data) }
-            is Resource.DataError -> {
-
-            }
+    private fun showError() {
+        with(binding) {
+            mainContent.visibility = View.GONE
+            errorContent.visibility = View.VISIBLE
+            swipeRefresh.isRefreshing = false
         }
     }
+
 }
