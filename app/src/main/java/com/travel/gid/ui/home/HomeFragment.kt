@@ -157,6 +157,7 @@ class HomeFragment : Fragment() {
 
             }
             1 -> {
+
                 fragment = listFragment[1] as GidFragment
                 fragment.refreshData()
                 fragment.setOnStopRefreshCallBack {
@@ -179,7 +180,7 @@ class HomeFragment : Fragment() {
     private fun setupRangePickerDialog() {
         val builder: MaterialDatePicker.Builder<androidx.core.util.Pair<Long, Long>> =
             MaterialDatePicker.Builder.dateRangePicker()
-        builder.setTitleText("Выберите дату заселения и выезда")
+        builder.setTitleText("Выберите дату заселения и выезда ")
         builder.setInputMode(INPUT_MODE_CALENDAR)
         builder.setTheme(R.style.MyMaterialCalendarTheme)
 
