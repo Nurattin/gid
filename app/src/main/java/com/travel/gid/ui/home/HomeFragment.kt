@@ -185,7 +185,7 @@ class HomeFragment : Fragment() {
         builder.setTheme(R.style.MyMaterialCalendarTheme)
 
         val date = Date()
-        date.date = date.date - 1
+//        date.date = date.date - 1
         val dateValidator: DateValidator = DateValidatorPointForward.from(date.time)
 
         val constraintsBuilder = CalendarConstraints.Builder()
