@@ -41,7 +41,7 @@ class GidAdapter() : RecyclerView.Adapter<GidAdapter.SliderViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return 5
+        return data.size
     }
 
     class SliderViewHolder(var binding: GidItemBinding) : RecyclerView.ViewHolder(binding.root) {

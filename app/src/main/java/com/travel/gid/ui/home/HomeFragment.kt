@@ -157,14 +157,11 @@ class HomeFragment : Fragment() {
 
             }
             1 -> {
-
                 fragment = listFragment[1] as GidFragment
                 fragment.refreshData()
                 fragment.setOnStopRefreshCallBack {
                     with(binding) {
                         swipeRefresh.isRefreshing = false
-
-
                         errorContent.isVisible = false
                         mainContent.isVisible = true
                     }
