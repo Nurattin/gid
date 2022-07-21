@@ -89,29 +89,14 @@ class MapFragment : Fragment(), DrivingSession.DrivingRouteListener {
                     changePointer(position + 1)
                 }
             })
-        binding.mapview.map.mapObjects.addTapListener { mapObject, point ->
-            moveMapByPointer(point)
+        binding.mapview.map.mapObjects.addTapListener { mapObject, _ ->
+            val position = mapObject.userData.toString().toInt()
+            binding.detailPlaceRecycler.scrollToPosition(position)
+            changePointer(position+1)
             true
         }
         stopProgressBar()
         super.onViewCreated(view, savedInstanceState)
-    }
-
-    private fun moveMapByPointer(point: Point) {
-        var cameraPosition = binding.mapview.map.cameraPosition(
-            getBoundingBoxThenCameraMove(
-                point.latitude,
-                point.longitude,
-                5
-            )
-        )
-        cameraPosition = CameraPosition(
-            point,
-            cameraPosition.zoom - 1,
-            cameraPosition.azimuth,
-            cameraPosition.tilt
-        )
-        binding.mapview.map.move(cameraPosition, Animation(Animation.Type.SMOOTH, 1f), null)
     }
 
     private fun moveMapByPosition(pos: Int) {
@@ -166,13 +151,15 @@ class MapFragment : Fragment(), DrivingSession.DrivingRouteListener {
                 }
                 pointer.setValues(place = index + 1, index + 1 == lastPosition)
                 val viewProvider = ViewProvider(pointer)
+                val placeMarkMapObject = mapObjects.addPlacemark(
+                    Point(
+                        place.geo.lat,
+                        place.geo.lng
+                    ), viewProvider
+                )
+                placeMarkMapObject.userData = index
                 listPointer[index + 1] =
-                    mapObjects.addPlacemark(
-                        Point(
-                            place.geo.lat,
-                            place.geo.lng
-                        ), viewProvider
-                    )
+                    placeMarkMapObject
             }
         }
     }

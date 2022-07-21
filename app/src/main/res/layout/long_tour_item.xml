@@ -40,27 +40,23 @@
             android:id="@+id/name_tour"
             android:layout_width="137dp"
             android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="44dp"
+            android:layout_marginBottom="8dp"
             android:fontFamily="@font/roboto_medium"
             android:textColor="@color/white"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/image_tour"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.103"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/place"
+            app:layout_constraintStart_toEndOf="@+id/place_image"
             tools:text="Горная местность" />
 
         <ImageView
             android:id="@+id/place_image"
             android:layout_width="11dp"
             android:layout_height="20dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginStart="4dp"
             android:contentDescription="place image"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/place"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/name_tour"
+            app:layout_constraintTop_toTopOf="@+id/place"
             app:srcCompat="@drawable/ic_baseline_place_24" />
 
         <TextView
@@ -68,13 +64,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
+            android:text="г.Дагестан"
+            android:layout_marginBottom="12dp"
             android:fontFamily="@font/roboto_medium"
             android:textColor="@color/white"
             android:textSize="11sp"
-            app:layout_constraintBottom_toBottomOf="@+id/place_image"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/place_image"
-            app:layout_constraintTop_toTopOf="@+id/place_image"
-            app:layout_constraintVertical_bias="0.0"
             tools:text="с. Чох, окр. Загутли" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

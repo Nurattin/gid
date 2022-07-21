@@ -29,7 +29,6 @@ data class Categories(
     val id: Long,
     @SerializedName("name")
     val name: String,
-
     var enable: Boolean = false
 )
 

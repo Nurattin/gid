@@ -1,24 +1,84 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_gravity="center_horizontal"
-        android:id="@+id/eventRecycler"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/error_internet_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Плохое подключение к интернету"
+            app:layout_constraintEnd_toEndOf="@+id/refresh"
+            app:layout_constraintStart_toStartOf="@+id/refresh"
+            app:layout_constraintTop_toBottomOf="@+id/refresh" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="150dp"
+            android:text="Обновить"
+            app:icon="@drawable/ic_baseline_refresh"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </com.google.android.material.button.MaterialButton>
+
+        <TextView
+            android:id="@+id/error_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="@+id/textView12"
+            app:layout_constraintStart_toStartOf="@+id/textView12"
+            app:layout_constraintTop_toBottomOf="@+id/textView12"
+            tools:text="dwa" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:clipToPadding="false"
-        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        tools:itemCount="10"
-        tools:listitem="@layout/long_tour_item" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/event_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:nestedScrollingEnabled="false"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+            app:spanCount="2"
+            tools:itemCount="10"
+            tools:listitem="@layout/long_tour_item" />
+
+        <include
+            android:id="@+id/skeletonLayout"
+            layout="@layout/skeleton_shimmer_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp" />
+    </FrameLayout>
+
+
+</LinearLayout>
 

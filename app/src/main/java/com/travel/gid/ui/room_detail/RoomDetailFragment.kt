@@ -1,8 +1,6 @@
 package com.travel.gid.ui.room_detail
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +9,10 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.travel.gid.R
 import com.travel.gid.data.models.Ameneti
 import com.travel.gid.databinding.RoomDetailFragmentBinding
-import com.travel.gid.ui.BaseFragment
+import com.travel.gid.ui.base.BaseFragment
 import com.travel.gid.ui.hotel_detail.adapters.HotelAmenitiesAdapter
 import com.travel.gid.ui.room_detail.adapters.RoomAdditionalAdapter
 import com.travel.gid.ui.room_detail.adapters.RoomAllPricesAdapter
-import com.travel.gid.ui.room_detail.adapters.RoomAmenitiesAdapter
 import com.travel.gid.ui.room_detail.adapters.RoomDetailImagesAdapter
 
 class RoomDetailFragment : BaseFragment<RoomDetailFragmentBinding>() {

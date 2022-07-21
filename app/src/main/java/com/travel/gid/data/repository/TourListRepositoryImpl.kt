@@ -17,7 +17,7 @@ class TourListRepositoryImpl @Inject constructor(var api: GidApi) :
         return api.getTourList(
             priceFrom = priceFrom,
             priceTo = priceTo,
-            categories = if (categories.isNullOrEmpty()) null else categories.toString(),
+            categories = if (categories.isNullOrEmpty() || categories.contains(-1)) null else categories.toString(),
             orderByPrice = orderByPrice
         )
     }

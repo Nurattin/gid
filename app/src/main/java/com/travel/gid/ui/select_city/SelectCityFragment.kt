@@ -1,14 +1,11 @@
 package com.travel.gid.ui.select_city
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.travel.gid.R
 import com.travel.gid.databinding.SelectCityFragmentBinding
-import com.travel.gid.ui.BaseFragment
+import com.travel.gid.ui.base.BaseFragment
 
 class SelectCityFragment : BaseFragment<SelectCityFragmentBinding>() {
 

@@ -14,7 +14,7 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class DirectionListViewModel @Inject constructor(
+class  DirectionListViewModel @Inject constructor(
     private val getFilterUseCase: GetFilterUseCase,
     private val getHomeUseCase: GetHomeUseCase
 ) : ViewModel() {

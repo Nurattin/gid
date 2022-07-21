@@ -25,7 +25,7 @@
 
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/selectFilter"
+            android:id="@+id/btn_show_filter_bottom_sheet"
             android:layout_width="88dp"
             android:layout_height="20dp"
             android:layout_marginStart="12dp"

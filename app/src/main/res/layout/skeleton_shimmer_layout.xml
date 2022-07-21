@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/shimmerSkeleton"
+    android:tag="shimmer"
     android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,6 +13,7 @@
     app:shimmer_mask_width="0.2">
     <LinearLayout
         android:id="@+id/skeletonLayout"
+        android:tag="skeleton_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"/>

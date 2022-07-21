@@ -42,7 +42,7 @@ interface GidApi {
         @Field("priceFrom")priceFrom: Int?,
         @Field("priceTo")priceTo: Int?,
         @Field("categories") categories: String?,
-        @Field("orderByPrice") orderByPrice: String?
+        @Field("orderByPrice") orderByPrice: String?,
     ): Response<Tour>
 }
 

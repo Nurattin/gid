@@ -4,17 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.PopupMenu
 import androidx.annotation.MenuRes
-import androidx.core.view.isEmpty
-import androidx.core.view.isNotEmpty
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.travel.gid.R
-import com.travel.gid.data.models.FilterParams
+import com.travel.gid.data.models.FilterParamsTour
 import com.travel.gid.databinding.FragmentTourBinding
+import com.travel.gid.ui.base.BaseFragment
 import com.travel.gid.ui.direction_list.list_tour.adapter.TourCategoriesAdapter
 import com.travel.gid.ui.direction_list.list_tour.adapter.ToursAdapter
 import com.travel.gid.ui.direction_list.list_tour.viewModel.TourViewModel
@@ -22,21 +19,16 @@ import com.travel.gid.ui.filter.FilterFragmentSheet
 import com.travel.gid.ui.filter.FilterFragmentSheet.Companion.TAG
 import com.travel.gid.ui.tour_detail.TourDetailFragmentArgs
 import dagger.hilt.android.AndroidEntryPoint
-import io.supercharge.shimmerlayout.ShimmerLayout
-import java.util.*
-import kotlin.concurrent.schedule
 
 @AndroidEntryPoint
-class TourFragment : Fragment() {
+class TourFragment : BaseFragment<FragmentTourBinding>() {
 
     private val viewModel: TourViewModel by viewModels()
-    private var filterDetail = FilterParams()
+    private val defaultFilterParams = FilterParamsTour()
+    private var filter = FilterParamsTour()
     private val adapterTour = ToursAdapter()
     private val adapterCategory = TourCategoriesAdapter()
-    private val filterSheet = FilterFragmentSheet()
-    private lateinit var binding: FragmentTourBinding
-    private lateinit var skeletonLayout: LinearLayout
-    private lateinit var shimmer: ShimmerLayout
+    private val filterBottomSheetFragment = FilterFragmentSheet()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,81 +37,111 @@ class TourFragment : Fragment() {
     ): View {
         val view = inflater.inflate(R.layout.fragment_tour, container, false)
         binding = FragmentTourBinding.bind(view)
-        skeletonLayout = binding.skeletonLayout.skeletonLayout
-        shimmer = binding.skeletonLayout.shimmerSkeleton
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        showProgress()
+
+        mainContent = binding.mainContent
+        skeletonLayout = binding.skeletonLayout.skeletonLayout
+        refreshData = binding.refreshData
+        errorInternetContainer = binding.errorInternetContainer
+        recyclerView = binding.tourRecycler
+        shimmer = binding.skeletonLayout.shimmerSkeleton
+        itemLayoutSkeleton = R.layout.skeleton_item_tour_list
+
+        showSkeleton()
+
         with(binding) {
+
             with(tourRecycler) {
                 adapter = adapterTour
                 viewModel.tours.observe(viewLifecycleOwner) { it ->
                     it.body()?.data?.let {
                         adapterTour.data = it
                     }
-                    stopProgress()
-                }
-                adapterTour.setOnTourClickListener {
-                    findNavController().navigate(
-                        R.id.tourDetailFragment,
-                        TourDetailFragmentArgs(it.id).toBundle(),
-                        null
-                    )
+                    adapterTour.setOnTourClickListener {
+                        navController.navigate(
+                            R.id.tourDetailFragment,
+                            TourDetailFragmentArgs(it.id).toBundle(),
+                            defNavOption
+                        )
+                    }
+                    stopSkeleton()
                 }
             }
 
             with(categoriesRecycler) {
                 adapter = adapterCategory
                 viewModel.categories.observe(viewLifecycleOwner) {
-                    it?.let {
-                        adapterCategory.data = it
-                        adapterCategory.positionCategories = viewModel.categoriesPos
-                        visibility = View.VISIBLE
-                    }
+                    adapterCategory.data = it
+                    adapterCategory.positionCategories = viewModel.categoriesPos
                 }
                 adapterCategory.setOnCategoriesTourClickListener { categories, pos ->
                     getToursByCategories(pos, categories.id.toInt())
                 }
             }
 
+            viewModel.filters.observe(viewLifecycleOwner) {
+                it.body()?.data.let { filterParams ->
+                    if (viewModel.categories.value.isNullOrEmpty()) viewModel.getListCategories()
+                    filter.fill(
+                        filterParams!!.listCategories,
+                        filterParams.price.priceFrom,
+                        filterParams.price.priceTo
+                    )
+                    defaultFilterParams.fill(
+                        filterParams.listCategories,
+                        filterParams.price.priceFrom,
+                        filterParams.price.priceTo
+                    )
+                    btnShowFilterBottomSheet.setOnClickListener {
+                        if (!filterBottomSheetFragment.isAdded) {
+                            filterBottomSheetFragment.filter = filter
+                            filterBottomSheetFragment.show(parentFragmentManager, TAG)
+                            filterBottomSheetFragment.setOnBtnApplyClickListener { filterParams ->
+                                getToursByFilterParams(filterParams)
+                                showSkeleton()
+                            }
+                        }
+                    }
+                }
+            }
+
             viewModel.error.observe(viewLifecycleOwner) {
-                showRefresh()
+                showError()
             }
 
             toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
 
             refresh.setOnClickListener {
-                viewModel.getAllTour(filterDetail)
-                showProgress()
+                viewModel.getAllTour(filter)
+                showSkeleton()
             }
 
             refreshData.setOnRefreshListener {
-                viewModel.getAllTour(filterDetail)
-                showProgress()
+                viewModel.getAllTour(filter)
+                showSkeleton()
             }
 
-            selectFilter.setOnClickListener {
-                if (!filterSheet.isAdded) {
-                    filterSheet.filterDetail
-                    filterSheet.show(parentFragmentManager, TAG)
-                    filterSheet.setOnBtnApplyClickListener {
-                        filterDetail = it
-                        filterDetail.orderByPrice = null
-                        viewModel.getAllTour(it)
-                        showProgress()
-                        adapterCategory.categoriesAllOn()
-                        viewModel.changeCategories(viewModel.categoriesPos, 0)
-                    }
-                }
-            }
+
             range.setOnClickListener {
                 showMenu(it, R.menu.popup_menu)
-                animSort.speed = 1F
                 animSort.playAnimation()
             }
+
+            refresh.setOnClickListener {
+                viewModel.refreshData(filter)
+            }
         }
+    }
+
+    private fun getToursByFilterParams(filterParams: FilterParamsTour) {
+        filter = filterParams
+        filter.sortedParams = null
+        viewModel.getAllTour(filterParams)
+        adapterCategory.categoriesAllOn()
+        viewModel.changeCategories(viewModel.categoriesPos, 0)
     }
 
     private fun showMenu(v: View?, @MenuRes popupMenu: Int) {
@@ -128,10 +150,10 @@ class TourFragment : Fragment() {
         popup.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.option_2 -> {
-                    getSortTours("\"desc\"")
+                    getSortedList("\"desc\"")
                 }
                 R.id.option_3 -> {
-                    getSortTours("\"asc\"")
+                    getSortedList("\"asc\"")
                 }
             }
             binding.range.text = it.title.toString()
@@ -140,64 +162,29 @@ class TourFragment : Fragment() {
         popup.show()
     }
 
-    private fun getSortTours(params: String) {
-        if (filterDetail.orderByPrice != params) {
-            filterDetail.orderByPrice = params
-            viewModel.getAllTour(filterDetail)
-            showProgress()
+    private fun getSortedList(params: String) {
+        if (filter.sortedParams != params) {
+            filter.sortedParams = params
+            viewModel.getAllTour(filter)
+            showSkeleton()
         }
-    }
-
-    private fun stopProgress() {
-        animateReplaceSkeleton(binding.tourRecycler)
-        binding.refreshData.isRefreshing = false
-    }
-
-    private fun showProgress() {
-        showSkeleton(true)
-    }
-
-    private fun showRefresh() {
-        showSkeleton(true)
     }
 
     private fun getToursByCategories(pos: Int, categoriesId: Int) {
         with(viewModel) {
-            filterSheet.filterDetail = FilterParams()
+            setDefaultParams()
             changeCategories(viewModel.categoriesPos, pos)
-            filterDetail = FilterParams()
-            filterDetail.categories = if (categoriesId == 0) null else listOf(categoriesId)
-            getAllTour(filterDetail)
+            filter.categoriesAccept = if (categoriesId == 0) null else listOf(categoriesId)
+            getAllTour(filter)
         }
-        showProgress()
+        showSkeleton()
     }
 
-    private fun showSkeleton(show: Boolean) {
-        if (show) {
-            binding.tourRecycler.visibility = View.GONE
-            if (skeletonLayout.isEmpty()) {
-                for (i in 0..1) {
-                    skeletonLayout.addView(
-                        layoutInflater.inflate(
-                            R.layout.skeleton_item_tour_list, null
-                        )
-                    )
-                }
-            }
-            shimmer.visibility = View.VISIBLE
-            shimmer.startShimmerAnimation()
-            skeletonLayout.visibility = View.VISIBLE
-            skeletonLayout.bringToFront()
-        } else {
-            shimmer.stopShimmerAnimation()
-            shimmer.visibility = View.GONE
-        }
-    }
-
-    private fun animateReplaceSkeleton(listView: View) {
-        listView.visibility = View.VISIBLE
-        showSkeleton(
-            false,
+    private fun setDefaultParams() {
+        filter.fill(
+            defaultFilterParams.categoriesName,
+            defaultFilterParams.startPrice,
+            defaultFilterParams.endPrice
         )
     }
 }

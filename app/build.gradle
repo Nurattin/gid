@@ -39,9 +39,12 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.1.1'
+    }
 
     buildFeatures {
+        compose true
         dataBinding true
         viewBinding true
     }
@@ -98,7 +101,7 @@ dependencies {
     implementation "com.airbnb.android:lottie:5.2.0"
 
     //Stfalcon ImageViewer
-//    implementation "com.github.stfalcon-studio:StfalconImageViewer:v1.0.1"
+    implementation "com.github.stfalcon-studio:StfalconImageViewer:1.0.1"
     //implementation "com.github.okaybroda:ImageZoom:1.1.0"
 
     //Paging3
@@ -106,6 +109,22 @@ dependencies {
 
     //ShimmerLayout
     implementation 'io.supercharge:shimmerlayout:2.1.0'
+
+    //LoadImage
+    implementation("io.coil-kt:coil:2.1.0")
+
+    // Integration with activities
+    implementation 'androidx.activity:activity-compose:1.4.0'
+    // Compose Material Design
+    implementation 'androidx.compose.material:material:1.1.1'
+    // Animations
+    implementation 'androidx.compose.animation:animation:1.1.1'
+    // Tooling support (Previews, etc.)
+    implementation 'androidx.compose.ui:ui-tooling:1.1.1'
+    // Integration with ViewModels
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'
+    // UI Tests
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.1.1'
 }
 
 

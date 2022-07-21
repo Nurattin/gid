@@ -6,12 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.travel.gid.R
-import com.travel.gid.data.models.AboutHotel
 import com.travel.gid.data.models.Ameneti
 import com.travel.gid.data.models.Hotel
 import com.travel.gid.data.models.Room
 import com.travel.gid.databinding.HotelsFragmentBinding
-import com.travel.gid.ui.BaseFragment
+import com.travel.gid.ui.base.BaseFragment
 import com.travel.gid.ui.hotel_detail.HotelDetailFragmentArgs
 import com.travel.gid.ui.hotels_list.adapters.HotelItemAdapter
 

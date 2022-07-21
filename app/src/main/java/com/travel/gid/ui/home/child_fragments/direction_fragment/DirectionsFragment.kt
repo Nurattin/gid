@@ -5,14 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.core.view.isEmpty
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.travel.gid.R
 import com.travel.gid.databinding.FragmentVpHomeToursBinding
+import com.travel.gid.ui.base.BaseFragment
 import com.travel.gid.ui.direction_detail.DirectionDetailFragmentArgs
 import com.travel.gid.ui.home.adapters.UpcomingToursAdapter
 import com.travel.gid.ui.home.child_fragments.direction_fragment.adapter.DirectionsListAdapter
@@ -20,17 +20,12 @@ import com.travel.gid.ui.home.child_fragments.direction_fragment.view_model.Dire
 import com.travel.gid.utils.SpaceItemDecoration
 import com.travel.gid.ui.home.utils.StopRefreshCallback
 import dagger.hilt.android.AndroidEntryPoint
-import io.supercharge.shimmerlayout.ShimmerLayout
-import java.util.*
-import kotlin.concurrent.schedule
 
 @AndroidEntryPoint
-class DirectionsFragment : Fragment() {
-
-    private lateinit var binding: FragmentVpHomeToursBinding
+class DirectionsFragment : BaseFragment<FragmentVpHomeToursBinding>() {
+    private val adapterDirection = DirectionsListAdapter()
+    private val adapterUpcomingTours = UpcomingToursAdapter()
     private val viewModel: DirectionViewModel by viewModels()
-    private lateinit var skeletonLayout: LinearLayout
-    private lateinit var shimmer: ShimmerLayout
     private var stopRefreshCallback: StopRefreshCallback? = null
 
 
@@ -39,54 +34,66 @@ class DirectionsFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentVpHomeToursBinding.inflate(inflater, container, false)
-        skeletonLayout = binding.skeletonLayout.skeletonLayout
-        skeletonLayout.orientation = LinearLayout.HORIZONTAL
-        shimmer = binding.skeletonLayout.shimmerSkeleton
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        mainContent = binding.mainContent
+        skeletonLayout = binding.skeletonLayout.skeletonLayout
+        skeletonLayout!!.orientation = LinearLayout.HORIZONTAL
+        errorInternetContainer = binding.errorInternetContainer
+        recyclerView = binding.similarToursRecyclerView
+        shimmer = binding.skeletonLayout.shimmerSkeleton
+        itemLayoutSkeleton = R.layout.skeleton_direction_tour_item
+
+        showSkeleton()
         setupRecyclerView()
         setupUpcomingRecyclerView()
 
         binding.apply {
             showAllTour.setOnClickListener {
-                findNavController().navigate(R.id.action_homeFragment_to_tourFragment)
+                findNavController().navigate(R.id.action_homeFragment_to_tourFragment, null, defNavOption)
             }
             showAllDirection.setOnClickListener {
-                findNavController().navigate(R.id.action_homeFragment_to_directionListFragment)
+                findNavController().navigate(R.id.action_homeFragment_to_directionListFragment, null, defNavOption)
+            }
+            refresh.setOnClickListener {
+                refreshData
+            }
+        }
+        viewModel.apply {
+            error.observe(viewLifecycleOwner) {
+                showError()
             }
         }
     }
 
-
     private fun setupRecyclerView() {
-        binding.run {
-            if (viewModel.directionsList.value == null) showProgressBar()
-            val adapter = DirectionsListAdapter()
-            similarToursRecyclerView.layoutManager =
+        binding.similarToursRecyclerView.run {
+
+            layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            similarToursRecyclerView.adapter = adapter
+            adapter = adapterDirection
 
             viewModel.directionsList.observe(viewLifecycleOwner, Observer {
                 it.body()?.data?.let { data ->
-                    adapter.data = data
+                    adapterDirection.data = data
                 }
-                stopProgressBar()
+                stopSkeleton()
 
             })
-
-
-            adapter.setOnTourClickListener {
-                findNavController().navigate(
+            adapterDirection.setOnTourClickListener {
+                navController.navigate(
                     R.id.directionDetailFragment,
-                    DirectionDetailFragmentArgs(it.id).toBundle()
+                    DirectionDetailFragmentArgs(it.id).toBundle(),
+                    defNavOption,
                 )
             }
 
-            similarToursRecyclerView.clipToPadding = false
-            similarToursRecyclerView.addItemDecoration(
+            clipToPadding = false
+            addItemDecoration(
                 SpaceItemDecoration(
                     space = 50,
                     orientation = SpaceItemDecoration.Orientation.HORIZONTAL
@@ -95,63 +102,25 @@ class DirectionsFragment : Fragment() {
         }
     }
 
+
     private fun setupUpcomingRecyclerView() {
-        binding.run {
-            upcomingToursRecyclerView.layoutManager =
+        binding.upcomingToursRecyclerView.run {
+            layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            val adapter = UpcomingToursAdapter()
-            upcomingToursRecyclerView.adapter = adapter
-            upcomingToursRecyclerView.clipToPadding = false
+            adapter = adapterUpcomingTours
+            clipToPadding = false
         }
     }
 
-    private fun showProgressBar() {
-        showSkeleton(true)
-    }
-
-    private fun stopProgressBar() {
-        animateReplaceSkeleton(binding.similarToursRecyclerView)
+    override fun stopSkeleton() {
         stopRefreshCallback?.invoke()
-    }
-
-    private fun showSkeleton(show: Boolean) {
-        if (show) {
-            binding.similarToursRecyclerView.visibility = View.GONE
-            if (skeletonLayout.isEmpty()) {
-                for (i in 0..2) {
-                    val rowLayout =
-                        layoutInflater.inflate(
-                            R.layout.skeleton_direction_tour_item,
-                            null
-                        ) as ViewGroup
-                    skeletonLayout.addView(rowLayout)
-                }
-            }
-            shimmer.visibility = View.VISIBLE
-            shimmer.startShimmerAnimation()
-            skeletonLayout.visibility = View.VISIBLE
-            skeletonLayout.bringToFront()
-        } else {
-            shimmer.stopShimmerAnimation()
-            shimmer.visibility = View.GONE
-        }
-    }
-
-    private fun animateReplaceSkeleton(listView: View) {
-        Timer().schedule(1000) {
-            activity?.runOnUiThread {
-                listView.visibility = View.VISIBLE
-                showSkeleton(
-                    false,
-                )
-            }
-        }
+        super.stopSkeleton()
     }
 
     fun refreshData() {
-        showProgressBar()
+        showSkeleton()
         viewModel.getDirectionList()
-
+        viewModel.getTours()
     }
 
     fun setOnStopRefreshCallBack(callBack: StopRefreshCallback) {

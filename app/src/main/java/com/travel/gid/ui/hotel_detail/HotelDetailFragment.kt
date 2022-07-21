@@ -6,20 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.travel.gid.R
-import com.travel.gid.data.models.Place
-import com.travel.gid.data.models.Room
 import com.travel.gid.databinding.HotelDetailFragmentBinding
-import com.travel.gid.ui.BaseFragment
+import com.travel.gid.ui.base.BaseFragment
 import com.travel.gid.ui.hotel_detail.adapters.HotelAmenitiesAdapter
 import com.travel.gid.ui.hotels_list.adapters.HotelItemImagesAdapter
 import com.travel.gid.ui.rooms.RoomsFragmentArgs
-import com.travel.gid.utils.CustomPointer
-import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
-import com.yandex.mapkit.geometry.BoundingBox
-import com.yandex.mapkit.geometry.Point
-import com.yandex.mapkit.map.CameraPosition
-import com.yandex.runtime.ui_view.ViewProvider
 
 class HotelDetailFragment : BaseFragment<HotelDetailFragmentBinding>() {
 

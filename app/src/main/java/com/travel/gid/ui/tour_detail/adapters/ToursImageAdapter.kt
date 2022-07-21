@@ -1,12 +1,16 @@
 package com.travel.gid.ui.tour_detail.adapters
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.stfalcon.imageviewer.StfalconImageViewer
 import com.travel.gid.R
 import com.travel.gid.databinding.ViewPagerBannerTourDetailBinding
 
@@ -25,17 +29,35 @@ class ToursImageAdapter(private val sliderItems: List<String>) :
     class TourDetailViewHolder(private val binding: ViewPagerBannerTourDetailBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: String) {
+            with(binding) {
+                glide(item, imageBanner)
+                imageBanner.setOnClickListener {
+                    showImage(listOf(item), root.context, imageBanner)
+                }
+            }
 
-            val imgUri = item.toUri().buildUpon().scheme("http").build()
-            Log.i("dwa", "$imgUri")
+
+        }
+
+        fun glide(item: String, into: ImageView) {
             Glide.with(itemView.context)
-                .load(imgUri)
+                .load(item)
                 .placeholder(R.drawable.no_image)
                 .apply(
                     RequestOptions()
                         .error(R.drawable.no_image)
                 )
-                .into(binding.imageBanner)
+                .into(into)
+        }
+
+        private fun showImage(images: List<String>, context: Context, imageBanner: ImageView) {
+            StfalconImageViewer.Builder(context, images) { view, image ->
+                glide(image, view)
+            }.withHiddenStatusBar(false)
+                .withTransitionFrom(imageBanner)
+                .withBackgroundColor(context.getColor(R.color.white))
+                .allowSwipeToDismiss(true)
+                .show()
         }
 
         companion object {

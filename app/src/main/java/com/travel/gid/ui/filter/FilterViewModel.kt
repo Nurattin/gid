@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.travel.gid.data.models.Categories
+import com.travel.gid.data.models.FilterParamsTour
 import com.travel.gid.data.models.Filters
 import com.travel.gid.data.models.Price
 import com.travel.gid.domain.usecases.GetFilterUseCase
@@ -21,34 +22,10 @@ class FilterViewModel @Inject constructor(
     private val getFilterUseCase: GetFilterUseCase,
 ) : ViewModel() {
 
-    private val _filters = MutableLiveData<Response<Filters>>()
-    val filters: LiveData<Response<Filters>>
-        get() = _filters
-
-    private val _error = MutableLiveData<String>()
-    val error: LiveData<String>
-        get() = _error
-
-    private val coroutineExceptionHandler =
-        CoroutineExceptionHandler { coroutineContext, throwable ->
-        }
+    var filters = MutableLiveData<FilterParamsTour>()
 
 
-    fun getFilter() {
-        viewModelScope.launch(coroutineExceptionHandler) {
-            _filters.value = getFilterUseCase.getFilterParams()
-        }
-    }
+    var priceFrom: Int? = null
 
-    fun getCategories(): List<Categories>? = filters.value?.body()?.data?.listCategories
-
-
-    fun getPriceRange(): Price? {
-        return filters.value?.body()?.data?.price
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-    }
-    
+    var priceTo: Int? = null
 }

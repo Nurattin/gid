@@ -29,7 +29,7 @@ sealed class EventRecyclerViewHolder(binding: ViewBinding) : RecyclerView.ViewHo
                 .apply(
                     RequestOptions()
 
-                        .placeholder(R.drawable.loading_animation)
+                        .placeholder(R.drawable.no_image)
                         .error(R.drawable.no_image)
                 )
                 .into(binding.imageTour)
@@ -60,7 +60,7 @@ sealed class EventRecyclerViewHolder(binding: ViewBinding) : RecyclerView.ViewHo
                 .apply(
                     RequestOptions()
 
-                        .placeholder(R.drawable.loading_animation)
+                        .placeholder(R.drawable.no_image)
                         .error(R.drawable.no_image)
                 )
                 .into(binding.imageTour)

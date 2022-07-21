@@ -3,13 +3,11 @@ package com.travel.gid.ui.home
 import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.findFragment
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.datepicker.CalendarConstraints
@@ -30,18 +28,15 @@ import com.travel.gid.ui.home.child_fragments.event_fragment.EventFragment
 import com.travel.gid.ui.home.child_fragments.gid_fragment.GidFragment
 import com.travel.gid.ui.home.view_model.HomeViewModel
 import com.travel.gid.ui.select_guest.BottomSheetSelectGuests
-import com.travel.gid.utils.makeGoneIfElseVisible
-import com.travel.gid.utils.makeVisibleIfElseGone
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
-import kotlin.collections.HashMap
 
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModels()
-    private var sliderHandler = Handler()
+    private var sliderHandler = Handler(Looper.getMainLooper())
     private lateinit var binding: HomeFragmentBinding
     private lateinit var childFragmentsAdapter: ViewPagerChildFragmentsAdapter
     private var listFragment = listOf(DirectionsFragment(), GidFragment(), EventFragment())
@@ -134,10 +129,6 @@ class HomeFragment : Fragment() {
         binding.swipeRefresh.setOnRefreshListener {
             refreshData()
         }
-
-        binding.refresh.setOnClickListener {
-            refreshData()
-        }
     }
 
 
@@ -151,10 +142,8 @@ class HomeFragment : Fragment() {
                 fragment.setOnStopRefreshCallBack {
                     with(binding) {
                         swipeRefresh.isRefreshing = false
-                        errorContent.visibility = View.GONE
                     }
                 }
-
             }
             1 -> {
                 fragment = listFragment[1] as GidFragment
@@ -162,12 +151,16 @@ class HomeFragment : Fragment() {
                 fragment.setOnStopRefreshCallBack {
                     with(binding) {
                         swipeRefresh.isRefreshing = false
-                        errorContent.isVisible = false
-                        mainContent.isVisible = true
                     }
                 }
-                fragment.setOnShowErrorCallback {
-                    showError()
+            }
+            2 -> {
+                fragment = listFragment[2] as EventFragment
+                fragment.refreshData()
+                fragment.setOnStopRefreshCallBack {
+                    with(binding) {
+                        swipeRefresh.isRefreshing = false
+                    }
                 }
             }
         }
@@ -215,30 +208,4 @@ class HomeFragment : Fragment() {
 
     private var sliderRunnable =
         Runnable { binding.bannerViewPager.currentItem = binding.bannerViewPager.currentItem + 1 }
-
-
-    private fun showBanner() {
-
-        binding.run {
-            containerProgress.visibility = View.GONE
-        }
-
-    }
-
-    fun showLoadingView() {
-    }
-
-    fun showDialogSelectGuests() {
-        val bottomSheet = BottomSheetSelectGuests()
-        bottomSheet.show(parentFragmentManager, bottomSheet.tag)
-    }
-
-    private fun showError() {
-        with(binding) {
-            mainContent.visibility = View.GONE
-            errorContent.visibility = View.VISIBLE
-            swipeRefresh.isRefreshing = false
-        }
-    }
-
 }

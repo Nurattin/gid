@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../layout/custom_preview.xml" value="0.14958033573141488" />
+        <entry key="../.gradle/caches/transforms-3/ac937020088d70ab02a70a78c3d5f503/transformed/jetified-StfalconImageViewer-1.0.1/res/layout/view_image_viewer.xml" value="0.27546296296296297" />
         <entry key="../Library/Android/sdk/platforms/android-31/data/res/layout/simple_selectable_list_item.xml" value="0.2543822146216332" />
         <entry key="..\:/project/gid2/app/src/main/res/drawable/bottom_sheet_backgroud.xml" value="0.159" />
         <entry key="..\:/project/gid2/app/src/main/res/drawable/bottom_sheet_background.xml" value="0.141" />
@@ -99,13 +100,18 @@
         <entry key="app/src/main/res/drawable/dotted.xml" value="0.3260416666666667" />
         <entry key="app/src/main/res/drawable/edit_text_botton_line.xml" value="0.2851851851851852" />
         <entry key="app/src/main/res/drawable/edit_text_botton_line_2.xml" value="0.3260416666666667" />
+        <entry key="app/src/main/res/drawable/ic_animal.xml" value="0.149" />
         <entry key="app/src/main/res/drawable/ic_back_button_detail.xml" value="0.31203703703703706" />
         <entry key="app/src/main/res/drawable/ic_bascket_check.xml" value="0.31296296296296294" />
+        <entry key="app/src/main/res/drawable/ic_bascket_uncheck.xml" value="0.1795" />
+        <entry key="app/src/main/res/drawable/ic_baseline_arrow_back.xml" value="0.149" />
         <entry key="app/src/main/res/drawable/ic_circle_is_touch.xml" value="0.2953703703703704" />
         <entry key="app/src/main/res/drawable/ic_circle_touch.xml" value="0.2953703703703704" />
         <entry key="app/src/main/res/drawable/ic_city_select.xml" value="0.321025641025641" />
+        <entry key="app/src/main/res/drawable/ic_come_back_later.xml" value="0.1785" />
         <entry key="app/src/main/res/drawable/ic_gid.xml" value="0.31296296296296294" />
         <entry key="app/src/main/res/drawable/ic_gid_check.xml" value="0.2574074074074074" />
+        <entry key="app/src/main/res/drawable/ic_gid_uncheck.xml" value="0.1795" />
         <entry key="app/src/main/res/drawable/ic_globe.xml" value="0.31296296296296294" />
         <entry key="app/src/main/res/drawable/ic_globe_uncheck.xml" value="0.31296296296296294" />
         <entry key="app/src/main/res/drawable/ic_hotel_data_obnovleniya.xml" value="0.31203703703703706" />
@@ -123,6 +129,8 @@
         <entry key="app/src/main/res/drawable/ic_postel.xml" value="0.31203703703703706" />
         <entry key="app/src/main/res/drawable/line_dashed.xml" value="0.321025641025641" />
         <entry key="app/src/main/res/drawable/line_reservation_2.xml" value="0.3260416666666667" />
+        <entry key="app/src/main/res/drawable/loading_img.xml" value="0.2115" />
+        <entry key="app/src/main/res/drawable/round_image.xml" value="0.129" />
         <entry key="app/src/main/res/drawable/selected_dot.xml" value="0.31203703703703706" />
         <entry key="app/src/main/res/drawable/selected_dot_hotel.xml" value="0.3175925925925926" />
         <entry key="app/src/main/res/drawable/selector_checkbox.xml" value="0.2851851851851852" />
@@ -141,9 +149,11 @@
         <entry key="app/src/main/res/layout/custom_pointer.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/direction_detail_content_scrolling.xml" value="0.30512820512820515" />
         <entry key="app/src/main/res/layout/direction_detail_fragment.xml" value="0.30512820512820515" />
+        <entry key="app/src/main/res/layout/error_layout.xml" value="0.262037037037037" />
         <entry key="app/src/main/res/layout/fragment_blank.xml" value="0.27546296296296297" />
         <entry key="app/src/main/res/layout/fragment_direction_detail.xml" value="0.2953125" />
         <entry key="app/src/main/res/layout/fragment_direction_list.xml" value="0.27546296296296297" />
+        <entry key="app/src/main/res/layout/fragment_event.xml" value="0.27546296296296297" />
         <entry key="app/src/main/res/layout/fragment_filter.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.1515625" />
         <entry key="app/src/main/res/layout/fragment_gid.xml" value="0.3098958333333333" />
@@ -176,12 +186,15 @@
         <entry key="app/src/main/res/layout/item_room_list_img.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/item_simmilar.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/item_tour.xml" value="0.2953125" />
+        <entry key="app/src/main/res/layout/long_event_item.xml" value="0.27546296296296297" />
         <entry key="app/src/main/res/layout/long_tour_item.xml" value="0.2543822146216332" />
         <entry key="app/src/main/res/layout/room_detail_fragment.xml" value="0.29583333333333334" />
         <entry key="app/src/main/res/layout/rooms_fragment.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/route_detail_item.xml" value="0.4551422319474836" />
         <entry key="app/src/main/res/layout/sceleton_item_tour_list.xml" value="0.2358303606817281" />
         <entry key="app/src/main/res/layout/select_city_fragment.xml" value="0.29583333333333334" />
-        <entry key="app/src/main/res/layout/short_tour_item.xml" value="0.2543822146216332" />
+        <entry key="app/src/main/res/layout/short_event_item.xml" value="0.27546296296296297" />
+        <entry key="app/src/main/res/layout/short_tour_item.xml" value="0.5220680958385876" />
         <entry key="app/src/main/res/layout/skeleton_direction_tour_item.xml" value="0.274537037037037" />
         <entry key="app/src/main/res/layout/skeleton_gid.xml" value="0.444468579367727" />
         <entry key="app/src/main/res/layout/skeleton_item_gid.xml" value="0.3717901724356192" />
@@ -194,6 +207,7 @@
         <entry key="app/src/main/res/layout/view_detail_live.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/view_pager_banner_tour_detail.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/view_price.xml" value="0.3103573277573809" />
+        <entry key="app/src/main/res/menu/popup_menu.xml" value="0.27546296296296297" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.28425925925925927" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.28425925925925927" />
         <entry key="app/src/main/res/xml/network_security_config.xml" value="0.15052083333333333" />

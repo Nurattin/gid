@@ -1,105 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="28dp"
-        android:fontFamily="@font/namsan_bold"
-        android:text="Направления"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <FrameLayout
-        android:id="@+id/similarTour"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/error_internet_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone">
 
-        <include
-            android:id="@+id/skeletonLayout"
-            layout="@layout/skeleton_shimmer_layout" />
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Плохое подключение к интернету"
+            app:layout_constraintEnd_toEndOf="@+id/refresh"
+            app:layout_constraintStart_toStartOf="@+id/refresh"
+            app:layout_constraintTop_toBottomOf="@+id/refresh" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/similarToursRecyclerView"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="150dp"
+            android:text="Обновить"
+            app:icon="@drawable/ic_baseline_refresh"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </com.google.android.material.button.MaterialButton>
+
+        <TextView
+            android:id="@+id/error_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="@+id/textView12"
+            app:layout_constraintStart_toStartOf="@+id/textView12"
+            app:layout_constraintTop_toBottomOf="@+id/textView12"
+            tools:text="dwa" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="28dp"
+            android:fontFamily="@font/namsan_bold"
+            android:text="Направления"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <FrameLayout
+            android:id="@+id/similarTour"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:clipToPadding="false"
-            android:orientation="horizontal"
-            android:paddingStart="10dp"
-            android:paddingEnd="16dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/home_tour_item" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView">
 
-    </FrameLayout>
+            <include
+                android:id="@+id/skeletonLayout"
+                layout="@layout/skeleton_shimmer_layout" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/similarToursRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                android:paddingStart="10dp"
+                android:paddingEnd="16dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/home_tour_item" />
+
+        </FrameLayout>
 
 
-    <TextView
-        android:id="@+id/textView33"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:fontFamily="@font/namsan_bold"
-        android:text="Туры"
-        android:textColor="@color/black"
-        android:textSize="18dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/similarTour" />
+        <TextView
+            android:id="@+id/textView33"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/namsan_bold"
+            android:text="Туры"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/similarTour" />
 
-    <TextView
-        android:id="@+id/show_all_tour"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:fontFamily="@font/namsan_bold"
-        android:gravity="center"
-        android:text="Все туры"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/similarTour" />
+        <TextView
+            android:id="@+id/show_all_tour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:fontFamily="@font/namsan_bold"
+            android:gravity="center"
+            android:text="Все туры"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/similarTour" />
 
-    <TextView
-        android:id="@+id/show_all_direction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="24dp"
-        android:fontFamily="@font/namsan_bold"
-        android:gravity="center"
-        android:text="Все направления"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/show_all_direction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="24dp"
+            android:fontFamily="@font/namsan_bold"
+            android:gravity="center"
+            android:text="Все направления"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/upcomingToursRecyclerView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:orientation="vertical"
-        android:paddingBottom="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView33"
-        tools:itemCount="3"
-        tools:listitem="@layout/upcoming_tours_item">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/upcomingToursRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            android:paddingBottom="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView33"
+            tools:itemCount="3"
+            tools:listitem="@layout/upcoming_tours_item">
 
-    </androidx.recyclerview.widget.RecyclerView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.recyclerview.widget.RecyclerView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
+
+

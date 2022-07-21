@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/error_internet_container"
+    android:tag="error_internet_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:visibility="gone">
+
+    <TextView
+        android:id="@+id/textView12"
+        app:layout_constraintEnd_toEndOf="@+id/refresh"
+        app:layout_constraintStart_toStartOf="@+id/refresh"
+        app:layout_constraintTop_toBottomOf="@+id/refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Плохое подключение к интернету" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/refresh"
+        app:icon="@drawable/ic_baseline_refresh"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:text="Обновить">
+
+    </com.google.android.material.button.MaterialButton>
+
+    <TextView
+        android:id="@+id/error_text"
+        app:layout_constraintEnd_toEndOf="@+id/textView12"
+        app:layout_constraintStart_toStartOf="@+id/textView12"
+        app:layout_constraintTop_toBottomOf="@+id/textView12"
+        tools:text="dwa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

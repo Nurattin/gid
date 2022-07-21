@@ -7,8 +7,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.travel.gid.R
 import com.travel.gid.databinding.RoomsFragmentBinding
-import com.travel.gid.ui.BaseFragment
-import com.travel.gid.ui.hotel_detail.HotelDetailFragmentArgs
+import com.travel.gid.ui.base.BaseFragment
 import com.travel.gid.ui.rooms.adapters.RoomsAdapter
 
 class RoomsFragment : BaseFragment<RoomsFragmentBinding>() {

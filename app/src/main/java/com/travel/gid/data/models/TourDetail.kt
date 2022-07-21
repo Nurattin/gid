@@ -1,14 +1,15 @@
 package com.travel.gid.data.models
 
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
-
+@Serializable
 data class TourDetail (
     @SerializedName("data") var data : TourDetailData
 )
 
+@Serializable
 data class TourDetailData (
-
     @SerializedName("id") var id : Int,
     @SerializedName("name") var name : String,
     @SerializedName("description") var description : String,
@@ -24,7 +25,7 @@ data class TourDetailData (
     @SerializedName("places") var places: List<Places>
 )
 
-
+@Serializable
 data class CategoryTour (
     @SerializedName("id") var id : Int,
     @SerializedName("name") var name : String

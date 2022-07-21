@@ -2,14 +2,14 @@ package com.travel.gid.ui.direction_list.list_tour.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.travel.gid.data.models.Categories
-import com.travel.gid.data.models.FilterParams
+import com.travel.gid.data.models.FilterParamsTour
 import com.travel.gid.data.models.Filters
 import com.travel.gid.data.models.Tour
 import com.travel.gid.domain.usecases.GetFilterUseCase
 import com.travel.gid.domain.usecases.GetTourListUseCase
+import com.travel.gid.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import retrofit2.Response
@@ -20,8 +20,7 @@ class TourViewModel @Inject constructor(
     private val getFilterUseCase: GetFilterUseCase,
     private val getTourListUseCase: GetTourListUseCase,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
-
-    ) : ViewModel() {
+    ) : BaseViewModel() {
 
     private val _filters = MutableLiveData<Response<Filters>>()
     val filters: LiveData<Response<Filters>>
@@ -39,23 +38,22 @@ class TourViewModel @Inject constructor(
     val tours: LiveData<Response<Tour>>
         get() = _tours
 
-    private val _error = MutableLiveData<String>()
-    val error: LiveData<String>
-        get() = _error
 
-    private val coroutineExceptionHandler =
-        CoroutineExceptionHandler { coroutineContext, throwable ->
-            _error.value = ""
-        }
-
-    init {
+    private fun getFilterParams() {
         viewModelScope.launch(coroutineExceptionHandler) {
             _filters.value = getFilterUseCase.getFilterParams()
-            val listCategories = filters.value?.body()?.data?.listCategories
-            listCategories?.add(0, Categories(0, "Все", true))
-            _categories.value = listCategories!!
         }
-        getAllTour(FilterParams())
+    }
+
+    fun getListCategories() {
+        val listCategories = filters.value?.body()?.data?.listCategories
+        listCategories?.add(0, Categories(0, "Все", true))
+        _categories.value = listCategories!!
+    }
+
+    init {
+        getFilterParams()
+        getAllTour(FilterParamsTour())
 
     }
 
@@ -67,14 +65,19 @@ class TourViewModel @Inject constructor(
 
     }
 
-    fun getAllTour(filter: FilterParams) {
+    fun refreshData(filter: FilterParamsTour) {
+        getAllTour(filter)
+        getFilterParams()
+    }
+
+    fun getAllTour(filter: FilterParamsTour) {
         viewModelScope.launch(coroutineExceptionHandler) {
             _tours.value = withContext(ioDispatcher) {
                 return@withContext getTourListUseCase.getTourListFilter(
-                    categories = filter.categories,
+                    categories = filter.categoriesAccept,
                     priceFrom = filter.startPrice,
                     priceTo = filter.endPrice,
-                    orderByPrice = filter.orderByPrice,
+                    orderByPrice = filter.sortedParams,
                 )
             }
 

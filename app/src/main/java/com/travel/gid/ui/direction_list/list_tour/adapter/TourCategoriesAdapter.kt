@@ -38,6 +38,7 @@ class TourCategoriesAdapter : RecyclerView.Adapter<TourCategoriesAdapter.ViewHol
         fun bind(item: Categories, clickListener: OnCategoriesTourClickListener?) {
             binding.apply {
                 categoryName.text = item.name
+
                 categoryName.setOnClickListener {
                     if (adapterPosition != positionCategories) {
                         data[positionCategories].enable = false

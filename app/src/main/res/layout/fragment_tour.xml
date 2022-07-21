@@ -23,173 +23,232 @@
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh_data"
+        android:tag="refresh_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/tourRecycler"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="8dp"
-                        android:nestedScrollingEnabled="false"
-                        android:orientation="vertical"
-                        android:visibility="gone"
-                        app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-                        app:spanCount="2"
-                        tools:itemCount="10"
-                        tools:listitem="@layout/long_tour_item" />
-
-                    <include
-                        android:layout_marginTop="8dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:id="@+id/skeletonLayout"
-                        layout="@layout/skeleton_shimmer_layout" />
-                </FrameLayout>
-
-
-                <com.airbnb.lottie.LottieAnimationView
-                    android:id="@+id/anim_sort"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/range"
-                    app:layout_constraintEnd_toStartOf="@+id/range"
-                    app:layout_constraintTop_toTopOf="@+id/range"
-                    app:lottie_rawRes="@raw/sort" />
-
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/selectFilter"
-                    style="@style/Widget.Material3.Button.IconButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="#00FFFFFF"
-                    android:fontFamily="@font/roboto_medium"
-                    android:text="@string/filter"
-                    android:textAllCaps="false"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    app:icon="@drawable/ic_coolicon"
-                    app:iconPadding="10dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/range"
-                    style="@style/Widget.Material3.Button.IconButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="#00FFFFFF"
-                    android:fontFamily="@font/roboto_medium"
-                    android:gravity="end"
-                    android:text="@string/by_popular"
-                    android:textAllCaps="false"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    app:icon="@drawable/ic_baseline_arrow_drop_down"
-                    app:iconGravity="end"
-                    app:iconTint="#8A8A8A"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/selectFilter" />
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/linearLayoutCompat"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/selectFilter">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/categoriesRecycler"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clipToPadding="false"
-                        android:orientation="horizontal"
-                        android:paddingStart="13dp"
-                        android:visibility="gone"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:itemCount="5"
-                        tools:listitem="@layout/categories_item"
-                        tools:visibility="visible" />
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/refresh_container"
+                    android:id="@+id/error_internet_container"
                     android:layout_width="match_parent"
-                    android:layout_height="500dp"
-                    android:padding="15dp"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:visibility="gone">
 
                     <TextView
-                        android:id="@+id/textView8"
+                        android:id="@+id/textView12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="14dp"
-                        android:fontFamily="@font/roboto_medium"
-                        android:text="@string/slow_internet"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        app:layout_constraintBottom_toTopOf="@+id/textView10"
+                        android:layout_marginTop="16dp"
+                        android:text="Плохое подключение к интернету"
+                        app:layout_constraintEnd_toEndOf="@+id/refresh"
+                        app:layout_constraintStart_toStartOf="@+id/refresh"
+                        app:layout_constraintTop_toBottomOf="@+id/refresh" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/refresh"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="150dp"
+                        android:text="Обновить"
+                        app:icon="@drawable/ic_baseline_refresh"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.496"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                    </com.google.android.material.button.MaterialButton>
 
                     <TextView
-                        android:id="@+id/textView10"
+                        android:id="@+id/error_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="14dp"
-                        android:text="@string/refresh_paging"
-                        android:textColor="#ADADAD"
-                        android:textSize="16sp"
-                        app:layout_constraintBottom_toTopOf="@+id/refresh"
-                        app:layout_constraintEnd_toEndOf="@+id/textView8"
-                        app:layout_constraintStart_toStartOf="@+id/textView8" />
-
-                    <Button
-                        android:id="@id/refresh"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/refresh"
-                        android:textAllCaps="false"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/textView8"
-                        app:layout_constraintStart_toStartOf="@+id/textView8" />
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintEnd_toEndOf="@+id/textView12"
+                        app:layout_constraintStart_toStartOf="@+id/textView12"
+                        app:layout_constraintTop_toBottomOf="@+id/textView12"
+                        tools:text="dwa" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/main_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="visible">
+
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:tag="skeleton_frame_layout"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat">
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/tourRecycler"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="8dp"
+                            android:nestedScrollingEnabled="false"
+                            android:orientation="vertical"
+                            android:visibility="visible"
+                            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+                            app:spanCount="2"
+                            tools:itemCount="10"
+                            tools:listitem="@layout/long_tour_item" />
+
+                        <include
+                            android:id="@+id/skeletonLayout"
+                            layout="@layout/skeleton_shimmer_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="8dp" />
+
+
+                    </FrameLayout>
+
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/anim_sort"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/range"
+                        app:layout_constraintEnd_toStartOf="@+id/range"
+                        app:layout_constraintTop_toTopOf="@+id/range"
+                        app:lottie_rawRes="@raw/sort" />
+
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_show_filter_bottom_sheet"
+                        style="@style/Widget.Material3.Button.IconButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#00FFFFFF"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/filter"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:icon="@drawable/ic_coolicon"
+                        app:iconPadding="10dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/range"
+                        style="@style/Widget.Material3.Button.IconButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#00FFFFFF"
+                        android:fontFamily="@font/roboto_medium"
+                        android:gravity="end"
+                        android:text="@string/by_popular"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        app:icon="@drawable/ic_baseline_arrow_drop_down"
+                        app:iconGravity="end"
+                        app:iconTint="#8A8A8A"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/btn_show_filter_bottom_sheet" />
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/linearLayoutCompat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/btn_show_filter_bottom_sheet">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/categoriesRecycler"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clipToPadding="false"
+                            android:orientation="horizontal"
+                            android:paddingStart="13dp"
+                            android:visibility="visible"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:itemCount="5"
+                            tools:listitem="@layout/categories_item"
+                            tools:visibility="visible" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/refresh_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="500dp"
+                        android:padding="15dp"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/textView8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="14dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="@string/slow_internet"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toTopOf="@+id/textView10"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.496"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView10"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="14dp"
+                            android:text="@string/refresh_paging"
+                            android:textColor="#ADADAD"
+                            android:textSize="16sp"
+                            app:layout_constraintBottom_toTopOf="@+id/refresh"
+                            app:layout_constraintEnd_toEndOf="@+id/textView8"
+                            app:layout_constraintStart_toStartOf="@+id/textView8" />
+
+                        <Button
+                            android:id="@id/refresh"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/refresh"
+                            android:textAllCaps="false"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/textView8"
+                            app:layout_constraintStart_toStartOf="@+id/textView8" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
 
         </androidx.core.widget.NestedScrollView>
 

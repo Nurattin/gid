@@ -1,11 +1,16 @@
 package com.travel.gid.ui.map_detail.adapter
 
-import android.util.Log
+import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.cardview.widget.CardView
+import androidx.core.view.forEach
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.stfalcon.imageviewer.StfalconImageViewer
 import com.travel.gid.R
 import com.travel.gid.data.models.Places
 import com.travel.gid.databinding.RouteDetailItemBinding
@@ -47,27 +52,61 @@ class MapAdapter() : RecyclerView.Adapter<MapAdapter.ViewHolder>() {
             binding.apply {
                 placeName.text = item.name
                 for (i in 0 until item.detailImages.size) {
-                    if (i < 3){
-                    Glide.with(itemView.context)
-                        .load(item.detailImages[i])
-                        .apply(
-                            RequestOptions()
-                                .placeholder(R.drawable.loading_animation)
-                                .error(R.drawable.no_image)
-                        )
-                        .into(
-                            when (i) {
-                                0 -> imageDetail1
-                                1 -> imageDetail2
-                                2 -> imageDetail3
-                                else -> imageDetail1
-                            }
-                        )
+                    if (i < 3) {
+                        Glide.with(itemView.context)
+                            .load(item.detailImages[i])
+                            .apply(
+                                RequestOptions()
+                                    .placeholder(R.drawable.loading_animation)
+                                    .error(R.drawable.no_image)
+                            )
+                            .into(
+                                when (i) {
+                                    0 -> imageDetail1
+                                    1 -> imageDetail2
+                                    2 -> imageDetail3
+                                    else -> imageDetail1
+                                }
+                            )
                     }
                 }
                 count.text = "${position + 1}"
+                imageContainer.forEach {
+                    if (it is CardView) it.setOnClickListener { v ->
+                        val tag = v.tag.toString().toInt()
+                        showImage(
+                            item.detailImages,
+                            binding.root.context,
+                            tag,
+                            it.getChildAt(0) as ImageView
+                        )
+                    }
+                }
             }
+        }
+        private fun showImage(
+            images: List<String>,
+            context: Context,
+            position: Int,
+            imageView: View
+        ) {
 
+            StfalconImageViewer.Builder(context, images) { view, image ->
+                Glide.with(itemView.context)
+                    .load(image)
+                    .apply(
+                        RequestOptions()
+                            .placeholder(R.drawable.loading_animation)
+                            .error(R.drawable.no_image)
+                    ).into(
+                        view
+                    )
+            }.withStartPosition(position - 1)
+                .withHiddenStatusBar(false)
+                .withTransitionFrom(imageView as ImageView)
+                .withBackgroundColor(context.getColor(R.color.white))
+                .allowSwipeToDismiss(true).show()
+                .show()
         }
     }
 }
