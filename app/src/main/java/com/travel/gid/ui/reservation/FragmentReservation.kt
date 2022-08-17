@@ -1,4 +1,4 @@
-package com.travel.gid.ui
+package com.travel.gid.ui.reservation
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,15 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.motion.widget.MotionLayout
-import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.recyclerview.widget.RecyclerView
 import com.travel.gid.R
 import com.travel.gid.databinding.FragmentReservationBinding
-import com.travel.gid.databinding.HomeFragmentBinding
 import com.travel.gid.ui.tour_detail.adapters.TravelDatesAdapter
 
 class FragmentReservation : Fragment() {

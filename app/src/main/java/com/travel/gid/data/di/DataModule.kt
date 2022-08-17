@@ -2,80 +2,33 @@ package com.travel.gid.data.di
 
 import com.travel.gid.BuildConfig
 import com.travel.gid.data.datasource.network.GidApi
-import com.travel.gid.data.repository.*
-import com.travel.gid.domain.repository.*
-import dagger.Binds
+import com.travel.gid.data.retrofit_result.ResultAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.scopes.ViewModelScoped
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.serialization.json.Json
-import okhttp3.Dispatcher
-import okhttp3.OkHttpClient
+import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 @Module
-@InstallIn(ViewModelComponent::class)
-abstract class DataModule {
+@InstallIn(SingletonComponent::class)
+class DataModule {
 
-    @Binds
-    abstract fun binGidRepository(repo: GidListListRepositoryImpl): GidListRepository
-
-    @Binds
-    abstract fun binTourListFilter(repo: TourListRepositoryImpl): TourListRepository
-
-    @Binds
-    abstract fun binPlaceById(repo: PlaceByIdRepositoryImpl): PlaceByIdRepository
-
-    @Binds
-    abstract fun binFilterRepository(repo: FilterRepositoryImpl): FilterRepository
-
-    @Binds
-    abstract fun bindHomeRepository(repo: HomeRepositoryImpl): HomeRepository
-
-    @Binds
-    abstract fun bindDirectionDetailRepository(repo: DirectionDetailRepositoryImpl): DirectionDetailRepository
-
-    @Binds
-    abstract fun bindTourDetailRepository(repo: TourDetailRepositoryImpl): TourDetailRepository
-
-    companion object {
-        @Provides
-        @ViewModelScoped
-        fun provideRetrofit(): Retrofit {
-            val json = Json {
-                ignoreUnknownKeys = true
-                coerceInputValues = true
-            }
-
-            val okHttpBuilder = OkHttpClient().newBuilder()
-            okHttpBuilder.addInterceptor {
-                val request = it.request()
-                val url = request.url.newBuilder()
-//                    .addQueryParameter("key", "key")
-                    .build()
-                it.proceed(request.newBuilder().url(url).build())
-            }
-
-            return Retrofit.Builder()
-                .baseUrl(BuildConfig.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(okHttpBuilder.build())
-                .build()
-        }
-
-        @Provides
-        @ViewModelScoped
-        fun providePixabayApi(retrofit: Retrofit): GidApi {
-            return retrofit.create(GidApi::class.java)
-        }
-
-        @Provides
-        @ViewModelScoped
-        fun provideIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
+    @Provides
+    @Singleton
+    fun provideRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL)
+            .addCallAdapterFactory(ResultAdapterFactory())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
     }
+
+    @Provides
+    @Singleton
+    fun providePixabayApi(retrofit: Retrofit): GidApi {
+        return retrofit.create(GidApi::class.java)
+    }
+
 }

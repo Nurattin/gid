@@ -3,8 +3,6 @@ package com.travel.gid.ui.direction_tour.adapter
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.travel.gid.data.models.DirectionData
-import com.travel.gid.ui.direction_list.list_tour.adapter.OnTourClickListener
-import com.travel.gid.ui.direction_list.list_tour.adapter.TourRecyclerViewHolder
 
 internal typealias OnDirectionClickListener = ((DirectionData) -> Unit)
 

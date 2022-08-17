@@ -2,13 +2,12 @@ package com.travel.gid.ui.home.child_fragments.event_fragment.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import coil.load
+import coil.size.Scale
 import com.travel.gid.R
-import com.travel.gid.data.models.DirectionData
+import com.travel.gid.data.models.Events
 import com.travel.gid.databinding.LongEventItemBinding
 import com.travel.gid.databinding.ShortEventItemBinding
 
@@ -17,24 +16,20 @@ sealed class EventRecyclerViewHolder(binding: ViewBinding) : RecyclerView.ViewHo
 
     class LongViewHolder(private val binding: LongEventItemBinding) :
         EventRecyclerViewHolder(binding) {
-        fun bind(item: DirectionData, clickListener: OnEventClickListener?) {
+        fun bind(item: Events.Event, clickListener: OnEventClickListener?) {
             binding.run {
                 cardTour.setOnClickListener {
                     clickListener?.invoke(item)
                 }
-            }
-            val imgUri = item.avatar.toUri().buildUpon().scheme("http").build()
-            Glide.with(itemView.context)
-                .load(imgUri)
-                .apply(
-                    RequestOptions()
 
-                        .placeholder(R.drawable.no_image)
-                        .error(R.drawable.no_image)
-                )
-                .into(binding.imageTour)
-            binding.nameTour.text = item.name
-            binding.place.text = item.city.name
+                imageTour.load(data = item.image) {
+                    scale(Scale.FILL)
+                    error(R.drawable.no_image)
+                    placeholder(R.drawable.loading_animation)
+                }
+                nameTour.text = item.name
+                place.text = item.city.name
+            }
         }
 
         companion object {
@@ -48,24 +43,20 @@ sealed class EventRecyclerViewHolder(binding: ViewBinding) : RecyclerView.ViewHo
 
     class ShortViewHolder(private val binding: ShortEventItemBinding) :
         EventRecyclerViewHolder(binding) {
-        fun bind(item: DirectionData, clickListener: OnEventClickListener?) {
+        fun bind(item: Events.Event, clickListener: OnEventClickListener?) {
             binding.run {
                 cardTour.setOnClickListener {
                     clickListener?.invoke(item)
                 }
-            }
-            val imgUri = item.avatar.toUri().buildUpon().scheme("http").build()
-            Glide.with(itemView.context)
-                .load(imgUri)
-                .apply(
-                    RequestOptions()
 
-                        .placeholder(R.drawable.no_image)
-                        .error(R.drawable.no_image)
-                )
-                .into(binding.imageTour)
-            binding.nameTour.text = item.name
-            binding.place.text = item.city.name
+                imageTour.load(data = item.image) {
+                    scale(Scale.FILL)
+                    error(R.drawable.no_image)
+                    placeholder(R.drawable.loading_animation)
+                }
+                nameTour.text = item.name
+                place.text = item.city.name
+            }
         }
 
         companion object {

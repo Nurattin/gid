@@ -3,15 +3,16 @@ package com.travel.gid.ui.home.child_fragments.event_fragment.adapter
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.travel.gid.data.models.DirectionData
+import com.travel.gid.data.models.Events
 
-internal typealias OnEventClickListener = ((DirectionData) -> Unit)
+internal typealias OnEventClickListener = ((Events.Event) -> Unit)
 
 
 class EventAdapter : RecyclerView.Adapter<EventRecyclerViewHolder>() {
 
     private var clickListener: OnEventClickListener? = null
 
-    var data = listOf<DirectionData>()
+    var data = listOf<Events.Event>()
         set(value) {
             field = value
             notifyDataSetChanged()

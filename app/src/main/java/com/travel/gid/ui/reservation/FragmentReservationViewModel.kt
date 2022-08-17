@@ -1,4 +1,4 @@
-package com.travel.gid.ui
+package com.travel.gid.ui.reservation
 
 import androidx.lifecycle.ViewModel
 

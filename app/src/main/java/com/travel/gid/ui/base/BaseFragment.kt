@@ -16,11 +16,11 @@ import com.travel.gid.R
 import com.travel.gid.ui.ActivityProviding
 import com.travel.gid.ui.base.loader.Error
 import com.travel.gid.ui.base.loader.LoaderProgressBar
-import com.travel.gid.ui.base.loader.LoaderSkeleton
+import com.travel.gid.ui.base.loader.Skeleton
 import com.travel.gid.utils.*
 import io.supercharge.shimmerlayout.ShimmerLayout
 
-abstract class BaseFragment<T : ViewBinding> : Fragment(), LoaderSkeleton, LoaderProgressBar,
+abstract class BaseFragment<T : ViewBinding> : Fragment(), Skeleton, LoaderProgressBar,
     Error {
 
     protected var mainContent: View? = null
@@ -34,11 +34,13 @@ abstract class BaseFragment<T : ViewBinding> : Fragment(), LoaderSkeleton, Loade
 
     protected val navController by lazy { (activity as ActivityProviding).provideNavController() }
     protected val insetController by lazy { (activity as ActivityProviding).provideInsetsController() }
+
     protected var binding
         get() = _binding!!
         set(value) {
             _binding = value
         }
+
     private var _binding: T? = null
 
 
@@ -85,13 +87,19 @@ abstract class BaseFragment<T : ViewBinding> : Fragment(), LoaderSkeleton, Loade
     }
 
     override fun showSkeleton(
+        recyclerView: RecyclerView,
+        shimmerLayout: ShimmerLayout,
+        orientation: Int,
+        item: Int
     ) {
-        recyclerView?.makeGone()
-        skeletonLayout?.let {
+        recyclerView.makeGone()
+        val skeletonLayout = shimmerLayout.getChildAt(0) as LinearLayout
+        skeletonLayout.let {
+            it.orientation = orientation
             if (it.isEmpty()) {
                 repeat(2) {
-                    itemLayoutSkeleton?.let { item ->
-                        skeletonLayout!!.addView(
+                    item.let { item ->
+                        skeletonLayout.addView(
                             layoutInflater.inflate(
                                 item, null
                             )
@@ -99,24 +107,15 @@ abstract class BaseFragment<T : ViewBinding> : Fragment(), LoaderSkeleton, Loade
                     }
                 }
             }
-
-            shimmer?.makeVisibly()
-            shimmer?.startShimmerAnimation()
-            it.makeVisibly()
         }
-
+        shimmerLayout.makeVisibly()
+        shimmerLayout.startShimmerAnimation()
     }
 
-    override fun stopSkeleton(
-    ) {
-        recyclerView?.makeVisibly()
-        shimmer?.makeGone()
-        shimmer?.stopShimmerAnimation()
-        skeletonLayout?.makeGone()
-        errorInternetContainer?.makeGoneIfVisibly()
-        mainContent?.makeVisiblyIfGone()
-        refreshData?.stopRefreshed()
-
+    override fun stopSkeleton(recyclerView: RecyclerView, shimmerLayout: ShimmerLayout) {
+        recyclerView.makeVisibly()
+        shimmerLayout.makeGone()
+        shimmerLayout.stopShimmerAnimation()
     }
 
 

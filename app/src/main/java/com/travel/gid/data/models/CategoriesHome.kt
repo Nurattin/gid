@@ -5,5 +5,5 @@ data class CategoriesHome(
     val iconChecked: Int,
     val iconUnChecked: Int,
     val name: String,
-    var isChecked: Boolean = false
+    val isChecked: Boolean = false
 )

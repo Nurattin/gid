@@ -1,6 +1,7 @@
 package com.travel.gid.data.datasource.network
 
 import com.travel.gid.data.models.*
+import com.travel.gid.data.result.Result
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -9,11 +10,11 @@ interface GidApi {
 
     @GET("tours/list-filter-parameters")
     suspend fun getFilterParams(
-    ): Response<Filters>
+    ): Result<Filters>
 
     @GET("directions/list")
     suspend fun getDirectionsList(
-    ): Response<Direction>
+    ): Result<Direction>
 
     @GET("directions/detail")
     suspend fun getDirectionDetail(
@@ -32,9 +33,11 @@ interface GidApi {
     @GET("places/detail")
     suspend fun getPlaceById(@Query("id") id: Long): Response<Place>
 
-    @GET("guides/list")
-    suspend fun getGidList(): Response<Gid>
+    @POST("guides/list")
+    suspend fun getGidList(): Result<Gid>
 
+    @POST("events/list")
+    suspend fun getEventList(): Result<Events>
 
     @FormUrlEncoded
     @POST("tours/list")
@@ -43,7 +46,7 @@ interface GidApi {
         @Field("priceTo")priceTo: Int?,
         @Field("categories") categories: String?,
         @Field("orderByPrice") orderByPrice: String?,
-    ): Response<Tour>
+    ): Result<Tour>
 }
 
 suspend fun <T> request(

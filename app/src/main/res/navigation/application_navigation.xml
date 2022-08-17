@@ -46,7 +46,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragmentReservation"
-        android:name="com.travel.gid.ui.FragmentReservation"
+        android:name="com.travel.gid.ui.reservation.FragmentReservation"
         android:label="FragmentReservation" >
         <action
             android:id="@+id/action_fragmentReservation_to_homeFragment"
@@ -89,8 +89,12 @@
         tools:layout="@layout/room_detail_fragment" />
     <fragment
         android:id="@+id/tourFragment"
-        android:name="com.travel.gid.ui.direction_list.list_tour.TourFragment"
-        android:label="TourFragment" />
+        android:name="com.travel.gid.ui.tour_list.TourFragment"
+        android:label="TourFragment" >
+        <action
+            android:id="@+id/action_tourFragment_to_filterFragmentSheet"
+            app:destination="@id/filterFragmentSheet" />
+    </fragment>
     <fragment
         android:id="@+id/directionListFragment"
         android:name="com.travel.gid.ui.direction_tour.DirectionListFragment"
@@ -104,7 +108,10 @@
             android:name="places"
             app:argType="com.travel.gid.data.models.Places[]" />
     </fragment>
-
+    <dialog
+        android:id="@+id/filterFragmentSheet"
+        android:name="com.travel.gid.ui.filter.FilterFragmentSheet"
+        android:label="FilterFragmentSheet" />
 
 
 </navigation>

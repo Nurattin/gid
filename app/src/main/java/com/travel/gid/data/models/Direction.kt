@@ -17,7 +17,7 @@ data class DirectionData (
     val name: String,
     @SerializedName("image")
     val avatar: String,
-    @SerializedName("cities")
+    @SerializedName("city")
     val city: City
 )
 

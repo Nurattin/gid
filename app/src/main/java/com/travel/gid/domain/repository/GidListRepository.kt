@@ -1,9 +1,9 @@
 package com.travel.gid.domain.repository
 
 import com.travel.gid.data.models.Gid
-import retrofit2.Response
+import com.travel.gid.data.result.Result
 
 
 interface GidListRepository {
-    suspend fun getGidList(): Response<Gid>
+    suspend fun getGidList(): Result<Gid>
 }

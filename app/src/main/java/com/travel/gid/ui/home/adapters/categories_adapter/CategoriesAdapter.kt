@@ -3,6 +3,8 @@ package com.travel.gid.ui.home.adapters.categories_adapter
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.travel.gid.R
 import com.travel.gid.data.models.CategoriesHome
@@ -10,21 +12,26 @@ import com.travel.gid.databinding.ItemCategoriesHomeBinding
 
 internal typealias OnCategoriesClickListener = ((Int) -> Unit)
 
+
 class CategoriesAdapter : RecyclerView.Adapter<CategoriesAdapter.ViewHolder>() {
-
-    var nowPosition: Int = 0
-    var lastPosition = 0
-
-    var data = listOf<CategoriesHome>()
-        set(value) {
-            field = value
-            field[nowPosition].isChecked = true
-            notifyDataSetChanged()
-        }
 
     var clickListener: OnCategoriesClickListener? = null
 
-    override fun getItemCount() = data.size
+    private val diffCallback = object : DiffUtil.ItemCallback<CategoriesHome>() {
+        override fun areItemsTheSame(oldItem: CategoriesHome, newItem: CategoriesHome): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: CategoriesHome, newItem: CategoriesHome): Boolean {
+            return oldItem == newItem
+        }
+
+    }
+
+    val differ = AsyncListDiffer(this, diffCallback)
+
+
+    override fun getItemCount() = differ.currentList.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -37,7 +44,7 @@ class CategoriesAdapter : RecyclerView.Adapter<CategoriesAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(data[position])
+        holder.bind(differ.currentList[position])
     }
 
 
@@ -57,18 +64,12 @@ class CategoriesAdapter : RecyclerView.Adapter<CategoriesAdapter.ViewHolder>() {
                 }
                 categoriesText.text = item.name
                 categoriesIcon.setOnClickListener {
-                    if (lastPosition != adapterPosition) {
-                        data[adapterPosition].isChecked = true
-                        notifyItemChanged(adapterPosition)
-                        data[lastPosition].isChecked = false
-                        notifyItemChanged(lastPosition)
-                        lastPosition = adapterPosition
-                        clickListener?.invoke(adapterPosition)
-                    }
+                    clickListener?.invoke(absoluteAdapterPosition)
                 }
             }
         }
     }
+
     fun setOnCategoriesClickListener(listener: OnCategoriesClickListener) {
         clickListener = listener
     }

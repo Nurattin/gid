@@ -28,7 +28,6 @@ internal typealias OnBtnApplyClickListener = ((FilterParamsTour) -> Unit)
 class FilterFragmentSheet : BottomSheetDialogFragment() {
 
     var filter = FilterParamsTour()
-
     private var priceFrom: Int? = null
     private var priceTo: Int? = null
 
@@ -132,37 +131,37 @@ class FilterFragmentSheet : BottomSheetDialogFragment() {
 
     private fun displayScreen(
     ) {
-        viewModel.filters.value?.let {
-            it.categoriesName?.let {listCategories ->
-                for (element in listCategories) {
-                    val chip =
-                        layoutInflater.inflate(
-                            R.layout.single_chip,
-                            binding.chipGroup,
-                            false
-                        ) as Chip
-                    chip.setOnCheckedChangeListener { compoundButton, b ->
-                        selectAllIfPressedOtherwiseRemoveTheSelection(compoundButton, b)
-                    }
-                    chip.text = element.name
-                    chip.id = if (element.name == "Все") -1 else element.id.toInt()
-                    chip.isChecked = filter.categoriesAccept?.contains(element.id.toInt()) ?: false
-                    binding.chipGroup.addView(chip)
-                }
-            }
-            priceFrom = if (priceFrom == null) it.startPrice else priceFrom
-            priceTo = if (priceTo == null) it.endPrice else priceTo
-
-            priceToNow = it.endPrice ?: priceTo!!
-            priceFromNow = it.startPrice ?: priceFrom!!
-
-            binding.rangeSliderPrice.values = listOf(priceFromNow.toFloat(), priceToNow.toFloat())
-            binding.rangeSliderPrice.valueFrom = priceFrom!!.toFloat()
-            binding.rangeSliderPrice.valueTo = priceTo!!.toFloat()
-
-            binding.endPrice.setText(priceToNow.toString())
-            binding.startPrice.setText(priceFromNow.toString())
-        }
+//        viewModel.filters.value?.let {
+//            it.categoriesName?.let {listCategories ->
+//                for (element in listCategories) {
+//                    val chip =
+//                        layoutInflater.inflate(
+//                            R.layout.single_chip,
+//                            binding.chipGroup,
+//                            false
+//                        ) as Chip
+//                    chip.setOnCheckedChangeListener { compoundButton, b ->
+//                        selectAllIfPressedOtherwiseRemoveTheSelection(compoundButton, b)
+//                    }
+//                    chip.text = element.name
+//                    chip.id = if (element.name == "Все") -1 else element.id.toInt()
+//                    chip.isChecked = filter.categoriesAccept?.contains(element.id.toInt()) ?: false
+//                    binding.chipGroup.addView(chip)
+//                }
+//            }
+//            priceFrom = if (priceFrom == null) it.startPrice else priceFrom
+//            priceTo = if (priceTo == null) it.endPrice else priceTo
+//
+//            priceToNow = it.endPrice ?: priceTo!!
+//            priceFromNow = it.startPrice ?: priceFrom!!
+//
+//            binding.rangeSliderPrice.values = listOf(priceFromNow.toFloat(), priceToNow.toFloat())
+//            binding.rangeSliderPrice.valueFrom = priceFrom!!.toFloat()
+//            binding.rangeSliderPrice.valueTo = priceTo!!.toFloat()
+//
+//            binding.endPrice.setText(priceToNow.toString())
+//            binding.startPrice.setText(priceFromNow.toString())
+//        }
 
     }
 

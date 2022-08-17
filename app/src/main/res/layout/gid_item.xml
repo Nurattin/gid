@@ -53,8 +53,8 @@
 
                     <ImageView
                         android:id="@+id/gid_avatar"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="87dp"
+                        android:layout_height="87dp"
                         android:layout_gravity="center"
                         android:scaleType="centerCrop"
                         app:srcCompat="@drawable/avatar" />

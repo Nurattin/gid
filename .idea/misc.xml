@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../layout/compose-model-1659537331576.xml" value="0.25" />
+        <entry key="../../../layout/compose-model-1659537454041.xml" value="0.25" />
+        <entry key="../../../layout/compose-model-1659537508087.xml" value="1.0" />
         <entry key="../../../layout/custom_preview.xml" value="0.14958033573141488" />
         <entry key="../.gradle/caches/transforms-3/ac937020088d70ab02a70a78c3d5f503/transformed/jetified-StfalconImageViewer-1.0.1/res/layout/view_image_viewer.xml" value="0.27546296296296297" />
         <entry key="../Library/Android/sdk/platforms/android-31/data/res/layout/simple_selectable_list_item.xml" value="0.2543822146216332" />
@@ -95,6 +98,7 @@
         <entry key="app/src/main/res/drawable/bg_stroke_gray_darken_8dp.xml" value="0.321025641025641" />
         <entry key="app/src/main/res/drawable/bg_white_40per_round_corner.xml" value="0.321025641025641" />
         <entry key="app/src/main/res/drawable/bg_white_round_corner.xml" value="0.321025641025641" />
+        <entry key="app/src/main/res/drawable/bottom_sheet_background.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/button_background_detail.xml" value="0.31203703703703706" />
         <entry key="app/src/main/res/drawable/default_dot.xml" value="0.31203703703703706" />
         <entry key="app/src/main/res/drawable/dotted.xml" value="0.3260416666666667" />
@@ -127,6 +131,7 @@
         <entry key="app/src/main/res/drawable/ic_pointer.xml" value="0.30925925925925923" />
         <entry key="app/src/main/res/drawable/ic_pointer_check.xml" value="0.30925925925925923" />
         <entry key="app/src/main/res/drawable/ic_postel.xml" value="0.31203703703703706" />
+        <entry key="app/src/main/res/drawable/ic_round_arrow_drop_up.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/line_dashed.xml" value="0.321025641025641" />
         <entry key="app/src/main/res/drawable/line_reservation_2.xml" value="0.3260416666666667" />
         <entry key="app/src/main/res/drawable/loading_img.xml" value="0.2115" />
@@ -165,7 +170,7 @@
         <entry key="app/src/main/res/layout/fragment_tour_detail.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_vp_home_tours.xml" value="0.22693786621093748" />
         <entry key="app/src/main/res/layout/gid_item.xml" value="0.3787032124057464" />
-        <entry key="app/src/main/res/layout/home_fragment.xml" value="0.3314917127071823" />
+        <entry key="app/src/main/res/layout/home_fragment.xml" value="0.18016759776536312" />
         <entry key="app/src/main/res/layout/home_tour_item.xml" value="0.5299728393554688" />
         <entry key="app/src/main/res/layout/hotel_detail_fragment.xml" value="0.2375405405382024" />
         <entry key="app/src/main/res/layout/hotels_fragment.xml" value="0.31715473759339846" />
@@ -207,6 +212,7 @@
         <entry key="app/src/main/res/layout/view_detail_live.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/view_pager_banner_tour_detail.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/view_price.xml" value="0.3103573277573809" />
+        <entry key="app/src/main/res/menu/menu.xml" value="0.262037037037037" />
         <entry key="app/src/main/res/menu/popup_menu.xml" value="0.27546296296296297" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.28425925925925927" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.28425925925925927" />
@@ -223,7 +229,7 @@
   <component name="VisualizationToolProject">
     <option name="state">
       <ProjectState>
-        <option name="scale" value="0.3098958333333333" />
+        <option name="scale" value="0.2358303606817281" />
       </ProjectState>
     </option>
   </component>

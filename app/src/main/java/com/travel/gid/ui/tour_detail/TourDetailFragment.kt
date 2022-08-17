@@ -4,18 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.transition.MaterialElevationScale
-import com.stfalcon.imageviewer.StfalconImageViewer
 import com.travel.gid.R
 import com.travel.gid.data.models.Places
 import com.travel.gid.data.models.TourDetailData
@@ -24,8 +19,6 @@ import com.travel.gid.ui.tour_detail.adapters.IncludedTour
 import com.travel.gid.ui.tour_detail.adapters.IncludedTourAdapter
 import com.travel.gid.ui.tour_detail.adapters.ToursImageAdapter
 import com.travel.gid.utils.CustomPointer
-import com.yandex.mapkit.Animation
-import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.RequestPoint
 import com.yandex.mapkit.RequestPointType
 import com.yandex.mapkit.directions.DirectionsFactory
@@ -38,9 +31,7 @@ import com.yandex.runtime.Error
 import com.yandex.runtime.ui_view.ViewProvider
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
-import kotlin.math.ln
 
 
 @AndroidEntryPoint
@@ -80,29 +71,31 @@ class TourDetailFragment : Fragment(), DrivingSession.DrivingRouteListener {
             initBanner(it?.data)
             initDescription(it?.data)
 
-            try {
-                arrayPlaces = viewModel.getPlaces()!!
-                setupMap(arrayPlaces)
-                initMarkPlaces(arrayPlaces)
-                submitRequest()
-            } catch (e: Exception) {
-                Toast.makeText(
-                    requireContext(),
-                    "Не удалось построить маршрут",
-                    Toast.LENGTH_SHORT
-                ).show()
-                binding.detailTourInclude.mapview.visibility = View.GONE
-            }
-            binding.detailTourInclude.mapview.setOnClickListener {
+            if (it.data.places.size > 1) {
 
-//                val extras =
-//                    FragmentNavigatorExtras(binding.detailTourInclude.mapview to "shared_element_container")
-                val bundle = bundleOf("places" to arrayPlaces.toTypedArray())
-                findNavController().navigate(
-                    R.id.action_tourDetailFragment_to_mapFragment,
-                    bundle,
-                )
+                try {
+                    arrayPlaces = viewModel.getPlaces()!!
+                    setupMap(arrayPlaces)
+                    initMarkPlaces(arrayPlaces)
+                    submitRequest()
+                    binding.detailTourInclude.mapview.setOnClickListener {
+                        val bundle = bundleOf("places" to arrayPlaces.toTypedArray())
+                        findNavController().navigate(
+                            R.id.action_tourDetailFragment_to_mapFragment,
+                            bundle,
+                        )
+                    }
+                } catch (e: Exception) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Не удалось построить маршрут",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    binding.detailTourInclude.mapview.visibility = View.GONE
+                }
             }
+            binding.detailTourInclude.mapview.setNoninteractive(true)
+
 
         }
         if (viewModel.toursDetail.value != null) {

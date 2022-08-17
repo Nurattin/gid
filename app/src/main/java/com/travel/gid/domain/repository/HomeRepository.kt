@@ -7,6 +7,4 @@ import retrofit2.Response
 
 interface HomeRepository {
     suspend fun getTours(): Response<Tour>
-    suspend fun getDirection(): Response<Direction>
-    suspend fun getDirections(): Response<Direction>
 }

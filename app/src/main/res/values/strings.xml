@@ -34,5 +34,11 @@
         <item>2</item>
         <item>15</item>
     </string-array>
+    
+    <!--listSortOptions for FragmentTour-->
+    <string name="popularityFirst">По популятрности</string>
+    <string name="dearFirst">Сначала дорогие</string>
+    <string name="cheapFirst">Сначала дешевые</string>
+    <string name="newFirst">Новые</string>
 
 </resources>

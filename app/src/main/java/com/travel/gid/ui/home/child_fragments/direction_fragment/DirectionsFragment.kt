@@ -5,126 +5,181 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.travel.gid.R
+import com.travel.gid.data.models.Direction
+import com.travel.gid.data.result.Result
+import com.travel.gid.data.result.asFailure
+import com.travel.gid.data.result.asSuccess
 import com.travel.gid.databinding.FragmentVpHomeToursBinding
-import com.travel.gid.ui.base.BaseFragment
+import com.travel.gid.ui.delegation.Error
+import com.travel.gid.ui.delegation.ErrorImpl
+import com.travel.gid.ui.delegation.Skeleton
+import com.travel.gid.ui.delegation.SkeletonImpl
 import com.travel.gid.ui.direction_detail.DirectionDetailFragmentArgs
 import com.travel.gid.ui.home.adapters.UpcomingToursAdapter
 import com.travel.gid.ui.home.child_fragments.direction_fragment.adapter.DirectionsListAdapter
-import com.travel.gid.ui.home.child_fragments.direction_fragment.view_model.DirectionViewModel
-import com.travel.gid.utils.SpaceItemDecoration
-import com.travel.gid.ui.home.utils.StopRefreshCallback
+import com.travel.gid.ui.home.view_model.HomeViewModel
+import com.travel.gid.utils.ConnectionLiveData
+import com.travel.gid.utils.checkInternetConnection
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class DirectionsFragment : BaseFragment<FragmentVpHomeToursBinding>() {
+class DirectionsFragment :
+    Fragment(), Error by ErrorImpl(), Skeleton by SkeletonImpl() {
+
+    @Inject
+    lateinit var networkConnection: ConnectionLiveData
+    private lateinit var binding: FragmentVpHomeToursBinding
     private val adapterDirection = DirectionsListAdapter()
     private val adapterUpcomingTours = UpcomingToursAdapter()
-    private val viewModel: DirectionViewModel by viewModels()
-    private var stopRefreshCallback: StopRefreshCallback? = null
-
+    private val viewModel: HomeViewModel by viewModels({ requireParentFragment() })
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentVpHomeToursBinding.inflate(inflater, container, false)
-
+        binding.recyclerGidList.adapter = adapterDirection
+        binding.upcomingToursRecyclerView.adapter = adapterUpcomingTours
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        mainContent = binding.mainContent
-        skeletonLayout = binding.skeletonLayout.skeletonLayout
-        skeletonLayout!!.orientation = LinearLayout.HORIZONTAL
-        errorInternetContainer = binding.errorInternetContainer
-        recyclerView = binding.similarToursRecyclerView
-        shimmer = binding.skeletonLayout.shimmerSkeleton
-        itemLayoutSkeleton = R.layout.skeleton_direction_tour_item
+        networkConnection.observe(viewLifecycleOwner) {
+            when (it) {
+                true -> getDataForUpcomingToursRecyclerView()
+                false -> {}
+            }
+        }
 
-        showSkeleton()
-        setupRecyclerView()
-        setupUpcomingRecyclerView()
+        with(binding) {
 
-        binding.apply {
             showAllTour.setOnClickListener {
-                findNavController().navigate(R.id.action_homeFragment_to_tourFragment, null, defNavOption)
+                findNavController().navigate(
+                    R.id.action_homeFragment_to_tourFragment,
+                    null,
+                )
             }
             showAllDirection.setOnClickListener {
-                findNavController().navigate(R.id.action_homeFragment_to_directionListFragment, null, defNavOption)
-            }
-            refresh.setOnClickListener {
-                refreshData
+                findNavController().navigate(
+                    R.id.action_homeFragment_to_directionListFragment,
+                    null,
+                )
             }
         }
-        viewModel.apply {
-            error.observe(viewLifecycleOwner) {
-                showError()
+
+        viewModel.swipeProgress.observe(viewLifecycleOwner) {
+            when (it) {
+                true -> getDataForUpcomingToursRecyclerView()
+                false -> {}
             }
+        }
+
+        viewModel.directionsList.observe(viewLifecycleOwner) { result ->
+
+            when (result) {
+                is Result.Success -> showDirectionList(result.asSuccess().value)
+
+                is Result.Failure<*> -> {
+                    result.asFailure().error.let { throwable ->
+                        viewModel.swipeProgress.value = false
+                        showError(
+                            mainContainer = binding.mainContent,
+                            errorContainer = binding.errorInternetContainer,
+                            throwable = throwable ?: Throwable("Unknown error"),
+                            actionOnErrorButton = { getDataForUpcomingToursRecyclerView() }
+                        )
+                    }
+                }
+            }
+            viewModel.swipeProgress.value = false
         }
     }
 
-    private fun setupRecyclerView() {
-        binding.similarToursRecyclerView.run {
-
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = adapterDirection
-
-            viewModel.directionsList.observe(viewLifecycleOwner, Observer {
-                it.body()?.data?.let { data ->
-                    adapterDirection.data = data
-                }
-                stopSkeleton()
-
-            })
-            adapterDirection.setOnTourClickListener {
-                navController.navigate(
-                    R.id.directionDetailFragment,
-                    DirectionDetailFragmentArgs(it.id).toBundle(),
-                    defNavOption,
-                )
+    private fun showDirectionList(value: Direction) {
+        binding.recyclerGidList.run {
+            value.data.let { data ->
+                adapterDirection.data = data
             }
-
             clipToPadding = false
-            addItemDecoration(
-                SpaceItemDecoration(
-                    space = 50,
-                    orientation = SpaceItemDecoration.Orientation.HORIZONTAL
-                )
+        }
+        adapterDirection.setOnTourClickListener {
+            findNavController().navigate(
+                R.id.directionDetailFragment,
+                DirectionDetailFragmentArgs(it.id).toBundle(),
+                null
             )
         }
+        stopSkeletonForSimilarToursRecyclerView()
     }
 
 
-    private fun setupUpcomingRecyclerView() {
+    private fun showSimilarToursRecyclerView() {
+
+    }
+
+
+    private fun showUpcomingToursRecyclerView() {
         binding.upcomingToursRecyclerView.run {
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = adapterUpcomingTours
             clipToPadding = false
         }
+        stopSkeletonForUpcomingToursRecyclerView()
     }
 
-    override fun stopSkeleton() {
-        stopRefreshCallback?.invoke()
-        super.stopSkeleton()
+    private fun getDataForUpcomingToursRecyclerView() {
+        networkConnection.checkInternetConnection(
+            actionOnInternetConnection = {
+                if (binding.errorInternetContainer.isVisible) hideError()
+                showSkeletonForUpcomingToursRecyclerView()
+                viewModel.getDirectionList()
+            },
+            actionOnInternetDisconnection = {
+                viewModel.swipeProgress.value = false
+                if (!binding.errorInternetContainer.isVisible) {
+                    showError(
+                        mainContainer = binding.mainContent,
+                        errorContainer = binding.errorInternetContainer,
+                        actionOnErrorButton = { getDataForUpcomingToursRecyclerView() }
+                    )
+                }
+            }
+        )
     }
 
-    fun refreshData() {
-        showSkeleton()
-        viewModel.getDirectionList()
-        viewModel.getTours()
+    private fun stopSkeletonForSimilarToursRecyclerView() {
+        stopSkeleton(
+            recyclerView = binding.recyclerGidList,
+            shimmerLayout = binding.skeletonLayout.shimmerSkeleton,
+        )
     }
 
-    fun setOnStopRefreshCallBack(callBack: StopRefreshCallback) {
-        stopRefreshCallback = callBack
+
+    private fun showSkeletonForUpcomingToursRecyclerView() {
+        showSkeleton(
+            context = requireContext(),
+            recyclerView = binding.recyclerGidList,
+            shimmerLayout = binding.skeletonLayout.shimmerSkeleton,
+            orientation = LinearLayout.HORIZONTAL,
+            item = R.layout.skeleton_direction_tour_item,
+        )
     }
+
+    private fun hideError() {
+        hideError(
+            mainContainer = binding.mainContent,
+            errorContainer = binding.errorInternetContainer
+        )
+    }
+
+    private fun stopSkeletonForUpcomingToursRecyclerView() {
+    }
+
 }
 

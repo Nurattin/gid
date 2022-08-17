@@ -39,10 +39,10 @@ class DirectionListFragment : Fragment() {
         val adapterDirection = DirectionListAdapter()
         binding.tourRecycler.adapter = adapterDirection
         viewModel.directionList.observe(viewLifecycleOwner) { it ->
-            it.body()?.data?.let {
-                adapterDirection.data = it
-                stopProgress()
-            }
+//            it.body()?.data?.let {
+//                adapterDirection.data = it
+//                stopProgress()
+//            }
 
         }
 

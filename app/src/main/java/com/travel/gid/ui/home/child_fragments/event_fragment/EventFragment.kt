@@ -5,125 +5,139 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.core.view.isEmpty
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.travel.gid.R
+import com.travel.gid.data.models.Events
+import com.travel.gid.data.result.Result
+import com.travel.gid.data.result.asFailure
+import com.travel.gid.data.result.asSuccess
 import com.travel.gid.databinding.FragmentEventBinding
+import com.travel.gid.ui.delegation.Error
+import com.travel.gid.ui.delegation.ErrorImpl
+import com.travel.gid.ui.delegation.Skeleton
+import com.travel.gid.ui.delegation.SkeletonImpl
 import com.travel.gid.ui.home.child_fragments.event_fragment.adapter.EventAdapter
-import com.travel.gid.ui.home.child_fragments.event_fragment.view_model.EventViewModel
-import com.travel.gid.ui.home.utils.ShowErrorCallback
-import com.travel.gid.ui.home.utils.StopRefreshCallback
-import com.travel.gid.utils.makeGone
-import com.travel.gid.utils.stopRefreshed
-import com.travel.gid.utils.makeVisibly
+import com.travel.gid.ui.home.view_model.HomeViewModel
+import com.travel.gid.utils.ConnectionLiveData
+import com.travel.gid.utils.checkInternetConnection
 import dagger.hilt.android.AndroidEntryPoint
-import io.supercharge.shimmerlayout.ShimmerLayout
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class EventFragment : Fragment() {
 
-    lateinit var binding: FragmentEventBinding
-    private var stopRefreshCallback: StopRefreshCallback? = null
-    private val viewModel: EventViewModel by viewModels()
-    private lateinit var skeletonLayout: LinearLayout
-    private lateinit var shimmer: ShimmerLayout
+class EventFragment : Fragment(),
+    Error by ErrorImpl(),
+    Skeleton by SkeletonImpl() {
+
+    @Inject
+    lateinit var networkConnection: ConnectionLiveData
+
+    private lateinit var binding: FragmentEventBinding
+    private val viewModel: HomeViewModel by viewModels({ requireParentFragment() })
+    private val adapter = EventAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.fragment_event, container, false)
-        binding = FragmentEventBinding.bind(view)
-        skeletonLayout = binding.skeletonLayout.skeletonLayout
-        shimmer = binding.skeletonLayout.shimmerSkeleton
+        binding = FragmentEventBinding.inflate(inflater, container, false)
+
+        binding.eventRecycler.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        showProgressBar()
-        val eventAdapter = EventAdapter()
-        binding.eventRecycler.adapter = eventAdapter
-        binding.eventRecycler.layoutManager =
-            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        viewModel.event.observe(viewLifecycleOwner) { it ->
-            it.body()?.data?.let {
-                eventAdapter.data = it
+        networkConnection.observe(viewLifecycleOwner) {
+            when (it) {
+                true -> getData()
+                false -> {}
             }
-            stopProgressBar()
         }
 
-        viewModel.error.observe(viewLifecycleOwner) {
-            showError()
-            stopRefreshCallback?.invoke()
+        viewModel.swipeProgress.observe(viewLifecycleOwner) {
+            when (it) {
+                true -> getData()
+                false -> {}
+            }
         }
-        binding.refresh.setOnClickListener {
-            refreshData()
-        }
-    }
 
+        viewModel.events.observe(viewLifecycleOwner) { result ->
+            when (result) {
 
-    private fun showProgressBar() {
-        showSkeleton(true)
-    }
+                is Result.Success -> showEventList(result.asSuccess().value)
 
-    private fun stopProgressBar() {
-        animateReplaceSkeleton(binding.eventRecycler)
-        with(binding) {
-            mainContent.makeVisibly()
-            errorInternetContainer.makeGone()
-        }
-        stopRefreshCallback?.invoke()
-    }
-
-    private fun showSkeleton(show: Boolean) {
-        if (show) {
-            binding.eventRecycler.makeGone()
-            if (skeletonLayout.isEmpty()) {
-                for (i in 0..2) {
-                    val rowLayout =
-                        layoutInflater.inflate(
-                            R.layout.skeleton_item_tour_list,
-                            null
-                        ) as ViewGroup
-                    skeletonLayout.addView(rowLayout)
+                is Result.Failure<*> -> {
+                    result.asFailure().error.let { throwable ->
+                        showError(
+                            mainContainer = binding.mainContent,
+                            errorContainer = binding.errorInternetContainer,
+                            throwable = throwable ?: Throwable("Unknown error"),
+                            actionOnErrorButton = { getData() }
+                        )
+                    }
                 }
             }
-            shimmer.makeVisibly()
-            shimmer.startShimmerAnimation()
-            skeletonLayout.makeVisibly()
-            skeletonLayout.bringToFront()
-        } else {
-            shimmer.stopShimmerAnimation()
-            shimmer.makeGone()
+            stopSkeletonForEventList()
+            viewModel.swipeProgress.value = false
+        }
+
+    }
+
+    private fun getData() {
+        networkConnection.checkInternetConnection(actionOnInternetConnection = {
+            if (binding.errorInternetContainer.isVisible) hideError()
+            showSkeletonForEventList()
+            viewModel.getEvent()
+        }, actionOnInternetDisconnection = {
+            viewModel.swipeProgress.value = false
+            if (!binding.errorInternetContainer.isVisible) {
+                showError(
+                    mainContainer = binding.mainContent,
+                    errorContainer = binding.errorInternetContainer,
+                    actionOnErrorButton = { getData() }
+                )
+            }
+        })
+    }
+
+    private fun showEventList(value: Events) {
+
+        value.data.let { data ->
+            adapter.data = data
+            binding.run {
+                eventRecycler.adapter = adapter
+            }
         }
     }
 
-    private fun animateReplaceSkeleton(listView: View) {
-        listView.makeVisibly()
+    private fun showSkeletonForEventList() {
         showSkeleton(
-            false,
+            context = requireContext(),
+            recyclerView = binding.eventRecycler,
+            shimmerLayout = binding.skeletonLayout.shimmerSkeleton,
+            orientation = LinearLayout.VERTICAL,
+            item = R.layout.skeleton_item_tour_list
         )
     }
 
-    fun refreshData() {
-        showProgressBar()
-        viewModel.getEvent()
+    private fun stopSkeletonForEventList() {
+        stopSkeleton(
+            recyclerView = binding.eventRecycler,
+            shimmerLayout = binding.skeletonLayout.shimmerSkeleton,
+        )
     }
 
-    fun setOnStopRefreshCallBack(callBack: StopRefreshCallback) {
-        stopRefreshCallback = callBack
-    }
-
-    private fun showError() {
-        with(binding) {
-            mainContent.makeGone()
-            errorInternetContainer.makeVisibly()
-        }
-        stopRefreshCallback?.invoke()
+    private fun hideError() {
+        hideError(
+            mainContainer = binding.mainContent,
+            errorContainer = binding.errorInternetContainer
+        )
     }
 }

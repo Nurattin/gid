@@ -1,4 +1,4 @@
-package com.travel.gid.ui.direction_list.list_tour.adapter
+package com.travel.gid.ui.tour_list.adapter
 
 import android.graphics.Color
 import android.view.LayoutInflater

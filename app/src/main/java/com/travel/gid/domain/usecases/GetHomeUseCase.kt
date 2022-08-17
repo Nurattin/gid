@@ -9,6 +9,4 @@ import javax.inject.Inject
 
 class GetHomeUseCase @Inject constructor(private val repo: HomeRepository) {
     suspend fun getTours(): Response<Tour> = repo.getTours()
-    suspend fun getDirection(): Response<Direction> = repo.getDirection()
-    suspend fun getDirections(): Response<Direction> = repo.getDirections()
 }

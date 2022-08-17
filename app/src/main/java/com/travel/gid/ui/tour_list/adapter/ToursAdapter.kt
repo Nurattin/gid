@@ -1,13 +1,12 @@
-package com.travel.gid.ui.direction_list.list_tour.adapter
+package com.travel.gid.ui.tour_list.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.travel.gid.data.models.DirectionData
 import com.travel.gid.data.models.TourData
 
 internal typealias OnTourClickListener = ((TourData) -> Unit)
 
-class ToursAdapter : RecyclerView.Adapter<TourRecyclerViewHolder>() {
+class ToursAdapter : RecyclerView.Adapter<TourRecyclerListViewHolder>() {
 
     private var clickListener: OnTourClickListener? = null
 
@@ -16,19 +15,19 @@ class ToursAdapter : RecyclerView.Adapter<TourRecyclerViewHolder>() {
             field = value
             notifyDataSetChanged()
         }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TourRecyclerViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TourRecyclerListViewHolder {
         return if (viewType == 0)
-            TourRecyclerViewHolder.LongViewHolder.fromLong(parent)
+            TourRecyclerListViewHolder.LongListViewHolder.fromLong(parent)
         else {
-            TourRecyclerViewHolder.ShortViewHolder.fromShort(parent)
+            TourRecyclerListViewHolder.ShortListViewHolder.fromShort(parent)
         }
     }
-    override fun onBindViewHolder(holder: TourRecyclerViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TourRecyclerListViewHolder, position: Int) {
         when (holder) {
-            is TourRecyclerViewHolder.LongViewHolder -> {
+            is TourRecyclerListViewHolder.LongListViewHolder -> {
                 holder.bind(data[position], clickListener)
             }
-            is TourRecyclerViewHolder.ShortViewHolder -> {
+            is TourRecyclerListViewHolder.ShortListViewHolder -> {
                 holder.bind(data[position], clickListener)
             }
         }

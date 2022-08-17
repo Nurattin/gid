@@ -1,4 +1,4 @@
-package com.travel.gid.ui.direction_list.list_tour.viewModel
+package com.travel.gid.ui.tour_list.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,11 +7,13 @@ import com.travel.gid.data.models.Categories
 import com.travel.gid.data.models.FilterParamsTour
 import com.travel.gid.data.models.Filters
 import com.travel.gid.data.models.Tour
+import com.travel.gid.data.result.Result
+import com.travel.gid.data.result.asSuccess
 import com.travel.gid.domain.usecases.GetFilterUseCase
 import com.travel.gid.domain.usecases.GetTourListUseCase
 import com.travel.gid.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -19,11 +21,12 @@ import javax.inject.Inject
 class TourViewModel @Inject constructor(
     private val getFilterUseCase: GetFilterUseCase,
     private val getTourListUseCase: GetTourListUseCase,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
-    ) : BaseViewModel() {
+) : BaseViewModel() {
 
-    private val _filters = MutableLiveData<Response<Filters>>()
-    val filters: LiveData<Response<Filters>>
+    var  startPost = 0
+
+    private val _filters = MutableLiveData<Result<Filters>>()
+    val filters: LiveData<Result<Filters>>
         get() = _filters
 
     private val _categories = MutableLiveData<List<Categories>>()
@@ -34,26 +37,28 @@ class TourViewModel @Inject constructor(
     val categoriesPos: Int
         get() = _categoriesPos
 
-    private val _tours = MutableLiveData<Response<Tour>>()
-    val tours: LiveData<Response<Tour>>
+    private val _tours = MutableLiveData<Result<Tour>>()
+    val tours: LiveData<Result<Tour>>
         get() = _tours
 
 
     private fun getFilterParams() {
         viewModelScope.launch(coroutineExceptionHandler) {
-            _filters.value = getFilterUseCase.getFilterParams()
+            _filters.value = getFilterUseCase.invoke()
         }
     }
 
     fun getListCategories() {
-        val listCategories = filters.value?.body()?.data?.listCategories
-        listCategories?.add(0, Categories(0, "Все", true))
-        _categories.value = listCategories!!
+        filters.value?.asSuccess()?.value?.data?.let {
+            val listCategories = it.listCategories
+            listCategories.add(0, Categories(0, "Все", true))
+            _categories.value = listCategories
+        }
     }
 
     init {
         getFilterParams()
-        getAllTour(FilterParamsTour())
+        getAllTour()
 
     }
 
@@ -65,22 +70,15 @@ class TourViewModel @Inject constructor(
 
     }
 
-    fun refreshData(filter: FilterParamsTour) {
-        getAllTour(filter)
-        getFilterParams()
-    }
-
-    fun getAllTour(filter: FilterParamsTour) {
+    fun getAllTour(filter: FilterParamsTour? = null) {
         viewModelScope.launch(coroutineExceptionHandler) {
-            _tours.value = withContext(ioDispatcher) {
-                return@withContext getTourListUseCase.getTourListFilter(
-                    categories = filter.categoriesAccept,
-                    priceFrom = filter.startPrice,
-                    priceTo = filter.endPrice,
-                    orderByPrice = filter.sortedParams,
-                )
-            }
-
+            _tours.value = getTourListUseCase.invoke(
+                categories = filter?.categoriesAccept,
+                priceFrom = filter?.startPrice,
+                priceTo = filter?.endPrice,
+                orderByPrice = filter?.sortedParams,
+            )
         }
+
     }
 }

@@ -1,4 +1,4 @@
-package com.travel.gid.ui.direction_list.list_tour.adapter
+package com.travel.gid.ui.tour_list.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -12,11 +12,12 @@ import com.travel.gid.data.models.TourData
 import com.travel.gid.databinding.LongTourItemBinding
 import com.travel.gid.databinding.ShortTourItemBinding
 
-sealed class TourRecyclerViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
 
+sealed class TourRecyclerListViewHolder(binding: ViewBinding) :
+    RecyclerView.ViewHolder(binding.root) {
 
-    class LongViewHolder(private val binding: LongTourItemBinding) :
-        TourRecyclerViewHolder(binding) {
+    class LongListViewHolder(private val binding: LongTourItemBinding) :
+        TourRecyclerListViewHolder(binding) {
         fun bind(item: TourData, clickListener: OnTourClickListener?) {
             binding.run {
                 cardTour.setOnClickListener {
@@ -35,16 +36,16 @@ sealed class TourRecyclerViewHolder(binding: ViewBinding) : RecyclerView.ViewHol
         }
 
         companion object {
-            fun fromLong(parent: ViewGroup): LongViewHolder {
+            fun fromLong(parent: ViewGroup): LongListViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val bindingLong = LongTourItemBinding.inflate(layoutInflater, parent, false)
-                return LongViewHolder(bindingLong)
+                return LongListViewHolder(bindingLong)
             }
         }
     }
 
-    class ShortViewHolder(private val binding: ShortTourItemBinding) :
-        TourRecyclerViewHolder(binding) {
+    class ShortListViewHolder(private val binding: ShortTourItemBinding) :
+        TourRecyclerListViewHolder(binding) {
         fun bind(item: TourData, clickListener: OnTourClickListener?) {
             binding.run {
                 cardTour.setOnClickListener { clickListener?.invoke(item) }
@@ -60,10 +61,10 @@ sealed class TourRecyclerViewHolder(binding: ViewBinding) : RecyclerView.ViewHol
         }
 
         companion object {
-            fun fromShort(parent: ViewGroup): ShortViewHolder {
+            fun fromShort(parent: ViewGroup): ShortListViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val bindingShort = ShortTourItemBinding.inflate(layoutInflater, parent, false)
-                return ShortViewHolder(bindingShort)
+                return ShortListViewHolder(bindingShort)
             }
         }
     }
