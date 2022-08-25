@@ -1,25 +1,36 @@
 package com.travel.gid.ui.home
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.animation.*
+import androidx.compose.animation.core.EaseInOut
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BackdropScaffold
+import androidx.compose.material.BackdropValue
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.rememberBackdropScaffoldState
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.viewpager2.widget.ViewPager2
+import androidx.navigation.findNavController
+import com.travel.gid.R
 import com.travel.gid.databinding.HomeFragmentBinding
-import com.travel.gid.ui.home.adapters.ViewPagerChildFragmentsAdapter
-import com.travel.gid.ui.home.adapters.banner_adapter.ViewPagerAdapter
-import com.travel.gid.ui.home.adapters.banner_adapter.view_pager_extension.autoScrollViewPager
-import com.travel.gid.ui.home.adapters.banner_adapter.view_pager_extension.infinityScrollViewPager
-import com.travel.gid.ui.home.adapters.categories_adapter.CategoriesAdapter
+import com.travel.gid.ui.home.compose.HomeAppBar
+import com.travel.gid.ui.home.compose.back_layer.HomeBackLayerContent
+import com.travel.gid.ui.home.compose.back_layer.HomeScreen
+import com.travel.gid.ui.home.compose.front_layer.GidScreen
+import com.travel.gid.ui.home.compose.front_layer.TourScreen
 import com.travel.gid.ui.home.view_model.HomeViewModel
 import com.travel.gid.utils.ConnectionLiveData
-import com.travel.gid.utils.checkInternetConnection
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
+private const val ANIMATED_CONTENT_ANIMATION_DURATION = 300
 
 
 @AndroidEntryPoint
@@ -28,99 +39,77 @@ class HomeFragment : Fragment() {
     @Inject
     lateinit var networkConnection: ConnectionLiveData
     private val viewModel: HomeViewModel by viewModels()
-    private var sliderHandler = Handler(Looper.getMainLooper())
     private lateinit var binding: HomeFragmentBinding
-    private val adapters = ViewPagerAdapter()
-    private val adapterCategories = CategoriesAdapter()
-    private lateinit var childFragmentsAdapter: ViewPagerChildFragmentsAdapter
 
+    @OptIn(ExperimentalMaterialApi::class, ExperimentalAnimationApi::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
         binding = HomeFragmentBinding.inflate(inflater, container, false)
-        binding.run {
-            childFragmentsAdapter =
-                ViewPagerChildFragmentsAdapter(this@HomeFragment)
-            vpChildFragment.adapter = childFragmentsAdapter
-            vpChildFragment.isUserInputEnabled = false
-        }
-        return binding.root
-    }
 
+        return ComposeView(requireContext()).apply {
+            setContent {
+                BackdropScaffold(
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+                    scaffoldState = rememberBackdropScaffoldState(BackdropValue.Revealed),
+                    frontLayerScrimColor = Color.Unspecified,
+                    backLayerBackgroundColor = Color.White,
+                    appBar = { HomeAppBar() },
+                    backLayerContent = {
+                        HomeBackLayerContent(
+                            onClickChangeCategories = { newScreenPos ->
+                                viewModel.changeCategoriesScreen(newScreenPos)
+                            },
+                            onRefresh = { viewModel.refreshData() }
+                        )
+                    },
+                    frontLayerContent = {
+                        AnimatedContent(
+                            targetState = viewModel.currentScreenPosition.value,
+                            transitionSpec = {
+                                val direction = if (initialState.ordinal < targetState.ordinal)
+                                    AnimatedContentScope.SlideDirection.Left else AnimatedContentScope
+                                    .SlideDirection.Right
 
-        binding.run {
-            viewModel.listImageBanner.observe(viewLifecycleOwner) {
-                adapters.data = it
-            }
-            bannerViewPager.run {
-                autoScrollViewPager(adapters)
-                infinityScrollViewPager()
-
-                registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                    override fun onPageSelected(position: Int) {
-                        super.onPageSelected(position)
-                        sliderHandler.removeCallbacks(sliderRunnable)
-                        sliderHandler.postDelayed(sliderRunnable, 10000)
-                    }
-                })
-            }
-        }
-
-        with(binding) {
-            categoriesAdapter.adapter = adapterCategories
-            viewModel.listCategoriesHome.observe(viewLifecycleOwner) { listCategoriesHome ->
-                adapterCategories.differ.submitList(listCategoriesHome)
-                binding.vpChildFragment.currentItem = viewModel.currentItem
-            }
-            adapterCategories.setOnCategoriesClickListener { newPosition ->
-                with(viewModel) {
-                    if (currentItem != newPosition) {
-                        changePosCategories(currentItem, newPosition)
-                        swipeProgress.value = false
-                    }
+                                slideIntoContainer(
+                                    towards = direction,
+                                    animationSpec = tween(ANIMATED_CONTENT_ANIMATION_DURATION)
+                                ) with
+                                        slideOutOfContainer(
+                                            towards = direction,
+                                            animationSpec = tween(
+                                                ANIMATED_CONTENT_ANIMATION_DURATION
+                                            )
+                                        ) using SizeTransform(
+                                    clip = false,
+                                    sizeAnimationSpec = { _, _ ->
+                                        tween(
+                                            ANIMATED_CONTENT_ANIMATION_DURATION,
+                                            easing = EaseInOut
+                                        )
+                                    }
+                                )
+                            }
+                        ) { targetState ->
+                            when (targetState) {
+                                HomeScreen.TourScreen -> TourScreen(
+                                    onClickShowAllTour = { findNavController().navigate(R.id.tourFragment) }
+                                )
+                                HomeScreen.GidScreen -> {
+                                    viewModel.getGidList()
+                                    GidScreen()
+                                }
+                                HomeScreen.PlaceScreen -> {}
+                                HomeScreen.HotelScreen -> {}
+                            }
+                        }
+                    },
+                    frontLayerElevation = 5.dp,
+                    frontLayerShape = RoundedCornerShape(10.dp)
+                ) {
                 }
             }
         }
-
-        viewModel.swipeProgress.observe(viewLifecycleOwner) {
-            binding.swipeRefresh.isRefreshing = it
-        }
-
-        binding.swipeRefresh.setOnRefreshListener {
-
-            networkConnection.checkInternetConnection(
-                actionOnInternetConnection = {
-                    viewModel.swipeProgress.value = true
-                    refreshData()
-                },
-                actionOnInternetDisconnection = {
-                    viewModel.swipeProgress.value = true
-                    refreshData()
-                })
-
-        }
     }
-
-
-    private fun refreshData() {
-        when (viewModel.currentItem) {
-            0 -> {
-//                viewModel.getDataDirectionFragmentScreen()
-            }
-            1 -> {
-                viewModel.getGidList()
-            }
-            2 -> {
-                viewModel.getEvent()
-            }
-        }
-    }
-
-
-    private var sliderRunnable =
-        Runnable { binding.bannerViewPager.currentItem = binding.bannerViewPager.currentItem + 1 }
 }

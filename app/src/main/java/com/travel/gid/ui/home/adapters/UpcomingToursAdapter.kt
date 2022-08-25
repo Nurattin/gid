@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.travel.gid.databinding.UpcomingToursItemBinding
 
-class UpcomingToursAdapter () : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class UpcomingToursAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -17,13 +17,15 @@ class UpcomingToursAdapter () : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
             )
         )
     }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     }
 
     override fun getItemCount(): Int {
         return 4
     }
-    inner class UpcomingViewHolder(private val binding: UpcomingToursItemBinding):
+
+    inner class UpcomingViewHolder(private val binding: UpcomingToursItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind() {

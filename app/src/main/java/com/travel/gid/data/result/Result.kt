@@ -2,6 +2,8 @@ package com.travel.gid.data.result
 
 sealed class Result<out T> {
 
+    class Loading<T> : Result<T>()
+
     sealed class Success<T> : Result<T>() {
 
         abstract val value: T

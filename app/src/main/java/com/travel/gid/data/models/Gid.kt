@@ -12,6 +12,8 @@ data class Gid(
 
 @Serializable
 data class GidDetail(
+    @SerializedName("id")
+    val id: Int,
     @SerializedName("name")
     val name: String,
     @SerializedName("number")
@@ -20,8 +22,6 @@ data class GidDetail(
     val image: String,
     @SerializedName("detailImages")
     val detailImages: List<String>,
-//    @SerializedName("categories")
-//    val categories: List<String>,
     @SerializedName("averageCheck")
     val averageCheck: Int,
     @SerializedName("city")

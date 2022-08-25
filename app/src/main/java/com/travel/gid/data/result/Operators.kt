@@ -27,6 +27,7 @@ fun <T, R> Result<T>.map(transform: (value: T) -> R): Result<R> {
     return when(this) {
         is Result.Success -> Result.Success.Value(transform(value))
         is Result.Failure<*> -> this
+        is Result.Loading -> Result.Loading()
     }
 }
 

@@ -2,10 +2,9 @@ package com.travel.gid.ui.home.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.travel.gid.data.models.DirectionData
 import com.travel.gid.ui.home.child_fragments.direction_fragment.DirectionsFragment
 import com.travel.gid.ui.home.child_fragments.event_fragment.EventFragment
-import com.travel.gid.ui.home.child_fragments.gid_fragment.GidFragment
+//import com.travel.gid.ui.home.child_fragments.gid_fragment.GidFragment
 
 class ViewPagerChildFragmentsAdapter(fragment: Fragment) :
     FragmentStateAdapter(fragment) {
@@ -15,7 +14,7 @@ class ViewPagerChildFragmentsAdapter(fragment: Fragment) :
 
         val fragment = when (position) {
             0 -> DirectionsFragment()
-            1 -> GidFragment()
+//            1 -> GidFragment()
             2 -> EventFragment()
             else -> DirectionsFragment()
         }

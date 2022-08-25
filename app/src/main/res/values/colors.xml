@@ -24,4 +24,11 @@
     <color name="green_btn_color">#738C95</color>
     <color name="bg_item_room">#F4F4F4</color>
 
+    <color name="text_unchecked">#ACA6A6</color>
+    <color name="text_checked">#000000</color>
+    <color name="icon_background_checked">#76A595</color>
+    <color name="icon_background_unchecked">#F5F5F5</color>
+    <color name="icon_checked">#FFFFFF</color>
+    <color name="icon_unchecked">#D7D7D7</color>
+
 </resources>
